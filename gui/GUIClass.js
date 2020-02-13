@@ -101,7 +101,7 @@ class GUIClass {
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
-            this.objList[i].GUI_BACK_2_BASIC = this.folder.back2Basic.bind(this.folder);
+            this.objList[i].GUI_BACK_2_BASIC = _folder.back2Basic.bind(_folder, i);
         }
         this.createListInteractiveOverEvent(_scene, _debugBox);
         this.createListInteractiveFocusEvent(_scene, _debugBox, _folder);
@@ -167,12 +167,12 @@ class GUIClass {
         // focus off function
         let tmpFocusFunc = () => {
             this.clearFocus();
-            this.folder.setBasicFocusFolder();
+            _folder.setBasicFocusFolder();
             this.debugBox.clearFocusGameObj();
         }
         // cross2FocusObj
         let tmpGo2ThisFunc = () => {
-            this.folder.cross2FocusObj(this.focusConfig.gameObj, this.objList);
+            _folder.cross2FocusObj(this.focusConfig.gameObj, this.objList);
         };
         let tmpFocusProperties = {
             name: 'NONE',
@@ -197,8 +197,8 @@ class GUIClass {
         tmpFocus.add(tmpFocusProperties, 'FOCUS_OFF'); // function
         tmpFocus.add(tmpFocusProperties, 'GO_2_THIS_OBJ'); // function
 
-        this.folder.push2FolderList(tmpPointer, 'basic');
-        this.folder.push2FolderList(tmpObj, 'basic');
+        _folder.push2FolderList(tmpPointer, 'basic');
+        _folder.push2FolderList(tmpObj, 'basic');
     }
     // create each custom folder from Phaser.scene.displayList
     createCustom(_scene, _custom) {

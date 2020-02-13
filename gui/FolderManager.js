@@ -117,6 +117,8 @@ class FolderManager {
     closeFolder(_folder) {
         _folder.close();
     }
+
+    // EXTERNAL
     setBasicOverFolder(_gameObj) {
         if (_gameObj) {
             let tmpTexture = this.typeSort.setTextureProperty(_gameObj);;
@@ -151,24 +153,15 @@ class FolderManager {
         }
     }
     cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
-        // close the basic folder
+        let tmpObjFolder = this.custom.folder.__folders;
         this.closeFolder(this.basic.folder);
-        // open the custom folder
         this.openFolder(this.custom.folder);
-        // + open !only! the gameObj folder
-        console.log('this.custom:', this.custom);
-        console.log('_objList[_gameObj.guiIdx]:', _objList[_gameObj.guiIdx]);
-        
-        // + close the other gameObj folders
+        this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
     }
-    back2Basic() {
-        console.log('this in back function:', this);
-        // ** this scope => FOLDER class self
-        // + close this gameObj folder
-
-        // + close the custom folder
+    back2Basic(_idx) {
+        let tmpObjFolder = this.custom.folder.__folders;
+        this.closeFolder(tmpObjFolder[_idx]);
         this.closeFolder(this.custom.folder);
-        // + open the basic folder
         this.openFolder(this.basic.folder);
     }
     // get func
