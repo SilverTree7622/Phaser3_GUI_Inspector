@@ -1,6 +1,6 @@
 
 // Folder manager
-class FolderManager {
+export default class FolderManager {
     constructor(_GUI, _typeSort) {
         this.GUI = _GUI;
         this.typeSort = _typeSort;

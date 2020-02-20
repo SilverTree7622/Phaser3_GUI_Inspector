@@ -1,6 +1,6 @@
 
 // make debug box with phaser graphics
-class DebugBoxClass {
+export default class DebugBoxClass {
     constructor() {
         this.graphics = undefined;
         this.list = undefined;

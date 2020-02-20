@@ -28,8 +28,13 @@
         for each gameobjects, but this is gonna be hard so i just drawback for next version)
 */
 
+import TypeSortManager from './TypeSortManager.js';
+import FolderManager from './FolderManager.js';
+import SaveManager from './SaveManager.js';
+import DebugBoxClass from './DebugBoxClass.js';
+
 // GUI class (dat.GUI)
-class GUIClass {
+export default class GUIClass {
     constructor(_statusManager) {
         this.self = new dat.GUI();
         this.statusManager = this.initChckStatusManager(_statusManager);

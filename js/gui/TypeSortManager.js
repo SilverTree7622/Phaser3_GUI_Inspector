@@ -1,6 +1,6 @@
 
 // sort obj type, pointer over properties
-class TypeSortManager {
+export default class TypeSortManager {
     constructor() {
 
     }

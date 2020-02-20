@@ -4,7 +4,7 @@
     included for saving changed GUI touched stuffs
 */
 
-class SaveManager {
+export default class SaveManager {
     constructor(_save) {
         this.saveFunc = _save;
         this.saveQ = [];
