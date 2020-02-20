@@ -4,4 +4,3 @@ require('./gui/lib/DatGUILib.js');
 require('./gui/GUIClass.js');
 // import GUIClass from './gui/GUIClass.js';
 
-console.log('GUIClass in cdn file:', GUIClass);

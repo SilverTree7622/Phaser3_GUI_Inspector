@@ -36,6 +36,7 @@ import DebugBoxClass from './DebugBoxClass.js';
 // GUI class (dat.GUI)
 export default class GUIClass {
     constructor(_statusManager) {
+        console.log('NOTIFICATION: GUIClass in cdn file:', this);
         this.self = new dat.GUI();
         this.statusManager = this.initChckStatusManager(_statusManager);
         this.overConfig = this.initOverConfig();
