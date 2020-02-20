@@ -3046,12 +3046,16 @@ function () {
 
 exports.default = GUIClass;
 },{"./TypeSortManager.js":"gui/TypeSortManager.js","./FolderManager.js":"gui/FolderManager.js","./SaveManager.js":"gui/SaveManager.js","./DebugBoxClass.js":"gui/DebugBoxClass.js"}],"main.js":[function(require,module,exports) {
+"use strict";
+
+var _GUIClass = _interopRequireDefault(require("./gui/GUIClass.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 require('./gui/lib/DatGUILib.js'); // import * from require('./gui/lib/DatGUILib.js');
+// require('./gui/GUIClass.js');
 
 
-require('./gui/GUIClass.js'); // import GUIClass from './gui/GUIClass.js';
-
-
-console.log('GUIClass in main.js:', GUIClass);
+console.log('GUIClass in main.js:', _GUIClass.default);
 },{"./gui/lib/DatGUILib.js":"gui/lib/DatGUILib.js","./gui/GUIClass.js":"gui/GUIClass.js"}]},{},["main.js"], null)
 //# sourceMappingURL=/main.js.map
