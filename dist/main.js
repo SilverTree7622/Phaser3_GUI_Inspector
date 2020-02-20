@@ -2692,7 +2692,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// GUI class (dat.GUI)
+console.log('NOTIFICATION: GUIClass in cdn file'); // GUI class (dat.GUI)
+
 var GUIClass =
 /*#__PURE__*/
 function () {
