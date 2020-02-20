@@ -31,11 +31,11 @@
 // GUI class (dat.GUI)
 class GUIClass {
     constructor(_statusManager) {
+        this.self = new dat.GUI();
         this.statusManager = this.initChckStatusManager(_statusManager);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
         this.scene = undefined;
-        this.self = new dat.GUI();
         this.objList = undefined; // all game object list
         this.typeSort = new TypeSortManager();
         this.folder = new FolderManager(this.self, this.typeSort);
@@ -45,10 +45,13 @@ class GUIClass {
         this._custom = undefined;
     }
     create(_scene) {
+
+        let tmpCon = _scene.add.container();
+
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
         this.createBasic(_scene, this.folder, this._basic);
-        this.createCustom(_scene, this._custom);
+        this.createCustom(_scene, this._custom, this.typeSort);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {
@@ -97,7 +100,9 @@ class GUIClass {
     createListInteractive(_scene, _debugBox, _folder) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.objList[i].setInteractive();
+            if (this.objList[i].type !== 'Container') {
+                this.objList[i].setInteractive();
+            }
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
@@ -125,19 +130,21 @@ class GUIClass {
         _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {
             // if middle button pressed
             if (!_pointer.rightButtonDown() && !_pointer.leftButtonDown()) {
-                // clear the focus object
                 if (_gameObj.isFocusOnGUI) { // clear the focus object
                     this.setFocusConfig(true, _gameObj);
                     this.clearFocus(_gameObj);
                     _debugBox.clearFocusGameObj();
                     _folder.setBasicFocusFolder();
+                    console.log('0');
                 }
                 else { // set the focus object
                     if (this.focusConfig.gameObj) { // init focus check
+                        console.log('1');
                         this.clearFocus(this.focusConfig.gameObj);
                         this.setFocusConfig(false, undefined);
                         _debugBox.clearFocusGameObj();
                     }
+                    console.log('2');
                     // set to this game object
                     this.setFocusConfig(true, _gameObj);
                     this.setFocus(_scene, _gameObj);
@@ -160,6 +167,7 @@ class GUIClass {
         let tmpObj = undefined;
         let tmpFocus = undefined;
         let tmpObjProperties = {
+            GUIIdx: 'NONE',
             name: 'NONE',
             type: 'NONE',
             texture: 'NONE'
@@ -175,6 +183,7 @@ class GUIClass {
             _folder.cross2FocusObj(this.focusConfig.gameObj, this.objList);
         };
         let tmpFocusProperties = {
+            GUIIdx: 'NONE',
             name: 'NONE',
             type: 'NONE',
             texture: 'NONE',
@@ -187,10 +196,12 @@ class GUIClass {
         tmpPointer.add(_scene.input, 'x').listen();
         tmpPointer.add(_scene.input, 'y').listen();
         tmpObj = _basic.addFolder('Obj');
+        tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
         tmpObj.add(tmpObjProperties, 'name').listen();
         tmpObj.add(tmpObjProperties, 'type').listen();
         tmpObj.add(tmpObjProperties, 'texture').listen();
         tmpFocus= tmpObj.addFolder('Focus'); // add to Parent Obj folder
+        tmpFocus.add(tmpFocusProperties, 'GUIIdx').listen();
         tmpFocus.add(tmpFocusProperties, 'name');
         tmpFocus.add(tmpFocusProperties, 'type');
         tmpFocus.add(tmpFocusProperties, 'texture');
@@ -201,11 +212,11 @@ class GUIClass {
         _folder.push2FolderList(tmpObj, 'basic');
     }
     // create each custom folder from Phaser.scene.displayList
-    createCustom(_scene, _custom) {
+    createCustom(_scene, _custom, _typeSort) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
-            this.typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList[i]);
+            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList[i]);
         }   
     }
     setFocus(_scene, _gameObj) {

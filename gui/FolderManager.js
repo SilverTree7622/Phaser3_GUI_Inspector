@@ -121,10 +121,11 @@ class FolderManager {
     // EXTERNAL
     setBasicOverFolder(_gameObj) {
         if (_gameObj) {
-            let tmpTexture = this.typeSort.setTextureProperty(_gameObj);;
-            this.basic.list[1].__controllers[0].setValue(_gameObj.name);
-            this.basic.list[1].__controllers[1].setValue(_gameObj.type);
-            this.basic.list[1].__controllers[2].setValue(tmpTexture);
+            let tmpTexture = this.typeSort.setTextureProperty(_gameObj);
+            this.basic.list[1].__controllers[0].setValue(_gameObj.guiIdx);
+            this.basic.list[1].__controllers[1].setValue(_gameObj.name);
+            this.basic.list[1].__controllers[2].setValue(_gameObj.type);
+            this.basic.list[1].__controllers[3].setValue(tmpTexture);
         }
         else { // change to all 'NONE'
             let tmpLength = this.basic.list[1].__controllers.length;
@@ -138,9 +139,10 @@ class FolderManager {
         if (_gameObj) {
             let tmpTexture = this.typeSort.setTextureProperty(_gameObj);
             this.openFolder(tmpFocus);
-            tmpFocus.__controllers[0].setValue(_gameObj.name);
-            tmpFocus.__controllers[1].setValue(_gameObj.type);
-            tmpFocus.__controllers[2].setValue(tmpTexture);
+            tmpFocus.__controllers[0].setValue(_gameObj.guiIdx);
+            tmpFocus.__controllers[1].setValue(_gameObj.name);
+            tmpFocus.__controllers[2].setValue(_gameObj.type);
+            tmpFocus.__controllers[3].setValue(tmpTexture);
         }
         else { // change to all 'NONE'
             this.openFolder(this.basic.folder);
@@ -153,10 +155,15 @@ class FolderManager {
         }
     }
     cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
-        let tmpObjFolder = this.custom.folder.__folders;
-        this.closeFolder(this.basic.folder);
-        this.openFolder(this.custom.folder);
-        this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
+        if (_gameObj) {
+            let tmpObjFolder = this.custom.folder.__folders;
+            this.closeFolder(this.basic.folder);
+            this.openFolder(this.custom.folder);
+            this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
+        }
+        else {
+            console.warn('_inspector SYSTEM_: NONE Focus');
+        }
     }
     back2Basic(_idx) {
         let tmpObjFolder = this.custom.folder.__folders;
