@@ -2700,6 +2700,7 @@ function () {
   function GUIClass(_statusManager) {
     _classCallCheck(this, GUIClass);
 
+    console.log('NOTIFICATION: GUIClass in cdn file:', this);
     this.self = new dat.GUI();
     this.statusManager = this.initChckStatusManager(_statusManager);
     this.overConfig = this.initOverConfig();
@@ -3049,5 +3050,8 @@ require('./gui/lib/DatGUILib.js'); // import * from require('./gui/lib/DatGUILib
 
 
 require('./gui/GUIClass.js'); // import GUIClass from './gui/GUIClass.js';
+
+
+console.log('GUIClass in main.js:', GUIClass);
 },{"./gui/lib/DatGUILib.js":"gui/lib/DatGUILib.js","./gui/GUIClass.js":"gui/GUIClass.js"}]},{},["main.js"], null)
 //# sourceMappingURL=/main.js.map
