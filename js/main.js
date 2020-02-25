@@ -8,4 +8,4 @@ require('./gui/GUIClass.js');
 // Publish method
 window.PHASER3_DATGUI_INSPECTOR = window.PHASER3_DATGUI_INSPECTOR || {};
 window.PHASER3_DATGUI_INSPECTOR = GUIClass;
-console.log(window.PHASER3_DATGUI_INSPECTOR);
+console.log('check window pdi object is fine:', window.PHASER3_DATGUI_INSPECTOR);
