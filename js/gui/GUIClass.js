@@ -28,15 +28,15 @@
         for each gameobjects, but this is gonna be hard so i just drawback for next version)
 */
 
+import * as dat from './lib/DatGUILib.js'; // import lib
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
 
 console.log('NOTIFICATION: GUIClass in cdn file');
-console.log('dat:', dat);
 
-export default class GUIClass {
+export class GUIClass {
     constructor(_statusManager) {
         this.self = new dat.GUI();
         this.scene = undefined;
