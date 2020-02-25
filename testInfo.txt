@@ -23,3 +23,16 @@ https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.0/dist/main
 https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector/js/main.min.js
 https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector/test/GUIClass.js
 
+
+// temp package
+{
+    "name": "parcel_publish_test",
+    "version": "1.0.0",
+    "description": "phaser3_datGUI_inspector",
+    "main": "index.js",
+    "scripts": {
+        "build": "parcel build ./js/main.js"
+    },
+    "author": "SilverTree7622",
+    "license": "MIT"
+  }

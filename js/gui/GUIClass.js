@@ -28,6 +28,7 @@
         for each gameobjects, but this is gonna be hard so i just drawback for next version)
 */
 
+require('./lib/DatGUILib.js'); // dat.GUI API import
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
@@ -38,8 +39,6 @@ console.log('NOTIFICATION: GUIClass in cdn file');
 // GUI class (dat.GUI)
 export default class GUIClass {
     constructor(_statusManager) {
-
-        console.log('NOTIFICATION: GUIClass in cdn file:', this);
         this.self = new dat.GUI();
         this.statusManager = this.initChckStatusManager(_statusManager);
         this.overConfig = this.initOverConfig();
@@ -54,9 +53,6 @@ export default class GUIClass {
         this._custom = undefined;
     }
     create(_scene) {
-
-        // let tmpCon = _scene.add.container();
-
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
         this.createBasic(_scene, this.folder, this._basic);

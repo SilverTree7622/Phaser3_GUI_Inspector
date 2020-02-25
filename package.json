@@ -1,0 +1,29 @@
+{
+	"name": "phaser3_gui_inspector",
+	"version": "1.0.0",
+	"description": "phaser3, datgui, inspector, api",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"build": "parcel build ./js/main.js",
+	"scripts": {
+		"build": "parcel build ./js/main.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SilverTree7622/Phaser3_GUI_inspector.git"
+	},
+	"keywords": [
+		"phaser3",
+		"datgui",
+		"inpsector",
+		"api"
+	],
+	"author": "SilverTree7622",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/SilverTree7622/Phaser3_GUI_inspector/issues"
+	},
+	"homepage": "https://github.com/SilverTree7622/Phaser3_GUI_inspector#readme"
+}
