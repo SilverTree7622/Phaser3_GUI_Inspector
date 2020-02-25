@@ -55,7 +55,7 @@ export default class GUIClass {
     }
     create(_scene) {
 
-        let tmpCon = _scene.add.container();
+        // let tmpCon = _scene.add.container();
 
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
