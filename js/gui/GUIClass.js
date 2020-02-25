@@ -34,10 +34,10 @@ import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
 
 console.log('NOTIFICATION: GUIClass in cdn file');
+console.log('dat:', dat);
 
 export default class GUIClass {
     constructor(_statusManager) {
-        console.log('dat:', dat);
         this.self = new dat.GUI();
         this.scene = undefined;
         this.objList = undefined; // all game object list
