@@ -34,8 +34,6 @@ import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
 
-console.log('NOTIFICATION: GUIClass in cdn file');
-
 export class GUIClass {
     constructor(_statusManager) {
         this.self = new dat.GUI();
