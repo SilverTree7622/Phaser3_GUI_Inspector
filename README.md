@@ -17,6 +17,7 @@ USAGE_EXAMPLE)
    </html>
    
   JS_CODE)
+  
   function create() {
     /*
     * your any codes
