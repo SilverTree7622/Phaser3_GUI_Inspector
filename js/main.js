@@ -11,5 +11,5 @@ window.GUIClass = require('./gui/GUIClass.js').GUIClass;
 // window.GUIClass = GUIClass;
 
 // check is really exist
-console.log('window:', window);
+console.log('window in lib:', window);
 console.log('GUIClass in window:', window.GUIClass);
