@@ -5,29 +5,18 @@ export default class FolderManager {
         this.GUI = _GUI;
         this.typeSort = _typeSort;
         this.config = this.initConfig();
-        this.property = this.initProperty();
         this.basic = this.initBasic();
         this.custom = this.initCustom();
     }
     create(_scene) {
-        this.createProperty(_scene);
         this.createBasic();
         this.createCustom();
-    }
-    update(_time, _delta) {
-        this.updateFPS(_delta);
     }
     initConfig() { // config
         let tmpC = {};
         tmpC.openBasicDefault = true;
         tmpC.openCustomDefault = false;
         return tmpC;
-    }
-    initProperty() { // always check Phaser FPS
-        let tmpP = {};
-        tmpP.self = [];
-        tmpP.FPS = 0;
-        return tmpP;
     }
     initBasic() { // basic folder
         let tmpB = {};
@@ -55,17 +44,11 @@ export default class FolderManager {
         tmpC.list = [];
         return tmpC;
     }
-    createProperty(_scene) {
-        this.property.self.push(this.GUI.add(this.property, 'FPS').listen());
-    }
     createBasic() {
         this.basic.folder = this.GUI.addFolder('BASIC');
     }
     createCustom() {
         this.custom.folder = this.GUI.addFolder('CUSTOM');
-    }
-    updateFPS(_delta) { // update temp FPS
-        this.property.FPS = (1000/_delta).toFixed(3);
     }
     push2FolderList(_folder, _isBasic) {
         if (_isBasic === 'basic') {
