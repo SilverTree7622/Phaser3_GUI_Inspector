@@ -1,6 +1,6 @@
 
 // function
-function PhaserDatActionWithScene (_scene, _statusManager) {
+function PhaserDatActionWithScene(_scene, _statusManager) {
     // declare
     let tmpClass;
     let tmpStatus;
