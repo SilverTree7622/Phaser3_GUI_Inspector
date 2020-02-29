@@ -8,10 +8,10 @@ DESCRIPTION)
 
 EXAMPLE)
 	CODE)
-		IN_HTML)
-			<!-- https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.1/dist/main.js -->
-			<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.1/dist/main.js"></script>
-		IN_JS)
+IN_HTML)
+https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.1/dist/main.js
+IN_JS)
+
 			  function create() {
 			    /*
 			    * your any codes
@@ -19,9 +19,8 @@ EXAMPLE)
 			    // should call this function at the end of Phaser.Scene create function
 			    PhaserDatActionWithScene(this);
 			  }
-	
-	WEB)
-		
+WEB)
+
 	
 NOTATION)
 	  This is kind of side project so if I got feedback,
