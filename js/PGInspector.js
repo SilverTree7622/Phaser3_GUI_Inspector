@@ -15,7 +15,11 @@ function PhaserDatActionWithScene(_scene, _statusManager) {
 
 // detail function
 function InitSet() {
-    let tmpClass = require('./gui/GUIClass.js').GUIClass;
+    let tmpClass;
+    try {
+        tmpClass = require('./gui/GUIClass.js').GUIClass;
+    }
+    catch {}
     return tmpClass;
 }
 function CheckSM(_statusManager) {

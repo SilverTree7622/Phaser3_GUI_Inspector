@@ -2,27 +2,46 @@
 // sort obj type, pointer over properties
 export default class TypeSortManager {
     constructor() {
-
+        this.timeKey = 'Sorting Timer';
+        this.objLength = 0;
     }
     // _EXTERNAL_
-    chckObjType(_custom, _idx, _folderInCustom, _gameObj) { // check each of objs type
-        let tmpType = _gameObj.type;
-        this.createBack2BasicFunc(_idx, _folderInCustom, _gameObj);
+    chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
+        let tmpGameObj = _objList[_idx];
+        let tmpType = tmpGameObj.type;
+
+        this.createBack2BasicFunc(_idx, _folderInCustom, tmpGameObj);
+        this.chckStartSorting(_idx, _objList.length);
+
         switch (tmpType) {
-            case 'Image': this.createListImage(_idx, _folderInCustom, _gameObj); break;
-            case 'Sprite': this.createListSprite(_idx, _folderInCustom, _gameObj); break;
-            case 'Text': this.createListText(_idx, _folderInCustom, _gameObj); break;
-            case 'Graphics': this.createGraphics(_idx, _folderInCustom, _gameObj); break;
-            case 'Container': this.createContainer(_idx, _folderInCustom, _gameObj); break;
+            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
             case 'Arc': 
-                console.log('Arc:', _gameObj);
-                // this.createAracdeBodySprite(_idx, _folderInCustom, _gameObj);
+                // console.log('Arc:', tmpGameObj);
+                // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
                 break;
             // + etc
             default:
-                console.warn(tmpType, '<= this is not on the type options');
+                console.warn(tmpType, '<= this is not on the type or not yet updated type options');
                 break;
         }
+    }
+    chckStartSorting(_idx, _length) {
+        if (_idx === 0) {
+            console.log('_inspector SYSTEM_: START CUSTOM SORTING');
+            console.time(this.timeKey);
+            this.objLength = _length - 1;
+        } else {}
+    }
+    chckEndSorting(_idx) {
+        if (_idx === this.objLength) {
+            console.log('_inspector SYSTEM_: END CUSTOM SORTING');
+            console.timeEnd(this.timeKey);
+            console.log('_inspector SYSTEM_: DISPLAY LENGTH IS', this.objLength + 1);
+        } else {}
     }
     // pointer over texture sorting
     setTextureProperty(_gameObj) {
@@ -41,7 +60,7 @@ export default class TypeSortManager {
                 console.log('object:', _gameObj);
                 break;
             default:
-                console.log(tmpType, '<= this is not on the options');
+                console.log(tmpType, 'this is not on the type or not yet updated type options');
                 break;
         }
         return tmpReturn;
@@ -53,16 +72,19 @@ export default class TypeSortManager {
     }
     createListImage(_idx, _folderInCustom, _gameObj) {
         // also check what type of Physics
-        console.log('IMAGE type:', _gameObj);
+        // console.log('IMAGE type:', _gameObj);
         let tmpType = (_gameObj.body) ? true : false;
+
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(tmpType, _folderInCustom, _gameObj);
+
         _folderInCustom.add(_gameObj.texture, 'key').listen();
         this.createCommon(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(tmpType, _folderInCustom, _gameObj);
+        this.chckEndSorting(_idx);
     }
     createListSprite(_idx, _folderInCustom, _gameObj) {
-        console.log('SPRITE type:', _gameObj);
+        // console.log('SPRITE type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
         _folderInCustom.add(_gameObj.texture, 'key').listen();
@@ -74,18 +96,20 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'w').listen();
         this.createCommon(_idx, _folderInCustom, _gameObj);
         this.createAnims(_idx, _folderInCustom, _gameObj);
+        this.chckEndSorting(_idx);
     }
     createListText(_idx, _folderInCustom, _gameObj) {
-        console.log('TEXT type:', _gameObj);
+        // console.log('TEXT type:', _gameObj);
         let tmpType = (_gameObj.body) ? true : false;
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(tmpType, _folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj, 'text').listen();
         this.createCommon(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(tmpType, _folderInCustom, _gameObj);
+        this.chckEndSorting(_idx);
     }
     createGraphics(_idx, _folderInCustom, _gameObj) {
-        console.log('GRAPHICS type:', _gameObj);
+        // console.log('GRAPHICS type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
         _folderInCustom.add(_gameObj, 'alpha').listen();
@@ -101,9 +125,10 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, '_lineWidth').listen();
         _folderInCustom.add(_gameObj, 'active').listen();
         // this.createCommon(_idx, _folderInCustom, _gameObj);
+        this.chckEndSorting(_idx);
     }
     createContainer(_idx, _folderInCustom, _gameObj) {
-        console.log('CONTAINER type:', _gameObj);
+        // console.log('CONTAINER type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name').listen();
         _folderInCustom.add(_gameObj, 'type').listen();
         _folderInCustom.add(_gameObj, 'alpha').listen();
@@ -130,9 +155,10 @@ export default class TypeSortManager {
             tmpList.add(_gameObj.list, i);
         }
         tmpList.open();
+        this.chckEndSorting(_idx);
     }
     createEmitter(_idx, _folderInCustom, _gameObj) {
-        console.log('EMITTER type:', _gameObj);
+        // console.log('EMITTER type:', _gameObj);
     }
 
     // check body is arcade or matter
@@ -191,19 +217,19 @@ export default class TypeSortManager {
         }
     }
     createCommon(_idx, _folderInCustom, _gameObj) {
-        _folderInCustom.add(_gameObj, 'x').listen();
-        _folderInCustom.add(_gameObj, 'y').listen();
-        _folderInCustom.add(_gameObj, 'width').listen();
-        _folderInCustom.add(_gameObj, 'height').listen();
-        _folderInCustom.add(_gameObj, 'alpha').listen();
-        _folderInCustom.add(_gameObj, 'depth').listen();
-        _folderInCustom.add(_gameObj, 'scale').listen();
-        _folderInCustom.add(_gameObj, 'angle').listen();
-        _folderInCustom.add(_gameObj, 'rotation').listen();
-        _folderInCustom.add(_gameObj, 'visible').listen();
-        _folderInCustom.add(_gameObj, 'originX').listen();
-        _folderInCustom.add(_gameObj, 'originY').listen();
-        _folderInCustom.add(_gameObj, 'active').listen();
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'x').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'y').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'width').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'height').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'alpha').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'depth').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'scale').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'angle').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'rotation').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'visible').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'originX').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'originY').listen);
+        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'active').listen);
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
         let tmpAnims = _folderInCustom.addFolder('anims');
@@ -228,5 +254,11 @@ export default class TypeSortManager {
         tmpAnims.add(_gameObj.anims, '_wasPlaying').listen();
         tmpAnims.add(_gameObj.anims, '_pendingStop').listen();
         tmpAnims.open();
+    }
+    tryCatchFlow(_function) {
+        try {
+            _function();
+        }
+        catch {}
     }
 }

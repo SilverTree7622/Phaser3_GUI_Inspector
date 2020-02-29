@@ -95,6 +95,10 @@ export default class DebugBoxClass {
     clearOverGameObj() {
         this.over.gameObj = undefined;
         this.clearDebugBox();
+        if (this.focus.gameObj) {
+            this.setDebugBox(this.focus, this.focus.gameObj);
+        }
+        else {}
     }
     clearFocusGameObj() {
         this.focus.gameObj = undefined;

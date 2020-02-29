@@ -116,15 +116,19 @@ export class GUIClass {
     createListInteractiveOverEvent(_scene, _debugBox) {
         // just pointer over obj
         _scene.input.on('gameobjectover', (_pointer, _gameObj) => {
-            this.setPointerOver(_gameObj);
-            _debugBox.setOver(_gameObj);
+            if (!_gameObj.isFocusOnGUI) {
+                this.setPointerOver(_gameObj);
+                _debugBox.setOver(_gameObj);
+            }
+            else {}
         });
         // when out from pointer over obj
         _scene.input.on('gameobjectout', (_pointer, _gameObj) => {
-            if (!_gameObj.isFocusOnGUI) {
+            if (!_gameObj.isFocusOnGUI) { // not focus
                 this.clearPointerOver(_gameObj);
                 _debugBox.clearOverGameObj();
             }
+            else {}
         });
     }
     createListInteractiveFocusEvent(_scene, _debugBox, _folder) {
@@ -137,16 +141,13 @@ export class GUIClass {
                     this.clearFocus(_gameObj);
                     _debugBox.clearFocusGameObj();
                     _folder.setBasicFocusFolder();
-                    console.log('0');
                 }
                 else { // set the focus object
                     if (this.focusConfig.gameObj) { // init focus check
-                        console.log('1');
                         this.clearFocus(this.focusConfig.gameObj);
                         this.setFocusConfig(false, undefined);
                         _debugBox.clearFocusGameObj();
                     }
-                    console.log('2');
                     // set to this game object
                     this.setFocusConfig(true, _gameObj);
                     this.setFocus(_scene, _gameObj);
@@ -218,7 +219,7 @@ export class GUIClass {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
-            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList[i]);
+            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
         }   
     }
     setFocus(_scene, _gameObj) {
