@@ -49,8 +49,8 @@
 > **PGInspector will detect and show on UI**
 
 **NOTATION)**\
-&nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project
-&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this lib so I made it as open source project
+&nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project\
+&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this lib so I made it as open source project\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
 &nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
   
