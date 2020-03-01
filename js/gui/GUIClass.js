@@ -58,6 +58,8 @@ export class GUIClass {
         this._custom = undefined;
     }
     create(_scene) {
+        let tmpScene = _scene;
+        console.log('GUIClass create function _scene:', _scene);
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
         this.createBasic(_scene, this.main, this.folder, this._basic);
