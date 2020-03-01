@@ -18,7 +18,7 @@
 		*/
 		
 		// should call this function at the end of Phaser.Scene create function
-		PhaserDatActionWithScene(this);
+		PhaserDatActionWithScene(this); // default setting will be applied
 		// or
 		PhaserDatActionWithScene({
 		scene: this,
