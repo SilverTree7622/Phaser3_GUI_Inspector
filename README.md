@@ -43,7 +43,7 @@
 
 ![Capture_img](./zReadmeSrc/capture_gif.gif)
 
-&nbsp;&nbsp;&nbsp;&nbsp;#_ (*)**If you wanna check status or var name somethning**,\
+&nbsp;&nbsp;&nbsp;&nbsp;###### (*)**If you wanna check status or var name somethning**,\
 &nbsp;&nbsp;&nbsp;&nbsp;**change Phaser GameObject name property, then GUI will detect it**
 
 **NOTATION)**\
