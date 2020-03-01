@@ -8,6 +8,10 @@
 &nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs \
 &nbsp;&nbsp;&nbsp;&nbsp;Also you can use this as debug displayed game objects
 
+**SCREENSHOT)**
+
+![Capture_img](./zReadmeSrc/capture_img.png)
+
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js \
@@ -32,9 +36,11 @@
 		});
 	}
 **USAGE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;Mouse command : *click phaser game object with **mouse middle button***\
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
 &nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
+
+![Capture_img](./zReadmeSrc/capture_gif.gif)
 	
 **NOTATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
