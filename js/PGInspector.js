@@ -37,7 +37,6 @@ function ChckConfigObj(_configObj) {
         tmpReturn.scene = _configObj.scene;
     }
     else { // only phaser scene
-        console.log('just only phaser scene');
         tmpReturn.css = {
             alpha: undefined
         };
