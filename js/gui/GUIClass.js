@@ -111,8 +111,15 @@ export class GUIClass {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             if (this.objList[i].type !== 'Container') {
-                this.objList[i].setInteractive();
+                console.log('this.objList['+i+'].type:', this.objList[i].type);
+                console.log('this.objList['+i+']:', this.objList[i]);
+                if (this.objList[i].on) {
+                    console.log('set interactive function in :', i);
+                    this.objList[i].setInteractive();
+                }
+                else {}
             }
+            else {}
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
