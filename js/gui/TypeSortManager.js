@@ -25,7 +25,7 @@ export default class TypeSortManager {
                 // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
                 break;
             case 'TileSprite':
-                console.log('object:', _gameObj);
+                console.log('object:', tmpGameObj);
                 break;
             // + etc
             default:
