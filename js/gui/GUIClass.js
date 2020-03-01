@@ -262,7 +262,7 @@ export class GUIClass {
                     _gameObj.setTint(Phaser.Display.Color.GetColor(tmpValue, tmpValue, tmpValue));
                 }
                 else {
-                    tmpObj.clearTint();
+                    _gameObj.clearTint();
                     _gameObj.focusTw.remove();
                 }
             }
