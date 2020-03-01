@@ -1,7 +1,7 @@
 
 # Phaser3_GUI_inspector
 
-**WARNING)**
+**WARNING)**\
 	This is only for phaser3 framework
 
 **DESCRIPTION)**
