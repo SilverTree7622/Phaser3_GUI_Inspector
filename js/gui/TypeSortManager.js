@@ -293,7 +293,6 @@ export default class TypeSortManager {
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'height').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'alpha').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'depth').listen);
-        this.tryCatchFlow(_folderInCustom.add(_gameObj, 'scale').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'angle').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'rotation').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj, 'visible').listen);
