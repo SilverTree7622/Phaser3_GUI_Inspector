@@ -1,6 +1,6 @@
 
 // function
-function PhaserDatActionWithScene(_configObj) {
+function PhaserGUIAction(_configObj) {
     // chck (scene, css Opacity object / phaser scenes)
     let tmpConfigObj = ChckConfigObj(_configObj);
     let tmpcss = tmpConfigObj.css;
@@ -75,4 +75,4 @@ function ChckStatusManager(_tmpStatus) {
 
 
 // FINFAL WORK: ADD TO WINDOW
-window.PhaserDatActionWithScene = PhaserDatActionWithScene;
+window.PhaserGUIAction = PhaserGUIAction;
