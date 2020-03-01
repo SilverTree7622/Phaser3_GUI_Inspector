@@ -5,6 +5,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
 
 **DESCRIPTION)**\
+&nbsp;&nbsp;&nbsp;&nbsp;I just inspired by babylon.js inspector
 &nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs \
 &nbsp;&nbsp;&nbsp;&nbsp;Also you can use this as debug displayed game objects
 
@@ -48,7 +49,9 @@
 > **PGInspector will detect and show on UI**
 
 **NOTATION)**\
-&nbsp;&nbsp;&nbsp;&nbsp;*) This is kind of side project so if I got some feedback,\
+&nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project
+&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this lib so I made it as open source project
+&nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
 &nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
   
 **PLAN)**\
