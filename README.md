@@ -1,5 +1,5 @@
 
-# Phaser3_GUI_inspector
+# Phaser3_GUI_inspector (PGInspector.js)
 
 **WARNING)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
@@ -56,5 +56,6 @@
   
 **PLAN)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if I finish GAME_STATUS_MANAGER, I also publish Merged PGInspector & GAME_STATUS_MANAGER Lib
     
