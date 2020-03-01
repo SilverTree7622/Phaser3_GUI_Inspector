@@ -104,7 +104,7 @@ export class GUIClass {
     }
     createList(_scene, _debugBox, _folder) {
         let tmpDisplayList = undefined;
-        tmpDisplayList = _scene.children;
+        tmpDisplayList = _scene.make;
         this.objList = tmpDisplayList.list;
         this.createListInteractive(_scene, _debugBox, _folder);
     }
