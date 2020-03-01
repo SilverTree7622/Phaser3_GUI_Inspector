@@ -13,17 +13,20 @@
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**\
 
 	function create() {
-	    /*
-	    * your any codes
-	    */
-	    // should call this function at the end of Phaser.Scene create function
-	    PhaserDatActionWithScene(this);
+		/*
+		* your any codes
+		*/
+		
+		// should call this function at the end of Phaser.Scene create function
+		PhaserDatActionWithScene(this);
+		
 		// or
+		
 		PhaserDatActionWithScene({
-			scene: this,
+		scene: this,
 			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
 		});
-	  }
+	}
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
