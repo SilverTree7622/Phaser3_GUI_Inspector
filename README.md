@@ -18,10 +18,12 @@
 		*/
 		
 		// should call this function at the end of Phaser.Scene create function
-		PhaserDatActionWithScene(this); // default setting will be applied
+		// default setting will be applied
+		PhaserDatActionWithScene(this);
 		// or
+		// add some custom config object
 		PhaserDatActionWithScene({
-		scene: this,
+			scene: this, //
 			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
 		});
 	}
