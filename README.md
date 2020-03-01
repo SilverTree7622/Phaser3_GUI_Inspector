@@ -16,8 +16,7 @@
 
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js \
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.5/dist/PGInspector.min.js \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.6/dist/PGInspector.min.js \
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
 
 	function create() {
@@ -26,13 +25,13 @@
 		*/
 		
 		// should call this function at the end of Phaser.Scene create function
-		// default detailed setting will be applied
-		PhaserDatActionWithScene(this);
+		// below method is gonna apply with default detailed setting
+		PhaserGUIAction(this);
 		
 		// or
 		
 		// add some custom config object
-		PhaserDatActionWithScene({
+		PhaserGUIAction({
 			scene: this, //
 			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
 		});
