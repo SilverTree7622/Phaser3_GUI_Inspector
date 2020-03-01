@@ -43,8 +43,9 @@
 
 ![Capture_img](./zReadmeSrc/capture_gif.gif)
 
-> **If you wanna check status or var name somethning**\
-> **change Phaser GameObject name property, then PGInspector will detect and show on UI**
+> **If you wanna check status or var name somethning,**\
+> **then change Phaser GameObject name property**\
+> **PGInspector will detect and show on UI**
 
 **NOTATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;*) This is kind of side project so if I got some feedback,\
