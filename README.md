@@ -27,11 +27,11 @@
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
-&nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)\
+&nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 	
 **NOTATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got feedback,\
-&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests\
+&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests
   
 **PLAN)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
