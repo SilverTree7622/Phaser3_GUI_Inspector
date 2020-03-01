@@ -28,18 +28,25 @@
         for each gameobjects, but this is gonna be hard so i just drawback for next version)
 */
 
-import * as dat from './lib/DatGUILib.js'; // import lib
+// import * as dat from './lib/DatGUILib.js'; // import GUI lib
+// import GUIcss from './lib/DatGUIcss'; // import GUI CSS
+
+import GUIMain from './lib/DatGUIMain.js'; // import whole GUI
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
 
 export class GUIClass {
-    constructor(_statusManager) {
-        this.self = new dat.GUI();
+    constructor(_tmpHandOverObj) {
+        this.css = _tmpHandOverObj.css;
+        this.status = _tmpHandOverObj.status;
+
+        this.main = new GUIMain(this.css);
+        this.self = this.main.getLib();
         this.scene = undefined;
         this.objList = undefined; // all game object list
-        this.statusManager = this.initChckStatusManager(_statusManager);
+        this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
         this.typeSort = new TypeSortManager();
@@ -52,7 +59,7 @@ export class GUIClass {
     create(_scene) {
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
-        this.createBasic(_scene, this.folder, this._basic);
+        this.createBasic(_scene, this.main, this.folder, this._basic);
         this.createCustom(_scene, this._custom, this.typeSort);
         this.folder.chckOpenAllList();
     }
@@ -165,7 +172,8 @@ export class GUIClass {
         this.focusConfig.status = _status;
         this.focusConfig.gameObj = _gameObj;
     }
-    createBasic(_scene, _folder, _basic) { // create basic pointer
+    createBasic(_scene, _main, _folder, _basic) { // create basic pointer
+        let tmpMaincss = _main.css;
         let tmpPointer = undefined;
         let tmpObj = undefined;
         let tmpFocus = undefined;
@@ -195,6 +203,8 @@ export class GUIClass {
         };
 
         // setting folder hierarchy list
+        _basic.add(tmpMaincss, 'alpha').min(0.1).max(1.0).step(0.02)
+        .onChange( tmpMaincss.setOpacityInGUI.bind(tmpMaincss) );
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').listen();
         tmpPointer.add(_scene.input, 'y').listen();
