@@ -120,13 +120,18 @@ export class GUIClass {
             //     else {}
             // }
             // else {}
-            if (this.objList[i].setInteractive) {
+            // if (this.objList[i].setInteractive) {
+            //     console.log('this.objList['+i+'] set interactive:', this.objList[i]);
+            //     this.objList[i].setInteractive();
+            // }
+            // else {
+            //     console.log('this.objList['+i+'] not set interactive:', this.objList[i]);
+            // }
+            try {
                 console.log('this.objList['+i+'] set interactive:', this.objList[i]);
                 this.objList[i].setInteractive();
             }
-            else {
-                console.log('this.objList['+i+'] not set interactive:', this.objList[i]);
-            }
+            catch {}
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
