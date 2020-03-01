@@ -2,7 +2,7 @@
 # Phaser3_GUI_inspector
 
 **WARNING)**\
-&nbsp;This is only for phaser3 framework
+&nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
 
 **DESCRIPTION)**\
 	This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
