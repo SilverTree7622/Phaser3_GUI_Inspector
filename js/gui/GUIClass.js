@@ -265,7 +265,7 @@ export class GUIClass {
     clearFocus(_gameObj) {
         let tmpObj = undefined;
         (_gameObj) ? (tmpObj = _gameObj) : (tmpObj = this.focusConfig.gameObj);
-        (tmpObj.focusTw) ? tmpObj.focusTw.remove() : null;
+        (tmpObj.focusTw) ? this.tryCatchFlow(tmpObj.focusTw.remove) : null;
         tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
         tmpObj.clearTint();
         tmpObj.isFocusOnGUI = false;
@@ -313,5 +313,12 @@ export class GUIClass {
     }
     loadConfig() {
 
+    }
+
+    tryCatchFlow(_function) {
+        try {
+            _function();
+        }
+        catch(e) {}
     }
 }
