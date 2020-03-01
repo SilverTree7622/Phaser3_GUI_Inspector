@@ -5,12 +5,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
 
 **DESCRIPTION)**\
-	This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
+&nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
 	***
 **EXAMPLE)**\
-**IN_HTML)**\
-https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.5/dist/main.js
-**IN_JS)**\
+&nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.5/dist/main.js \
+&nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**\
 
 	function create() {
 	    /*
@@ -25,15 +25,15 @@ https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.5/dist/main
 		});
 	  }
 **USAGE)**\
-mouse command : *click phaser game object with **mouse middle button***\
-(if is not already focused, then focus on it\
-else is focus off the object)\
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
+&nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
+&nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)\
 	
 **NOTATION)**\
-	  This is kind of side project so if I got feedback,\
-	  then I'll fix it with requests
+&nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got feedback,\
+&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests
   
 **PLAN)**\
-	**ADD ANOTHER)**\
-		Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib
+&nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib
     
