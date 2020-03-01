@@ -19,9 +19,7 @@
 		
 		// should call this function at the end of Phaser.Scene create function
 		PhaserDatActionWithScene(this);
-		
 		// or
-		
 		PhaserDatActionWithScene({
 		scene: this,
 			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
