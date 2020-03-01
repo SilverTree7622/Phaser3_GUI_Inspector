@@ -95,8 +95,8 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
         this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, 'key').listen);
-        this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, '_displayOriginX').listen);
-        this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, '_displayOriginY').listen);
+        // this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, '_displayOriginX').listen);
+        // this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, '_displayOriginY').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, 'originX').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, 'originY').listen);
         this.tryCatchFlow(_folderInCustom.add(_gameObj.texture, 'z').listen);
