@@ -8,8 +8,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs \
 &nbsp;&nbsp;&nbsp;&nbsp;Also you can use this as debug displayed game objects
 
-**SCREENSHOT)**
-<center><img src="./zReadmeSrc/capture_img.png"></center>
+**SCREENSHOT)**\
+<img align="center" src="./zReadmeSrc/capture_img.png">
 
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
