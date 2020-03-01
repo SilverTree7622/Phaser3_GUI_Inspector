@@ -46,6 +46,7 @@ export class GUIClass {
         this.self = this.main.getLib();
         this.scene = undefined;
         this.objList = undefined; // all game object list
+        this.conAlert = '_Inspector System_ :';
         this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
@@ -79,11 +80,11 @@ export class GUIClass {
         let tmpSM;
         if (_statusManager) {
             tmpSM = _statusManager;
-            console.log('_inspector SYSTEM_: USING STATUS MANAGER');
+            console.log(this.conAlert, 'USING STATUS MANAGER');
         }
         else {
             tmpSM = undefined;
-            console.log('_inspector SYSTEM_: NOT USING STATUS MANAGER');
+            console.log(this.conAlert, 'NOT USING STATUS MANAGER');
         }
         return tmpSM;
     }

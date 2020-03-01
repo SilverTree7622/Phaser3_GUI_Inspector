@@ -63,7 +63,6 @@ function CommonAction(_tmpcss, _tmpStatusReturn, _tmpClass, _scene) {
     };
     let GUIClass = new _tmpClass(tmpHandOverObj);
     GUIClass.create(_scene);
-    // manage update(FPS)
     return GUIClass;
 }
 function ChckStatusManager(_tmpStatus) {

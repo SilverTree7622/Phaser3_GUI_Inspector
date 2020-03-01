@@ -2,7 +2,8 @@
 // sort obj type, pointer over properties
 export default class TypeSortManager {
     constructor() {
-        this.timeKey = 'Sorting Timer';
+        this.conAlert = '_Inspector System_ :';
+        this.timeKey = '_Inspector CntEnd_ ';
         this.objLength = 0;
     }
     // _EXTERNAL_
@@ -31,16 +32,16 @@ export default class TypeSortManager {
     }
     chckStartSorting(_idx, _length) {
         if (_idx === 0) {
-            console.log('_inspector SYSTEM_: START CUSTOM SORTING');
+            console.log(this.conAlert, 'START CUSTOM SORTING');
             console.time(this.timeKey);
             this.objLength = _length - 1;
         } else {}
     }
     chckEndSorting(_idx) {
         if (_idx === this.objLength) {
-            console.log('_inspector SYSTEM_: END CUSTOM SORTING');
-            console.timeEnd(this.timeKey);
-            console.log('_inspector SYSTEM_: DISPLAY LENGTH IS', this.objLength + 1);
+            console.log(this.conAlert, 'END CUSTOM SORTING');
+            console.timeEnd(this.timeKey)
+            console.log(this.conAlert, 'DISPLAY LENGTH IS', this.objLength + 1);
         } else {}
     }
     // pointer over texture sorting
