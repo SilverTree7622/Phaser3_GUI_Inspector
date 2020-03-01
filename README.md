@@ -3,7 +3,7 @@
 
 **WARNING)**\
 	This is only for phaser3 framework
-	***
+---------------------------------------
 
 **DESCRIPTION)**\
 	This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
