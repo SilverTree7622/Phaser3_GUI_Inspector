@@ -6,7 +6,7 @@
 
 **DESCRIPTION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
-	***
+
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js \
@@ -31,7 +31,7 @@
 	
 **NOTATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got feedback,\
-&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests
+&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests\
   
 **PLAN)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
