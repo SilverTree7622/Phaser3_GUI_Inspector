@@ -350,6 +350,6 @@ export default class TypeSortManager {
         try {
             _function();
         }
-        catch {}
+        catch(e) {}
     }
 }

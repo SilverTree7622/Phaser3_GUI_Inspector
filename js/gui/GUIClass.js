@@ -118,7 +118,7 @@ export class GUIClass {
                     console.log('this.objList['+i+'] set interactive:', this.objList[i]);
                     this.objList[i].setInteractive();
                 }
-                catch {
+                catch(e) {
                     console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
                 }
             }
