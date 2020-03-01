@@ -8,14 +8,14 @@ function PhaserGUIAction(_configObj) {
     let tmpScene = tmpConfigObj.scene;
 
     // pure declare
-    let tmpClass;
+    let tmpGUIClass;
     let tmpStatusReturn;
     let tmpSceneReturn;
     
     // setting value
-    tmpClass = InitClassSetting();
+    tmpGUIClass = InitClassSetting();
     tmpStatusReturn = ChckStatusManager(tmpStatus);
-    tmpSceneReturn = CommonAction(tmpcss, tmpStatusReturn, tmpClass, tmpScene);
+    tmpSceneReturn = CommonAction(tmpcss, tmpStatusReturn, tmpGUIClass, tmpScene);
 
     // return
     return tmpSceneReturn;
@@ -55,14 +55,14 @@ function InitClassSetting() {
     catch {}
     return tmpClass;
 }
-function CommonAction(_tmpcss, _tmpStatusReturn, _tmpClass, _scene) {
+function CommonAction(_tmpcss, _tmpStatusReturn, _tmpGUIClass, _tmpScene) {
     let tmpHandOverObj = {
         css: _tmpcss,
         status: _tmpStatusReturn
     };
-    let GUIClass = new _tmpClass(tmpHandOverObj);
-    GUIClass.create(_scene);
-    return GUIClass;
+    let GUIClass = new _tmpGUIClass(tmpHandOverObj);
+    GUIClass.create(_tmpScene);
+    return _tmpScene;
 }
 function ChckStatusManager(_tmpStatus) {
     let tmpSM;
