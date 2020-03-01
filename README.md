@@ -5,7 +5,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
 
 **DESCRIPTION)**\
-&nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs
+&nbsp;&nbsp;&nbsp;&nbsp;This is a just custom dat.GUI, which works as Phaser3 inspector of each display list stuffs \
+&nbsp;&nbsp;&nbsp;&nbsp;Also you can use this as debug displayed game objects
 
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
@@ -36,8 +37,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 	
 **NOTATION)**\
-&nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got feedback,\
-&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix it with requests
+&nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
+&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
   
 **PLAN)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
