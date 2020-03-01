@@ -263,6 +263,8 @@ export class GUIClass {
                 }
                 else {
                     _gameObj.clearTint();
+                    console.log('_gameObj:', _gameObj);
+                    console.log('_gameObj.focusTw:', _gameObj.focusTw);
                     _gameObj.focusTw.remove();
                 }
             }
