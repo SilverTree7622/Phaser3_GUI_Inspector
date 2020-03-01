@@ -26,7 +26,7 @@
 		*/
 		
 		// should call this function at the end of Phaser.Scene create function
-		// default detailed setting will be applied
+		// below method is gonna apply with default detailed setting
 		PhaserGUIAction(this);
 		
 		// or
