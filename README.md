@@ -19,7 +19,7 @@
 		*/
 		
 		// should call this function at the end of Phaser.Scene create function
-		// default setting will be applied
+		// default detailed setting will be applied
 		PhaserDatActionWithScene(this);
 		
 		// or
