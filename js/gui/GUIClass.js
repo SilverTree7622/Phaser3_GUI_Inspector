@@ -112,15 +112,19 @@ export class GUIClass {
     createListInteractive(_scene, _debugBox, _folder) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
-            console.log('this.objList['+i+'] set interactive:', this.objList[i]);
             if (this.objList[i].type !== 'Graphics' &&
                 this.objList[i].type !== 'Container') {
                 try {
+                    console.log('this.objList['+i+'] set interactive:', this.objList[i]);
                     this.objList[i].setInteractive();
                 }
-                catch {}
+                catch {
+                    console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
+                }
             }
-            else {}
+            else {
+                console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
+            }
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
