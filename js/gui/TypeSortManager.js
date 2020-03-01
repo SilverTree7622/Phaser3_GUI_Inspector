@@ -24,6 +24,9 @@ export default class TypeSortManager {
                 // console.log('Arc:', tmpGameObj);
                 // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
                 break;
+            case 'TileSprite':
+                console.log('object:', _gameObj);
+                break;
             // + etc
             default:
                 console.warn(tmpType, '<= this is not on the type or not yet updated type options');
@@ -58,6 +61,9 @@ export default class TypeSortManager {
                 break;
             case 'Graphics':
             case 'Arc':
+                console.log('object:', _gameObj);
+                break;
+            case 'TileSprite':
                 console.log('object:', _gameObj);
                 break;
             default:
