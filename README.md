@@ -9,7 +9,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;Also you can use this as debug displayed game objects
 
 **SCREENSHOT)**
-<center><img src="./zReadmeSrc/capture_img.png" width="300" height="300"></center>
+<center><img src="./zReadmeSrc/capture_img.png"></center>
 
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML)**\
