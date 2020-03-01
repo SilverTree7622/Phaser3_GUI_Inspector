@@ -257,17 +257,23 @@ export class GUIClass {
                 this.setStoreConfig('BASIC', _gameObj);
             },
             onUpdate: () => {
-                let tmpValue = ~~(_gameObj.focusTw.getValue());
-                _gameObj.setTint(Phaser.Display.Color.GetColor(tmpValue, tmpValue, tmpValue));
+                if (_gameObj.isFocusOnGUI) {
+                    let tmpValue = ~~(_gameObj.focusTw.getValue());
+                    _gameObj.setTint(Phaser.Display.Color.GetColor(tmpValue, tmpValue, tmpValue));
+                }
+                else {
+                    tmpObj.clearTint();
+                    _gameObj.focusTw.remove();
+                }
             }
         });
     }
     clearFocus(_gameObj) {
         let tmpObj = undefined;
         (_gameObj) ? (tmpObj = _gameObj) : (tmpObj = this.focusConfig.gameObj);
-        (tmpObj.focusTw) ? this.tryCatchFlow(tmpObj.focusTw.remove) : null;
+        // (tmpObj.focusTw) ? this.tryCatchFlow(tmpObj.focusTw.remove) : null;
         tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
-        tmpObj.clearTint();
+        // tmpObj.clearTint();
         tmpObj.isFocusOnGUI = false;
     }
     setPointerOver(_gameObj) {
