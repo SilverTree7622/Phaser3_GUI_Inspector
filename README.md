@@ -1,6 +1,9 @@
 
 # Phaser3_GUI_inspector (PGInspector.js)
 
+[![GitHub issues](https://img.shields.io/github/issues/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/issues)
+[![GitHub license](https://img.shields.io/github/license/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/blob/master/LICENSE.md)
+
 **WARNING)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
 
