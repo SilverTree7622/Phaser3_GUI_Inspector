@@ -61,7 +61,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you wanna check this GUI class
 
-	console.log(window.PhaserGUI);
+	console.log('window.PhaserGUI:', window.PhaserGUI);
 
 
 **USAGE)**\
