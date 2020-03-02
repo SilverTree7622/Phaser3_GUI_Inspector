@@ -154,17 +154,17 @@ export default class FolderManager {
         this.closeFolder(this.custom.folder);
         this.openFolder(this.basic.folder);
     }
-    // get func
-    getFolder() {
-        let tmpFolder = {};
-        tmpFolder.basic = this.basic.folder;
-        tmpFolder.custom = this.custom.folder;
-        return tmpFolder;
+    // get function
+    getBasicFolder() {
+        return this.basic.folder;
     }
-    getList() {
-        let tmpList = {};
-        tmpList.basic = this.basic.list;
-        tmpList.custom = this.custom.list;
-        return tmpList;
+    getCustomFolder() {
+        return this.custom.folder;
+    }
+    getBasicList() {
+        return this.basic.list;
+    }
+    getCustomList() {
+        return this.custom.list;
     }
 }

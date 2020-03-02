@@ -39,10 +39,7 @@ import DebugBoxClass from './DebugBoxClass.js';
 
 export class GUIClass {
     constructor(_tmpHandOverObj) {
-        this.css = _tmpHandOverObj.css;
-        this.status = _tmpHandOverObj.status;
-
-        this.main = new GUIMain(this.css);
+        this.main = new GUIMain(_tmpHandOverObj.css);
         this.self = this.main.getLib();
         this.scene = undefined;
         this.objList = undefined; // all game object list
@@ -54,22 +51,18 @@ export class GUIClass {
         this.folder = new FolderManager(this.self, this.typeSort);
         this.save = new SaveManager();
         this.debugBox = new DebugBoxClass();
-        this._basic = undefined;
-        this._custom = undefined;
     }
     create(_scene) {
         let tmpScene = _scene;
         console.log('GUIClass create function _scene:', _scene);
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
-        this.createBasic(_scene, this.main, this.folder, this._basic);
-        this.createCustom(_scene, this._custom, this.typeSort);
+        this.createBasic(_scene, this.main, this.folder, this.folder.getBasicFolder());
+        this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {
         this.folder.create(_scene);
-        this._basic = this.folder.getFolder().basic;
-        this._custom = this.folder.getFolder().custom;
         this.save.create(_scene);
         this.debugBox.create(_scene);
     }
@@ -115,15 +108,15 @@ export class GUIClass {
             if (this.objList[i].type !== 'Graphics' &&
                 this.objList[i].type !== 'Container') {
                 try {
-                    console.log('this.objList['+i+'] set interactive:', this.objList[i]);
+                    // console.log('this.objList['+i+'] set interactive:', this.objList[i]);
                     this.objList[i].setInteractive();
                 }
                 catch(e) {
-                    console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
+                    // console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
                 }
             }
             else {
-                console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
+                // console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
             }
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
@@ -215,9 +208,10 @@ export class GUIClass {
             GO_2_THIS_OBJ: tmpGo2ThisFunc
         };
 
+        console.log('tmpMaincss:', tmpMaincss);
         // setting folder hierarchy list
         _basic.add(tmpMaincss, 'alpha').min(0.1).max(1.0).step(0.02)
-        .onChange( tmpMaincss.setOpacityInGUI.bind(tmpMaincss) );
+        .onChange( tmpMaincss.setAlphaInGUI.bind(tmpMaincss) );
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').listen();
         tmpPointer.add(_scene.input, 'y').listen();
@@ -300,8 +294,12 @@ export class GUIClass {
         }
         else {}
         tmpFocus.guiIdx = _gameObj.guiIdx;
-        tmpFocus.guiAlpha = _gameObj.alpha;
-        tmpFocus.guiTint = _gameObj.tint;
+        try {
+            tmpFocus.guiAlpha = _gameObj.alpha;
+        } catch (e) {}
+        try {
+            tmpFocus.guiTint = _gameObj.tint;
+        } catch (e) {}
     }
     clearStoreConfig(_folderType) {
         if (_folderType === 'BASIC') {
@@ -313,6 +311,10 @@ export class GUIClass {
         else {
 
         }
+    }
+
+    destroy() {
+        this.main.lib.destroy();
     }
 
     // WARNING THIS IS TRIAL: config

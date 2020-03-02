@@ -8,6 +8,7 @@ export default class TypeSortManager {
     }
     // _EXTERNAL_
     chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
+        console.log('chckObjType function this scope:', this);
         let tmpGameObj = _objList[_idx];
         let tmpType = tmpGameObj.type;
 
@@ -20,7 +21,9 @@ export default class TypeSortManager {
             case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj); break;
             case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
-            case 'Arc': 
+            case 'Emitter':
+                break;
+            case 'Arc':
                 // console.log('Arc:', tmpGameObj);
                 // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
                 break;
@@ -60,6 +63,8 @@ export default class TypeSortManager {
                 tmpReturn = _gameObj.text;
                 break;
             case 'Graphics':
+            case 'Container':
+            case 'Emitter':
             case 'Arc':
                 console.log('object:', _gameObj);
                 break;
@@ -94,13 +99,13 @@ export default class TypeSortManager {
         // console.log('SPRITE type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, 'key');
-        // this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, '_displayOriginX');
-        // this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, '_displayOriginY');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, 'originX');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, 'originY');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, 'z');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj.texture, 'w');
+        this.tryCatch(_folderInCustom, _gameObj.texture, 'key');
+        // this.tryCatch(_folderInCustom.add, _gameObj.texture, '_displayOriginX');
+        // this.tryCatch(_folderInCustom.add, _gameObj.texture, '_displayOriginY');
+        this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
+        this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj.texture, 'z');
+        this.tryCatch(_folderInCustom, _gameObj.texture, 'w');
         // _folderInCustom.add, _gameObj, '_displayOriginX').listen();
         // _folderInCustom.add, _gameObj, '_displayOriginY').listen();
         // _folderInCustom.add, _gameObj, 'originX').listen();
@@ -126,18 +131,19 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
 
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'alpha');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'scale');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'angle');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'rotation');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'visible');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'defaultFillColor');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'defaultFillAlpha');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'defaultStrokeWidth');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'defaultStrokeColor');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'defaultStrokeAlpha');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, '_lineWidth');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'active');
+        console.log('_folderInCustom:', _folderInCustom);
+        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'scale');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'visible');
+        this.tryCatch(_folderInCustom, _gameObj, 'defaultFillColor');
+        this.tryCatch(_folderInCustom, _gameObj, 'defaultFillAlpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'defaultStrokeWidth');
+        this.tryCatch(_folderInCustom, _gameObj, 'defaultStrokeColor');
+        this.tryCatch(_folderInCustom, _gameObj, 'defaultStrokeAlpha');
+        this.tryCatch(_folderInCustom, _gameObj, '_lineWidth');
+        this.tryCatch(_folderInCustom, _gameObj, 'active');
 
         // _folderInCustom.add, _gameObj, 'alpha').listen();
         // _folderInCustom.add, _gameObj, 'scale').listen();
@@ -156,28 +162,28 @@ export default class TypeSortManager {
     }
     createContainer(_idx, _folderInCustom, _gameObj) {
         // console.log('CONTAINER type:', _gameObj);
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'name');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'name');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'name');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'type');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'alpha');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'depth');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'scale');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'angle');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'rotation');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'visible');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'originX');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'originY');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'length');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'active');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'exclusive');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'position');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'scrollFactorX');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'scrollFactorY');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'x');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'y');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'z');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'w');
+        this.tryCatch(_folderInCustom, _gameObj, 'name');
+        this.tryCatch(_folderInCustom, _gameObj, 'name');
+        this.tryCatch(_folderInCustom, _gameObj, 'name');
+        this.tryCatch(_folderInCustom, _gameObj, 'type');
+        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'depth');
+        this.tryCatch(_folderInCustom, _gameObj, 'scale');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'visible');
+        this.tryCatch(_folderInCustom, _gameObj, 'originX');
+        this.tryCatch(_folderInCustom, _gameObj, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj, 'length');
+        this.tryCatch(_folderInCustom, _gameObj, 'active');
+        this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
+        this.tryCatch(_folderInCustom, _gameObj, 'position');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
+        this.tryCatch(_folderInCustom, _gameObj, 'x');
+        this.tryCatch(_folderInCustom, _gameObj, 'y');
+        this.tryCatch(_folderInCustom, _gameObj, 'z');
+        this.tryCatch(_folderInCustom, _gameObj, 'w');
         
         // _folderInCustom.add, _gameObj, 'name').listen();
         // _folderInCustom.add, _gameObj, 'type').listen();
@@ -202,7 +208,7 @@ export default class TypeSortManager {
         let tmpList = _folderInCustom.addFolder('list');
         tmpList.add(_gameObj.list, 'length');
         for (var i=0; i<_gameObj.list.length; i++) {
-            this.tryCatchFlow(tmpList.add.bind(this, _gameObj.list, i));
+            this.tryCatch(tmpList, _gameObj.list, i);
         }
         tmpList.open();
         this.chckEndSorting(_idx);
@@ -237,21 +243,21 @@ export default class TypeSortManager {
         if (_tmpType) { // arcade image
             let tmpBody = _folderInCustom.addFolder('body');
             let tmpOffset = undefined;
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'x');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'y');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'width');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'height');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'angle');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'allowRotation');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'rotation');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'debugShowBody');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'debugShowVelocity');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'debugBodyColor');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'onWorldBounds');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'allowDrag');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'allowGravity');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'onCollide');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'onOverlap');
+            this.tryCatch(tmpBody, _gameObj.body, 'x');
+            this.tryCatch(tmpBody, _gameObj.body, 'y');
+            this.tryCatch(tmpBody, _gameObj.body, 'width');
+            this.tryCatch(tmpBody, _gameObj.body, 'height');
+            this.tryCatch(tmpBody, _gameObj.body, 'angle');
+            this.tryCatch(tmpBody, _gameObj.body, 'allowRotation');
+            this.tryCatch(tmpBody, _gameObj.body, 'rotation');
+            this.tryCatch(tmpBody, _gameObj.body, 'debugShowBody');
+            this.tryCatch(tmpBody, _gameObj.body, 'debugShowVelocity');
+            this.tryCatch(tmpBody, _gameObj.body, 'debugBodyColor');
+            this.tryCatch(tmpBody, _gameObj.body, 'onWorldBounds');
+            this.tryCatch(tmpBody, _gameObj.body, 'allowDrag');
+            this.tryCatch(tmpBody, _gameObj.body, 'allowGravity');
+            this.tryCatch(tmpBody, _gameObj.body, 'onCollide');
+            this.tryCatch(tmpBody, _gameObj.body, 'onOverlap');
 
             // tmpBody.add, _gameObj.body, 'x').listen();
             // tmpBody.add, _gameObj.body, 'y').listen();
@@ -270,14 +276,14 @@ export default class TypeSortManager {
             // tmpBody.add, _gameObj.body, 'onOverlap').listen();
 
             tmpOffset = tmpBody.addFolder('offset');
-            this.tryCatchFlow(tmpOffset.add, _gameObj.body.offset, 'x');
-            this.tryCatchFlow(tmpOffset.add, _gameObj.body.offset, 'y');
+            this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
+            this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
             // tmpOffset.add, _gameObj.body.offset, 'x').listen();
             // tmpOffset.add, _gameObj.body.offset, 'y').listen();
             tmpOffset.open();
             
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'enable');
-            this.tryCatchFlow(tmpBody.add, _gameObj.body, 'isCircle');
+            this.tryCatch(tmpBody, _gameObj.body, 'enable');
+            this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
             // tmpBody.add, _gameObj.body, 'enable').listen();
             // tmpBody.add, _gameObj.body, 'isCircle').listen();
 
@@ -287,41 +293,41 @@ export default class TypeSortManager {
         }
     }
     createCommon(_idx, _folderInCustom, _gameObj) {
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'x');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'y');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'width');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'height');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'alpha');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'depth');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'angle');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'rotation');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'visible');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'originX');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'originY');
-        this.tryCatchFlow(_folderInCustom.add, _gameObj, 'active');
+        this.tryCatch(_folderInCustom, _gameObj, 'x');
+        this.tryCatch(_folderInCustom, _gameObj, 'y');
+        this.tryCatch(_folderInCustom, _gameObj, 'width');
+        this.tryCatch(_folderInCustom, _gameObj, 'height');
+        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'depth');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'visible');
+        this.tryCatch(_folderInCustom, _gameObj, 'originX');
+        this.tryCatch(_folderInCustom, _gameObj, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
         let tmpAnims = _folderInCustom.addFolder('anims');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'isPlaying');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'currentAnim');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'currentFrame');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'nextAnim');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'duration');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'msPerFrame');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'skipMissedFrames');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_delay');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_repeat');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_repeatDelay');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_yoyo');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'forward');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_reverse');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'accumulator');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'nextTick');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'repeatCounter');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, 'pendingRepeat');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_paused');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_wasPlaying');
-        this.tryCatchFlow(tmpAnims.add, _gameObj.anims, '_pendingStop');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'isPlaying');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'currentAnim');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'currentFrame');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'nextAnim');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'duration');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'msPerFrame');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'skipMissedFrames');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_delay');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_repeat');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_repeatDelay');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_yoyo');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'forward');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_reverse');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'accumulator');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'nextTick');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'repeatCounter');
+        this.tryCatch(tmpAnims, _gameObj.anims, 'pendingRepeat');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_paused');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_wasPlaying');
+        this.tryCatch(tmpAnims, _gameObj.anims, '_pendingStop');
 
         // tmpAnims.add, _gameObj.anims, 'isPlaying').listen();
         // tmpAnims.add, _gameObj.anims, 'currentAnim').listen();
@@ -345,10 +351,12 @@ export default class TypeSortManager {
         // tmpAnims.add, _gameObj.anims, '_pendingStop').listen();
         tmpAnims.open();
     }
-    tryCatchFlow(_function, _obj, _property) {
+    tryCatch(_guiObj, _obj, _property) {
         try {
-            _function(_obj, _property).listen();
+            _guiObj.add(_obj, _property).listen();
         }
-        catch(e) {}
+        catch(e) {
+            // console.log('error:', e);
+        }
     }
 }
