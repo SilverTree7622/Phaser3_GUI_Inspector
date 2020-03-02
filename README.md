@@ -59,10 +59,16 @@
 		}
 	}
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you wanna check this GUI class
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you wanna check this GUI class
 
 	console.log('window.PhaserGUI:', window.PhaserGUI);
 
+&nbsp;&nbsp;&nbsp;&nbsp;**IN_DEVTOOLS)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It has some info in console way
+	
+<p align="center">
+  <img src="./zReadmeSrc/capture_img2.PNG">
+</p>
 
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
