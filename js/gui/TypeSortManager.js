@@ -8,7 +8,6 @@ export default class TypeSortManager {
     }
     // _EXTERNAL_
     chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
-        console.log('chckObjType function this scope:', this);
         let tmpGameObj = _objList[_idx];
         let tmpType = tmpGameObj.type;
 
@@ -24,11 +23,11 @@ export default class TypeSortManager {
             case 'Emitter':
                 break;
             case 'Arc':
-                // console.log('Arc:', tmpGameObj);
+                console.log('Arc:', tmpGameObj);
                 // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
                 break;
             case 'TileSprite':
-                console.log('object:', tmpGameObj);
+                console.log('TileSprite:', tmpGameObj);
                 break;
             // + etc
             default:
@@ -66,10 +65,10 @@ export default class TypeSortManager {
             case 'Container':
             case 'Emitter':
             case 'Arc':
-                console.log('object:', _gameObj);
+                console.log('Arc:', _gameObj);
                 break;
             case 'TileSprite':
-                console.log('object:', _gameObj);
+                console.log('TileSprite:', _gameObj);
                 break;
             default:
                 console.log(tmpType, 'this is not on the type or not yet updated type options');
@@ -131,7 +130,6 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'name');
         _folderInCustom.add(_gameObj, 'type');
 
-        console.log('_folderInCustom:', _folderInCustom);
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
         this.tryCatch(_folderInCustom, _gameObj, 'scale');
         this.tryCatch(_folderInCustom, _gameObj, 'angle');

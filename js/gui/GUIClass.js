@@ -44,6 +44,7 @@ export class GUIClass {
         this.scene = undefined;
         this.objList = undefined; // all game object list
         this.conAlert = '_Inspector System_ :';
+        this.URLPath = this.initURLPath();
         this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
@@ -54,7 +55,6 @@ export class GUIClass {
     }
     create(_scene) {
         let tmpScene = _scene;
-        console.log('GUIClass create function _scene:', _scene);
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
         this.createBasic(_scene, this.main, this.folder, this.folder.getBasicFolder());
@@ -71,6 +71,11 @@ export class GUIClass {
         this.debugBox.update(_time, _delta, this.objList);
     }
 
+
+    initURLPath() {
+        let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
+        console.log(this.conAlert, tmpURL);
+    }
     initChckStatusManager(_statusManager) {
         let tmpSM;
         if (_statusManager) {
@@ -208,7 +213,6 @@ export class GUIClass {
             GO_2_THIS_OBJ: tmpGo2ThisFunc
         };
 
-        console.log('tmpMaincss:', tmpMaincss);
         // setting folder hierarchy list
         _basic.add(tmpMaincss, 'alpha').min(0.1).max(1.0).step(0.02)
         .onChange( tmpMaincss.setAlphaInGUI.bind(tmpMaincss) );
@@ -257,8 +261,6 @@ export class GUIClass {
                 }
                 else {
                     _gameObj.clearTint();
-                    console.log('_gameObj:', _gameObj);
-                    console.log('_gameObj.focusTw:', _gameObj.focusTw);
                     _gameObj.focusTw.remove();
                 }
             }
