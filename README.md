@@ -19,7 +19,8 @@
 
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.7/dist/PGInspector.min.js \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.1/dist/PGInspector.min.js \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js \
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
 
 	function create() {
@@ -39,6 +40,30 @@
 			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
 		});
 	}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
+
+	// your custom Phaser.Scene class
+	class MainScene extends Phaser.Scene {
+		preload() {
+			/*
+			* your any codes
+			*/
+		}
+		create() {
+			/*
+			* your any codes
+			*/
+			
+			PhaserGUIAction(this); // also config object one works
+		}
+	}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if you wanna check this GUI class
+
+	console.log(window.PhaserGUI);
+
+
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
@@ -57,6 +82,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
   
 **PLAN)**\
+&nbsp;&nbsp;&nbsp;&nbsp;**TO DO)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update DebugBox when change focus object properties\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set smooth detailed folder when change focus object\
 &nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if I finish GAME_STATUS_MANAGER, I also publish Merged PGInspector & GAME_STATUS_MANAGER Lib
