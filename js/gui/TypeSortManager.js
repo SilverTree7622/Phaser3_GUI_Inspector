@@ -2,8 +2,8 @@
 // sort obj type, pointer over properties
 export default class TypeSortManager {
     constructor() {
-        this.conAlert = '_Inspector System_ :';
-        this.timeKey = '_Inspector CntEnd_ ';
+        this.conAlert = '_PGI System_ :';
+        this.timeKey = '_PGI CntEnd_ ';
         this.objLength = 0;
     }
     // _EXTERNAL_

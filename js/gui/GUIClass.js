@@ -43,7 +43,7 @@ export class GUIClass {
         this.self = this.main.getLib();
         this.scene = undefined;
         this.objList = undefined; // all game object list
-        this.conAlert = '_Inspector System_ :';
+        this.conAlert = '_PGI System_:';
         this.URLPath = this.initURLPath();
         this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
