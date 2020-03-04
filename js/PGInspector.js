@@ -1,9 +1,10 @@
 
 // Main Phaser3 GUI function **
 function PhaserGUIAction(_configObj) {
-    let tmpGUIInstance;
+    let tmpGUIInstance; // GUI instance
 
-    ChckGUI();
+    // check GUI object is already exist
+    ChckGUIObj();
 
     // chck (scene, css Opacity object / phaser scenes)
     let tmpConfigObj = ChckConfigObj(_configObj);
@@ -15,12 +16,7 @@ function PhaserGUIAction(_configObj) {
     // setting value
     tmpGUIClass = InitGUIClassSetting();
     tmpStatusReturn = ChckStatusManager(tmpConfigObj.status);
-    tmpGUIInstance = CommonAction(
-        tmpConfigObj.css,
-        tmpStatusReturn,
-        tmpGUIClass,
-        tmpConfigObj.scene
-    );
+    tmpGUIInstance = CommonAction( tmpConfigObj, tmpStatusReturn, tmpGUIClass);
 
     StoreGUI(tmpGUIInstance);
 
@@ -36,13 +32,14 @@ window.PhaserGUI = undefined;
 
 
 // detailed functions
-function ChckGUI() {
+function ChckGUIObj() {
     if (window.PhaserGUI) {
         window.PhaserGUI.destroy();
         window.PhaserGUI = undefined;
     }
 }
 function ChckConfigObj(_configObj) {
+    // init config structure
     let tmpReturn = {
         css: {
             alpha: undefined
@@ -50,23 +47,26 @@ function ChckConfigObj(_configObj) {
         status: undefined,
         scene: undefined
     };
-    if (!_configObj.sys) { // obj with config
-        try {
-            tmpReturn.css = {
-                alpha: _configObj.alpha
-            };
-        }
-        catch {}
-        try {
-            tmpReturn.status = _configObj.status;
-        }
-        catch {}
-        tmpReturn.scene = _configObj.scene;
+    // check is init config
+    if (!_configObj.sys) {
+        TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
+        TryCatchObj(tmpReturn, 'status', _configObj.status);
+        TryCatchObj(tmpReturn, 'scene', _configObj.scene);
     }
     else { // only phaser scene
-        tmpReturn.scene = _configObj;
+        TryCatchObj(tmpReturn, 'scene', _configObj);
     }
     return tmpReturn;
+}
+function TryCatchObj(_obj, _objPropertyName, _obj2) {
+    try {
+        _obj[_objPropertyName] = _obj2;
+    }
+    catch(e) {
+        console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
+    };
+
+    console.log(_obj);
 }
 function InitGUIClassSetting() {
     let tmpClass;
@@ -76,13 +76,9 @@ function InitGUIClassSetting() {
     catch {}
     return tmpClass;
 }
-function CommonAction(_tmpcss, _tmpStatusReturn, _tmpGUIClass, _tmpScene) {
-    let tmpHandOverObj = {
-        css: _tmpcss,
-        status: _tmpStatusReturn
-    };
-    let GUIClass = new _tmpGUIClass(tmpHandOverObj);
-    GUIClass.create(_tmpScene);
+function CommonAction(_tmpConfigObj, _tmpStatusReturn, _tmpGUIClass) {
+    let GUIClass = new _tmpGUIClass(_tmpConfigObj);
+    GUIClass.create(_tmpConfigObj.scene);
     return GUIClass;
 }
 function ChckStatusManager(_tmpStatus) {

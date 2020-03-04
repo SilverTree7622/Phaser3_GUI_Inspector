@@ -6,9 +6,9 @@
 	"directories": {
 		"test": "test"
 	},
-	"build": "parcel build ./js/main.js",
+	"build": "parcel build ./js/PGInspector.js",
 	"scripts": {
-		"build": "parcel build ./js/main.js"
+		"build": "parcel build ./js/PGInspector.js"
 	},
 	"repository": {
 		"type": "git",
@@ -18,7 +18,8 @@
 		"phaser3",
 		"datgui",
 		"inpsector",
-		"api"
+		"api",
+		"lib"
 	],
 	"author": "SilverTree7622",
 	"license": "MIT",

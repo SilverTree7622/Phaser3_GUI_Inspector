@@ -39,16 +39,17 @@ import DebugBoxClass from './DebugBoxClass.js';
 
 export class GUIClass {
     constructor(_tmpHandOverObj) {
+        console.log('_tmpHandOverObj:', _tmpHandOverObj);
         this.main = new GUIMain(_tmpHandOverObj.css);
         this.self = this.main.getLib();
         this.scene = undefined;
         this.objList = undefined; // all game object list
-        this.conAlert = '_PGI System_:';
+        this.conAlert = '_PGI System_ :';
         this.URLPath = this.initURLPath();
         this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
-        this.typeSort = new TypeSortManager();
+        this.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
         this.folder = new FolderManager(this.self, this.typeSort);
         this.save = new SaveManager();
         this.debugBox = new DebugBoxClass();
@@ -214,8 +215,7 @@ export class GUIClass {
         };
 
         // setting folder hierarchy list
-        _basic.add(tmpMaincss, 'alpha').min(0.1).max(1.0).step(0.02)
-        .onChange( tmpMaincss.setAlphaInGUI.bind(tmpMaincss) );
+        this.createBasicInitConfig(_basic, tmpMaincss);
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').listen();
         tmpPointer.add(_scene.input, 'y').listen();
@@ -242,6 +242,14 @@ export class GUIClass {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
             _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
         }   
+    }
+    createBasicInitConfig(_basic, _tmpMaincss) {
+        // gui alpha
+        _basic.add(_tmpMaincss, 'alpha').min(0.1).max(1.0).step(0.02)
+        .onChange( _tmpMaincss.setAlphaInGUI.bind(_tmpMaincss) );
+        // gui color
+        _basic.addColor(_tmpMaincss, 'color')
+        .onChange( _tmpMaincss.setColorInGUI.bind(_tmpMaincss) );
     }
     setFocus(_scene, _gameObj) {
         _gameObj.isFocusOnGUI = true;

@@ -4,23 +4,73 @@ var config = {
     height: 600,
     parent: 'phaser-example',
     scene: {
+        preload: preload,
         create: create,
     }
 };
 
 var text;
+// temp test lazor atlas sprite
+var tmpSpr = {
+    self: undefined,
+    key: 'LazerSpr',
+    url: {
+        png: 'https://labs.phaser.io/assets/animations/lazer/lazer.png',
+        json: 'https://labs.phaser.io/assets/animations/lazer/lazer.json'
+    },
+    animSelf: undefined,
+    animKey: 'AnimLazer'
+};
 var game = new Phaser.Game(config);
-console.log(game);
 
-function create() 
-{
-    //  Implicit values
+function preload() {
+    this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+}
+
+function create() {
+    
+    /*
+    _trying all the Phaser.GameObjects_
+    
+    /OBJECT LIST                    /DONE RATE
+    TEXT(normal, arcade, matter)    X
+    IMAGE(")                        X
+    SPRITE(")                       X
+    TILESPRITE(")                   X
+    CONTAINER                       ?
+    SPINE                           X
+
+    */
+
+    // TEST__Phaser.Scene restart
+    // this.input.on('pointerdown', () => {
+    //     console.log('restart scene');
+    //     this.scene.restart();
+    // });
+
+    // sprite game object
+    tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
+    tmpSpr.self.name = 'var_tmpSpr';
+    this.anims.create(
+        {
+            key: tmpSpr.animKey,
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    // tmpSpr.self.anims.play(tmpSpr.animKey);
+    tmpSpr.self.setDisplaySize(80, 80);
+
+    // text game object
     var config1 = {
-        x: 100,
-        y: 100,
+        x: 300,
+        y: 300,
         text: 'Text\nGame Object\nCreated from config',
         style: {
-            fontSize: '64px',
+            fontSize: '30px',
             fontFamily: 'Arial',
             color: '#ffffff',
             align: 'center',
@@ -34,13 +84,9 @@ function create()
             }
         }
     };
-
-    // this.input.on('pointerdown', () => {
-    //     console.log('restart scene');
-    //     this.scene.restart();
-    // });
-
     this.make.text(config1);
 
+    // PGInspector.js usage
+    console.log('Phaser.Scene scope this:', this);
     PhaserGUIAction(this);
 }
