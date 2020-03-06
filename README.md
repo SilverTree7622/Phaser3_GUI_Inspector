@@ -21,6 +21,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;**NODE_JS)**
 	
 	npm install phaser3_gui_inspector
+	npm i phaser3_gui_inspector
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.0.0/dist/PGInspector.min.js \
