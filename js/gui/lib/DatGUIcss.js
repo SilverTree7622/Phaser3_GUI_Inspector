@@ -6,6 +6,7 @@ export default class GUIcss {
         this.gui = this.initGui();
         this.alpha = this.initSetAlpha(_cssObj);
         this.posXY = this.initSetPosXY(_cssObj);
+        // delay GUI color all structure
         // this.color = this.initSetColor(_cssObj);
         this.initAlpha();
         this.initPosXY();

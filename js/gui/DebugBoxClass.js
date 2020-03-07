@@ -69,8 +69,14 @@ export default class DebugBoxClass {
         this.setDebugBox(this.over, _gameObj);
     }
     setFocus(_gameObj) {
-        this.focus.gameObj = _gameObj;
-        this.setDebugBox(this.focus, _gameObj);
+        if (_gameObj) { // check is gameObj
+            this.focus.gameObj = _gameObj;
+            this.setDebugBox(this.focus, _gameObj);
+        } else {}
+    }
+    setClearNFocus(_gameObj) {
+        this.clearDebugBox();
+        this.setFocus(_gameObj);
     }
     // config should contain pos, scale(width, height)
     setDebugBox(_target, _gameObj) {

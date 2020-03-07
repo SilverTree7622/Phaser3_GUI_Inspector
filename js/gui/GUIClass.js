@@ -54,11 +54,10 @@ export class GUIClass {
         this.debugBox = new DebugBoxClass();
     }
     create(_scene) {
-        let tmpScene = _scene;
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
         this.createBasic(_scene, this.main, this.folder, this.folder.getBasicFolder());
-        this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort);
+        this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort, this.debugBox);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {
@@ -112,17 +111,9 @@ export class GUIClass {
         for (var i=0; i<tmpLength; i++) {
             if (this.objList[i].type !== 'Graphics' &&
                 this.objList[i].type !== 'Container') {
-                try {
-                    // console.log('this.objList['+i+'] set interactive:', this.objList[i]);
-                    this.objList[i].setInteractive();
-                }
-                catch(e) {
-                    // console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
-                }
-            }
-            else {
-                // console.log('this.objList['+i+'] NOT set interactive:', this.objList[i]);
-            }
+                try { this.objList[i].setInteractive(); }
+                catch(e) {}
+            } else {}
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
@@ -134,46 +125,81 @@ export class GUIClass {
     createListInteractiveOverEvent(_scene, _debugBox) {
         // just pointer over obj
         _scene.input.on('gameobjectover', (_pointer, _gameObj) => {
-            if (!_gameObj.isFocusOnGUI) {
+            if (!this.chckGameObjIsFocusOnGUI(_gameObj)) {
                 this.setPointerOver(_gameObj);
                 _debugBox.setOver(_gameObj);
-            }
-            else {}
+                this.setGameObjOver(_gameObj);
+            } else {}
         });
         // when out from pointer over obj
         _scene.input.on('gameobjectout', (_pointer, _gameObj) => {
-            if (!_gameObj.isFocusOnGUI) { // not focus
+            if (!this.chckGameObjIsFocusOnGUI(_gameObj)) { // not focus
                 this.clearPointerOver(_gameObj);
                 _debugBox.clearOverGameObj();
-            }
-            else {}
+                this.setGameObjOver();
+            } else {}
         });
     }
     createListInteractiveFocusEvent(_scene, _debugBox, _folder) {
         // when want to focus logic
+        let tmpKey = _scene.input.keyboard.createCursorKeys(); // cursor key 
         _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {
             // if middle button pressed
-            if (!_pointer.rightButtonDown() && !_pointer.leftButtonDown()) {
-                if (_gameObj.isFocusOnGUI) { // clear the focus object
-                    this.setFocusConfig(true, _gameObj);
-                    this.clearFocus(_gameObj);
-                    _debugBox.clearFocusGameObj();
-                    _folder.setBasicFocusFolder();
-                }
-                else { // set the focus object
-                    if (this.focusConfig.gameObj) { // init focus check
-                        this.clearFocus(this.focusConfig.gameObj);
-                        this.setFocusConfig(false, undefined);
-                        _debugBox.clearFocusGameObj();
-                    }
-                    // set to this game object
-                    this.setFocusConfig(true, _gameObj);
-                    this.setFocus(_scene, _gameObj);
-                    _debugBox.setFocus(_gameObj);
-                    _folder.setBasicFocusFolder(_gameObj);
-                }
-            }
+            if (this.chckCommandKey(tmpKey, _pointer)) {
+                this.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
+            } else {}
         });
+        // when press command SHIFT + F
+        _scene.input.keyboard.on('keydown-F', () => {
+            if (this.chckCommandKey_F(tmpKey)) {
+                // set gameObj via which pointer over on
+                let tmpGameObj = this.getGameObjOver();
+                this.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
+            } else {}
+        });
+    }
+    runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
+        if (this.chckGameObjIsFocusOnGUI(_gameObj)) { // clear the focus object
+            this.setFocusConfig(true, _gameObj);
+            this.clearFocus(_gameObj);
+            _debugBox.clearFocusGameObj();
+            _folder.setBasicFocusFolder();
+        }
+        else { // set the focus object
+            if (this.getGameObjFocus()) { // init focus check
+                this.clearFocus(this.focusConfig.gameObj);
+                this.setFocusConfig(false);
+                _debugBox.clearFocusGameObj();
+            } else {}
+            if (_gameObj) { // check gameObj is exist
+                // set to this game object
+                this.setFocusConfig(true, _gameObj);
+                this.setFocus(_scene, _gameObj);
+                _debugBox.setFocus(_gameObj);
+                _folder.setBasicFocusFolder(_gameObj);   
+            } else {}
+        }
+    }
+    chckCommandKey(_tmpKey, _pointer) {
+        let tmpBool = undefined;
+        if ((_tmpKey.shift.isDown && _pointer.leftButtonDown())  // shift + mouse left click
+            ||
+            (!_pointer.rightButtonDown() && !_pointer.leftButtonDown()) // mouse middle button
+            ) {
+            tmpBool = true;
+        }
+        else { tmpBool = false; }
+        return tmpBool;
+    }
+    chckCommandKey_F(_tmpKey) {
+        let tmpBool = (_tmpKey.shift.isDown) ? true : false; // is shift down?
+        return tmpBool;
+    }
+    setGameObjOver(_gameObj) {
+        this.overConfig.gameObj = _gameObj;
+    }
+    setGameObjFocus(_gameObj) {
+        this.focusConfig.gameObj = _gameObj;
     }
     setOverConfig(_status, _gameObj) {
         this.overConfig.status = _status;
@@ -182,6 +208,16 @@ export class GUIClass {
     setFocusConfig(_status, _gameObj) {
         this.focusConfig.status = _status;
         this.focusConfig.gameObj = _gameObj;
+    }
+    getGameObjOver() {
+        return this.overConfig.gameObj;
+    }
+    getGameObjFocus() {
+        return this.focusConfig.gameObj;
+    }
+    chckGameObjIsFocusOnGUI(_gameObj) {
+        let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
+        return tmpGameObjBoolean;
     }
     createBasic(_scene, _main, _folder, _basic) { // create basic pointer
         let tmpMaincss = _main.css;
@@ -235,12 +271,12 @@ export class GUIClass {
         _folder.push2FolderList(tmpObj, 'basic');
     }
     // create each custom folder from Phaser.scene.displayList
-    createCustom(_scene, _custom, _typeSort) {
+    createCustom(_scene, _custom, _typeSort, _debugBox) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
-            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
-        }   
+            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList, _debugBox);
+        }
     }
     setFocus(_scene, _gameObj) {
         _gameObj.isFocusOnGUI = true;

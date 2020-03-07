@@ -9,18 +9,17 @@ export default class TypeSortManager {
         this.objLength = 0;
         this.animList = new AnimListManager(_scene);
     }
+
     // _EXTERNAL_
-    chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
+    chckObjType(_custom, _idx, _folderInCustom, _objList, _debugBox) { // check each of objs type
         let tmpGameObj = _objList[_idx];
         let tmpType = tmpGameObj.type;
-
         this.createBack2BasicFunc(_idx, _folderInCustom, tmpGameObj);
         this.chckStartSorting(_idx, _objList.length);
-
         switch (tmpType) {
-            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj); break;
-            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj); break;
-            case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
+            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
+            case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
             case 'Graphics': 
                 this.createGraphics(_idx, _folderInCustom, tmpGameObj);
                 break;
@@ -90,38 +89,35 @@ export default class TypeSortManager {
     createBack2BasicFunc(_idx, _folderInCustom, _gameObj) { // create back 2 basic function
         _folderInCustom.add(_gameObj, 'GUI_BACK_2_BASIC');
     }
-    createListImage(_idx, _folderInCustom, _gameObj) {
+    createListImage(_idx, _folderInCustom, _gameObj, _debugBox) {
         // also check what type of Physics
         // console.log('IMAGE type:', _gameObj);
-
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj.texture, 'key').listen();
-        this.createCommon(_idx, _folderInCustom, _gameObj);
+        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
-    createListSprite(_idx, _folderInCustom, _gameObj) {
+    createListSprite(_idx, _folderInCustom, _gameObj, _debugBox) {
         // console.log('SPRITE type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
-
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
-
-        this.createCommon(_idx, _folderInCustom, _gameObj);
+        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
         this.createAnims(_idx, _folderInCustom, _gameObj);
-
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
-    createListText(_idx, _folderInCustom, _gameObj) {
+    createListText(_idx, _folderInCustom, _gameObj, _debugBox) {
         // console.log('TEXT type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj, 'text').listen();
-        this.createCommon(_idx, _folderInCustom, _gameObj);
+        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
+
         this.chckEndSorting(_idx);
     }
     createGraphics(_idx, _folderInCustom, _gameObj) {
@@ -237,18 +233,18 @@ export default class TypeSortManager {
             this.chckEndSorting(_idx);
         }
     }
-    createCommon(_idx, _folderInCustom, _gameObj) {
-        this.tryCatch(_folderInCustom, _gameObj, 'x');
-        this.tryCatch(_folderInCustom, _gameObj, 'y');
-        this.tryCatch(_folderInCustom, _gameObj, 'width');
-        this.tryCatch(_folderInCustom, _gameObj, 'height');
+    createCommon(_idx, _folderInCustom, _gameObj, _debugBox) {
+        this.tryCatch(_folderInCustom, _gameObj, 'x', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'y', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'width', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'height', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
         this.tryCatch(_folderInCustom, _gameObj, 'depth');
-        this.tryCatch(_folderInCustom, _gameObj, 'angle');
-        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         this.tryCatch(_folderInCustom, _gameObj, 'visible');
-        this.tryCatch(_folderInCustom, _gameObj, 'originX');
-        this.tryCatch(_folderInCustom, _gameObj, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj, 'originX', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'originY', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
@@ -284,9 +280,8 @@ export default class TypeSortManager {
     }
     tryCatch(_guiObj, _obj, _property, _cmd, _customFunction) {
         let tmpAddFunc = undefined;
-        try {
-            tmpAddFunc = _guiObj.add(_obj, _property);
-        } catch(e) {}
+        try { tmpAddFunc = _guiObj.add(_obj, _property); }
+        catch(e) {}
         
         if (tmpAddFunc) {
             switch (_cmd) {
@@ -298,7 +293,7 @@ export default class TypeSortManager {
                 break;
                 case 'onChange':
                     if (_customFunction) {
-                        tmpAddFunc.onChange(_customFunction());
+                        tmpAddFunc.onChange(_customFunction);
                     }
                 break;
                 default:
