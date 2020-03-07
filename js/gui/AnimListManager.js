@@ -2,7 +2,6 @@
 // get and set Phaser.Scene.Anims list
 export default class AnimListManager {
     constructor(_scene) {
-        console.log('_scene:', _scene);
         this.animList = undefined;
         this.isExist = this.initNChckAnimExist(_scene); // boolean
         this.list = this.initList(this.isExist); // object list
@@ -25,7 +24,6 @@ export default class AnimListManager {
         try {
             tmpKL = this.animList.keys();
         } catch(e) {}
-        console.table(tmpKL);
         return tmpKL;
     }
 

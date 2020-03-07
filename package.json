@@ -1,12 +1,11 @@
 {
 	"name": "phaser3_gui_inspector",
 	"version": "1.0.0",
-	"description": "phaser3, datgui, inspector, api",
+	"description": "This is a inspector for only phaser3 framework",
 	"main": "index.js",
 	"directories": {
 		"test": "test"
 	},
-	"build": "parcel build ./js/PGInspector.js",
 	"scripts": {
 		"build": "parcel build ./js/PGInspector.js"
 	},
@@ -17,7 +16,8 @@
 	"keywords": [
 		"phaser3",
 		"datgui",
-		"inpsector",
+		"gui",
+		"inspector",
 		"api",
 		"lib"
 	],

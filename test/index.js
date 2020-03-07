@@ -87,6 +87,9 @@ function create() {
     this.make.text(config1);
 
     // PGInspector.js usage
-    console.log('Phaser.Scene scope this:', this);
-    PhaserGUIAction(this);
+    // console.log('Phaser.Scene scope this:', this);
+    PhaserGUIAction({
+        scene: this,
+        right: 100
+    });
 }

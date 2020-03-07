@@ -25,10 +25,8 @@ function PhaserGUIAction(_configObj) {
 }
 
 // FINFAL WORK: ADD TO WINDOW OBJECT
-// lib act function
-window.PhaserGUIAction = PhaserGUIAction;
-// GUI self class
-window.PhaserGUI = undefined;
+window.PhaserGUIAction = PhaserGUIAction; // lib act function
+window.PhaserGUI = undefined; // GUI self class
 
 
 // detailed functions
@@ -42,7 +40,9 @@ function ChckConfigObj(_configObj) {
     // init config structure
     let tmpReturn = {
         css: {
-            alpha: undefined
+            alpha: undefined,
+            right: undefined,
+            top: undefined
         },
         status: undefined,
         scene: undefined
@@ -50,6 +50,8 @@ function ChckConfigObj(_configObj) {
     // check is init config
     if (!_configObj.sys) {
         TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
+        TryCatchObj(tmpReturn.css, 'right', _configObj.right);
+        TryCatchObj(tmpReturn.css, 'top', _configObj.top);
         TryCatchObj(tmpReturn, 'status', _configObj.status);
         TryCatchObj(tmpReturn, 'scene', _configObj.scene);
     }
@@ -65,8 +67,6 @@ function TryCatchObj(_obj, _objPropertyName, _obj2) {
     catch(e) {
         console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
     };
-
-    console.log(_obj);
 }
 function InitGUIClassSetting() {
     let tmpClass;
