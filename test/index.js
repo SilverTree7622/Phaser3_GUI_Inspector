@@ -6,6 +6,7 @@ var config = {
     scene: {
         preload: preload,
         create: create,
+        // update: update
     }
 };
 
@@ -84,7 +85,15 @@ function create() {
             }
         }
     };
-    this.make.text(config1);
+    var tmpTxt = this.make.text(config1);
+
+    var tmpTw = this.tweens.addCounter({
+        from: 300, to: 400,
+        ease: 'Linear', duration: 1000, yoyo: true, repeat: -1,
+        onUpdate: () => {
+            tmpTxt.x = tmpTw.getValue();
+        }
+    });
 
     // PGInspector.js usage
     // console.log('Phaser.Scene scope this:', this);
@@ -92,4 +101,8 @@ function create() {
         scene: this,
         right: 100
     });
+}
+
+function update() {
+    // console.log('this in index.js update:', this);
 }

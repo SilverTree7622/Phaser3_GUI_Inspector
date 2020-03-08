@@ -50,6 +50,9 @@ export default class GUIcss {
     }
 
     // EXTERNAL
+    getAlpha() {
+        return this.alpha;
+    }
     setAlphaInGUI() {
         this.gui.style.opacity = this.alpha;
     }
@@ -60,17 +63,17 @@ export default class GUIcss {
         this.gui.style.right = this.posXY.right + "px";
         this.gui.style.top = this.posXY.top + "px";
     }
-    addFolderInBasic(_basic) { // add in basic folder with events
-        // gui alpha
-        _basic.add(this, 'alpha').min(0.1).max(1.0).step(0.02)
-        .onChange( this.setAlphaInGUI.bind(this) );
-        // // gui color
-        // _basic.addColor(this, 'color')
-        // .onChange( this.setColorInGUI.bind(this) );
-        // gui posXY (right, top)
-        _basic.add(this.posXY, 'right').step(1)
-        .onChange( this.setPosXYInGUI.bind(this) );
-        _basic.add(this.posXY, 'top').step(1)
-        .onChange( this.setPosXYInGUI.bind(this) );
-    }
+    // addFolderInBasic(_basic) { // add in basic folder with events
+    //     // gui alpha
+    //     _basic.add(this, 'alpha').min(0.1).max(1.0).step(0.02)
+    //     .onChange( this.setAlphaInGUI.bind(this) );
+    //     // // gui color
+    //     // _basic.addColor(this, 'color')
+    //     // .onChange( this.setColorInGUI.bind(this) );
+    //     // gui posXY (right, top)
+    //     _basic.add(this.posXY, 'right').step(1)
+    //     .onChange( this.setPosXYInGUI.bind(this) );
+    //     _basic.add(this.posXY, 'top').step(1)
+    //     .onChange( this.setPosXYInGUI.bind(this) );
+    // }
 }

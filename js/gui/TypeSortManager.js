@@ -291,10 +291,11 @@ export default class TypeSortManager {
                 case 'listen':
                     tmpAddFunc.listen();
                 break;
+                // onChange
                 case 'onChange':
                     if (_customFunction) {
                         tmpAddFunc.onChange(_customFunction);
-                    }
+                    } else {}
                 break;
                 default:
                     console.log(_cmd, '<= this is not on the options');

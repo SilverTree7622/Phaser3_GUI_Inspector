@@ -1,4 +1,8 @@
 
+// FINFAL WORK: ADD TO WINDOW OBJECT
+window.PhaserGUIAction = PhaserGUIAction; // lib act function
+window.PhaserGUI = undefined; // GUI self class
+
 // Main Phaser3 GUI function **
 function PhaserGUIAction(_configObj) {
     let tmpGUIInstance; // GUI instance
@@ -16,18 +20,13 @@ function PhaserGUIAction(_configObj) {
     // setting value
     tmpGUIClass = InitGUIClassSetting();
     tmpStatusReturn = ChckStatusManager(tmpConfigObj.status);
-    tmpGUIInstance = CommonAction( tmpConfigObj, tmpStatusReturn, tmpGUIClass);
+    tmpGUIInstance = SetCreateUpdateInstance( tmpConfigObj, tmpStatusReturn, tmpGUIClass);
 
     StoreGUI(tmpGUIInstance);
 
     // return just phaser scene
     return tmpGUIInstance;
 }
-
-// FINFAL WORK: ADD TO WINDOW OBJECT
-window.PhaserGUIAction = PhaserGUIAction; // lib act function
-window.PhaserGUI = undefined; // GUI self class
-
 
 // detailed functions
 function ChckGUIObj() {
@@ -76,10 +75,21 @@ function InitGUIClassSetting() {
     catch {}
     return tmpClass;
 }
-function CommonAction(_tmpConfigObj, _tmpStatusReturn, _tmpGUIClass) {
+function SetCreateUpdateInstance(_tmpConfigObj, _tmpStatusReturn, _tmpGUIClass) {
     let GUIClass = new _tmpGUIClass(_tmpConfigObj);
     GUIClass.create(_tmpConfigObj.scene);
+    SetRenewalUpdate(_tmpConfigObj, GUIClass);
     return GUIClass;
+}
+// setting custom update
+function SetRenewalUpdate(_tmpConfigObj, GUIClass) {
+    let tmpUpdate = undefined;
+    let tmpSceneUpdate = _tmpConfigObj.scene.update.bind(_tmpConfigObj.scene);
+    tmpUpdate = function (_time, _delta) {
+        tmpSceneUpdate(_time, _delta);
+        GUIClass.update(_time, _delta);
+    }
+    return _tmpConfigObj.scene.update = tmpUpdate;
 }
 function ChckStatusManager(_tmpStatus) {
     let tmpSM;

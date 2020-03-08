@@ -28,10 +28,12 @@
         for each gameobjects, but this is gonna be hard so i just drawback for next version)
 */
 
+"use strict";
+
 // import * as dat from './lib/DatGUILib.js'; // import GUI lib
 // import GUIcss from './lib/DatGUIcss'; // import GUI CSS
 
-import GUIMain from './lib/DatGUIMain.js'; // import whole GUI
+import LibClass from './lib/index.js'; // import whole GUI
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
@@ -39,8 +41,7 @@ import DebugBoxClass from './DebugBoxClass.js';
 
 export class GUIClass {
     constructor(_tmpHandOverObj) {
-        this.main = new GUIMain(_tmpHandOverObj.css);
-        this.self = this.main.getLib();
+        this.libs = new LibClass(_tmpHandOverObj.css);
         this.scene = undefined;
         this.objList = undefined; // all game object list
         this.conAlert = '_PGI System_ :';
@@ -49,14 +50,14 @@ export class GUIClass {
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
         this.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
-        this.folder = new FolderManager(this.self, this.typeSort);
+        this.folder = new FolderManager(this.libs.getGUILib(), this.typeSort);
         this.save = new SaveManager();
         this.debugBox = new DebugBoxClass();
     }
     create(_scene) {
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
-        this.createBasic(_scene, this.main, this.folder, this.folder.getBasicFolder());
+        this.createBasic(_scene, this.libs, this.folder, this.folder.getBasicFolder());
         this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort, this.debugBox);
         this.folder.chckOpenAllList();
     }
@@ -66,7 +67,6 @@ export class GUIClass {
         this.debugBox.create(_scene);
     }
     update(_time, _delta) {
-        this.folder.update(_time, _delta);
         this.debugBox.update(_time, _delta, this.objList);
     }
 
@@ -219,8 +219,7 @@ export class GUIClass {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-    createBasic(_scene, _main, _folder, _basic) { // create basic pointer
-        let tmpMaincss = _main.css;
+    createBasic(_scene, _lib, _folder, _basic) { // create basic pointer
         let tmpPointer = undefined;
         let tmpObj = undefined;
         let tmpFocus = undefined;
@@ -250,7 +249,7 @@ export class GUIClass {
         };
 
         // setting folder hierarchy list
-        tmpMaincss.addFolderInBasic(_basic);
+        _lib.addFolderInBasic(_basic);
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').listen();
         tmpPointer.add(_scene.input, 'y').listen();
@@ -351,7 +350,7 @@ export class GUIClass {
     }
 
     destroy() {
-        this.main.lib.destroy();
+        this.libs.lib.destroy();
     }
 
     // WARNING THIS IS TRIAL: config
