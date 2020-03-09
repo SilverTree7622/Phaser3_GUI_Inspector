@@ -20,10 +20,9 @@ export default class TypeSortManager {
             case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
             case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
             case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
-            case 'Graphics': 
-                this.createGraphics(_idx, _folderInCustom, tmpGameObj);
-                break;
+            case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
+            
             case 'Emitter':
                 this.chckEndSorting(_idx);
                 break;
@@ -142,8 +141,6 @@ export default class TypeSortManager {
     }
     createContainer(_idx, _folderInCustom, _gameObj) {
         // console.log('CONTAINER type:', _gameObj);
-        this.tryCatch(_folderInCustom, _gameObj, 'name');
-        this.tryCatch(_folderInCustom, _gameObj, 'name');
         this.tryCatch(_folderInCustom, _gameObj, 'name');
         this.tryCatch(_folderInCustom, _gameObj, 'type');
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
