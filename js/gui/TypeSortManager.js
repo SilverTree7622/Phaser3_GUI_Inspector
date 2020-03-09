@@ -234,17 +234,25 @@ export default class TypeSortManager {
         }
     }
     createCommon(_idx, _folderInCustom, _gameObj, _debugBox) {
-        this.tryCatch(_folderInCustom, _gameObj, 'x', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
-        this.tryCatch(_folderInCustom, _gameObj, 'y', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
-        this.tryCatch(_folderInCustom, _gameObj, 'width', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
-        this.tryCatch(_folderInCustom, _gameObj, 'height', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'x', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'y', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'x');
+        this.tryCatch(_folderInCustom, _gameObj, 'y');
+        // this.tryCatch(_folderInCustom, _gameObj, 'width', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'height', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'width');
+        this.tryCatch(_folderInCustom, _gameObj, 'height');
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
         this.tryCatch(_folderInCustom, _gameObj, 'depth');
-        this.tryCatch(_folderInCustom, _gameObj, 'angle', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
-        this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'angle', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'angle');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
         this.tryCatch(_folderInCustom, _gameObj, 'visible');
-        this.tryCatch(_folderInCustom, _gameObj, 'originX', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
-        this.tryCatch(_folderInCustom, _gameObj, 'originY', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'originX', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        // this.tryCatch(_folderInCustom, _gameObj, 'originY', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
+        this.tryCatch(_folderInCustom, _gameObj, 'originX');
+        this.tryCatch(_folderInCustom, _gameObj, 'originY');
         this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder

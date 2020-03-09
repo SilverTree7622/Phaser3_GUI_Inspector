@@ -131,7 +131,8 @@ export default class FolderManager {
             this.openFolder(this.basic.folder);
             this.closeFolder(tmpFocus);
             this.closeFolder(this.custom.folder);
-            let tmpLength = 3;
+            let tmpFuncLength = 2;
+            let tmpLength = tmpFocus.__controllers.length - tmpFuncLength;
             for (var i=0; i<tmpLength; i++) {
                 tmpFocus.__controllers[i].setValue('NONE');
             }

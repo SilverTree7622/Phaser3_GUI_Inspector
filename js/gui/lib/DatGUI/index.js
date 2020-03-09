@@ -13,7 +13,7 @@ export default class GUIMain { // GUI property main class
     getcss() {
         return this.css;
     }
-    destory() {
-        this.lib.destory();
+    destroy() {
+        this.lib.destroy();
     }
 }

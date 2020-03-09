@@ -43,7 +43,7 @@ function create() {
 
     */
 
-    // TEST__Phaser.Scene restart
+    // // TEST__Phaser.Scene restart
     // this.input.on('pointerdown', () => {
     //     console.log('restart scene');
     //     this.scene.restart();

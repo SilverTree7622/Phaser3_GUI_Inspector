@@ -30,10 +30,11 @@ function PhaserGUIAction(_configObj) {
 
 // detailed functions
 function ChckGUIObj() {
+    // if exist, destory GUI
     if (window.PhaserGUI) {
-        window.PhaserGUI.destroy();
+        window.PhaserGUI.destroyGUI();
         window.PhaserGUI = undefined;
-    }
+    } else {}
 }
 function ChckConfigObj(_configObj) {
     // init config structure

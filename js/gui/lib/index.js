@@ -19,10 +19,14 @@ export default class LibClass {
         return this.GUI;
     }
     getGUILib() {
-        return this.GUI.getLib();
+        return this.getGUI().getLib();
     }
     getGUIcss() {
-        return this.GUI.getcss();
+        return this.getGUI().getcss();
+    }
+    // destroy GUI
+    destroyGUI() {
+        this.getGUI().destroy();
     }
 
     // EXTERNAL

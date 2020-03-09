@@ -159,25 +159,44 @@ export class GUIClass {
         });
     }
     runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
-        if (this.chckGameObjIsFocusOnGUI(_gameObj)) { // clear the focus object
-            this.setFocusConfig(true, _gameObj);
-            this.clearFocus(_gameObj);
-            _debugBox.clearFocusGameObj();
-            _folder.setBasicFocusFolder();
+        // isFocusOnGUI boolean is true
+        // (if u run focusCommand on the focus game object)
+        if (this.chckGameObjIsFocusOnGUI(_gameObj)) {
+            // clear the focus object
+            this.runFocusLogic_focus_clear(_gameObj, _debugBox, _folder);
         }
-        else { // set the focus object
-            if (this.getGameObjFocus()) { // init focus check
-                this.clearFocus(this.focusConfig.gameObj);
-                this.setFocusConfig(false);
-                _debugBox.clearFocusGameObj();
-            } else {}
-            if (_gameObj) { // check gameObj is exist
+        // isFocusOnGUI boolean is false
+        // (if u run focusCommand on the not focus game object)
+        else {
+            if (this.getGameObjFocus()) {
+                // clear the focus during object focusing
+                // init focus check
+                this.runFocusLogic_focus_clear(this.focusConfig.gameObj, _debugBox, _folder);
+            }
+            else {
+                // pure game object focus
                 // set to this game object
-                this.setFocusConfig(true, _gameObj);
-                this.setFocus(_scene, _gameObj);
-                _debugBox.setFocus(_gameObj);
-                _folder.setBasicFocusFolder(_gameObj);   
-            } else {}
+                this.runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder);
+            }
+        }
+    }
+    runFocusLogic_focus_clear(_gameObj, _debugBox, _folder) {
+        // console.log('focus clear');
+        this.clearFocus(_gameObj);
+        this.setFocusConfig(false);
+        _debugBox.clearFocusGameObj();
+        _folder.setBasicFocusFolder();
+    }
+    runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder) {
+        // console.log('focus pure');
+        if (_gameObj) {
+            this.setFocusConfig(true, _gameObj);
+            this.setFocus(_scene, _gameObj);
+            _debugBox.setFocus(_gameObj);
+            _folder.setBasicFocusFolder(_gameObj);
+        }
+        else {
+            // nothing is on the pointer so basically nothing happen
         }
     }
     chckCommandKey(_tmpKey, _pointer) {
@@ -349,8 +368,9 @@ export class GUIClass {
         }
     }
 
-    destroy() {
-        this.libs.lib.destroy();
+    // destroy GUI when restart Phaser.Scene
+    destroyGUI() {
+        this.libs.destroyGUI();
     }
 
     // WARNING THIS IS TRIAL: config
