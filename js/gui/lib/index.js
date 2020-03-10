@@ -24,6 +24,9 @@ export default class LibClass {
     getGUIcss() {
         return this.getGUI().getcss();
     }
+    getGUIcssObj() {
+        return this.getGUI().getcssObj();
+    }
     // destroy GUI
     destroyGUI() {
         this.getGUI().destroy();

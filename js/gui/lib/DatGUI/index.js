@@ -13,6 +13,9 @@ export default class GUIMain { // GUI property main class
     getcss() {
         return this.css;
     }
+    getcssObj() {
+        return this.css.getcssObj();
+    }
     destroy() {
         this.lib.destroy();
     }

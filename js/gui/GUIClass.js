@@ -33,11 +33,16 @@
 // import * as dat from './lib/DatGUILib.js'; // import GUI lib
 // import GUIcss from './lib/DatGUIcss'; // import GUI CSS
 
+// lib
 import LibClass from './lib/index.js'; // import whole GUI
+// utils
+import DebugConsole from '../utils/DebugConsoleFunc.js';
+// root
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
+
 
 export class GUIClass {
     constructor(_tmpHandOverObj) {
@@ -45,8 +50,8 @@ export class GUIClass {
         this.scene = undefined;
         this.objList = undefined; // all game object list
         this.conAlert = '_PGI System_ :';
-        this.URLPath = this.initURLPath();
-        this.statusManager = this.initChckStatusManager(this.status);
+        this.URLPath = this.initConsole(this.libs.getGUIcssObj());
+        // this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
         this.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
@@ -71,9 +76,16 @@ export class GUIClass {
     }
 
 
-    initURLPath() {
+    initConsole(_cssObj) {
+        let tmpName = 'PGInspector.js';
+        let tmpVersion = '1.1.0';
         let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
-        console.log(this.conAlert, tmpURL);
+        DebugConsole({
+            name: tmpName,
+            version: tmpVersion,
+            initConfig: _cssObj,
+            url: tmpURL
+        });
     }
     initChckStatusManager(_statusManager) {
         let tmpSM;

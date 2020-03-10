@@ -94,7 +94,7 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj.texture, 'key').listen();
-        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
@@ -104,7 +104,7 @@ export default class TypeSortManager {
         this.chckPhysicsType(_folderInCustom, _gameObj);
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
-        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
         this.createAnims(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
@@ -114,7 +114,7 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj, 'text').listen();
-        this.createCommon(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
 
         this.chckEndSorting(_idx);
@@ -230,7 +230,10 @@ export default class TypeSortManager {
             this.chckEndSorting(_idx);
         }
     }
-    createCommon(_idx, _folderInCustom, _gameObj, _debugBox) {
+    createCommonFront() {
+        
+    }
+    createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox) {
         // this.tryCatch(_folderInCustom, _gameObj, 'x', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         // this.tryCatch(_folderInCustom, _gameObj, 'y', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         this.tryCatch(_folderInCustom, _gameObj, 'x');
@@ -309,3 +312,4 @@ export default class TypeSortManager {
         }
     }
 }
+

@@ -98,13 +98,13 @@ function create() {
     var tmpCon = this.add.container();
     tmpCon.add([tmpSpr.self, tmpTxt]);
 
-    console.log('tmpCon:', tmpCon);
+    // console.log('tmpCon:', tmpCon);
 
     // PGInspector.js usage
-    console.log('Phaser.Scene scope this:', this);
+    // console.log('Phaser.Scene scope this:', this);
     PhaserGUIAction({
         scene: this,
-        right: 100
+        top: 10
     });
 }
 

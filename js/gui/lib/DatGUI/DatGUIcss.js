@@ -53,6 +53,13 @@ export default class GUIcss {
     getAlpha() {
         return this.alpha;
     }
+    getcssObj() {
+        return {
+            alpha: this.alpha,
+            right: this.posXY.right,
+            top: this.posXY.top
+        };
+    }
     setAlphaInGUI() {
         this.gui.style.opacity = this.alpha;
     }
