@@ -52,6 +52,7 @@ function ChckConfigObj(_configObj) {
         TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
         TryCatchObj(tmpReturn.css, 'right', _configObj.right);
         TryCatchObj(tmpReturn.css, 'top', _configObj.top);
+        // ++ TryCatchObj(tmpReturn, 'ignoreList', _configObj.ignoreList);
         TryCatchObj(tmpReturn, 'status', _configObj.status);
         TryCatchObj(tmpReturn, 'scene', _configObj.scene);
     }

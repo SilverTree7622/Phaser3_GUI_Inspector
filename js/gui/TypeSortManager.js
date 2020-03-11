@@ -11,29 +11,23 @@ export default class TypeSortManager {
     }
 
     // _EXTERNAL_
-    chckObjType(_custom, _idx, _folderInCustom, _objList, _debugBox) { // check each of objs type
+    chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
         let tmpGameObj = _objList[_idx];
         let tmpType = tmpGameObj.type;
         this.createBack2BasicFunc(_idx, _folderInCustom, tmpGameObj);
         this.chckStartSorting(_idx, _objList.length);
         switch (tmpType) {
-            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
-            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
-            case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj, _debugBox); break;
+            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj); break;
             case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
-            
-            case 'Emitter':
-                this.chckEndSorting(_idx);
-                break;
+            case 'TileSprite': this.createTileSprite(_idx, _folderInCustom, tmpGameObj); break;
+            case 'ParticleEmitterManager': this.createParticleEmitterManager(_idx, _folderInCustom, tmpGameObj); break;
             case 'Arc':
                 this.chckEndSorting(_idx);
                 console.log('Arc:', tmpGameObj);
                 // this.createAracdeBodySprite(_idx, _folderInCustom, tmpGameObj);
-                break;
-            case 'TileSprite':
-                this.chckEndSorting(_idx);
-                console.log('TileSprite:', tmpGameObj);
                 break;
             // + etc
             default:
@@ -88,42 +82,40 @@ export default class TypeSortManager {
     createBack2BasicFunc(_idx, _folderInCustom, _gameObj) { // create back 2 basic function
         _folderInCustom.add(_gameObj, 'GUI_BACK_2_BASIC');
     }
-    createListImage(_idx, _folderInCustom, _gameObj, _debugBox) {
+    createListImage(_idx, _folderInCustom, _gameObj) {
         // also check what type of Physics
         // console.log('IMAGE type:', _gameObj);
-        _folderInCustom.add(_gameObj, 'name');
+        this.createCommonFront(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj.texture, 'key').listen();
-        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
-    createListSprite(_idx, _folderInCustom, _gameObj, _debugBox) {
+    createListSprite(_idx, _folderInCustom, _gameObj) {
         // console.log('SPRITE type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
-        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj);
         this.createAnims(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
-    createListText(_idx, _folderInCustom, _gameObj, _debugBox) {
+    createListText(_idx, _folderInCustom, _gameObj) {
         // console.log('TEXT type:', _gameObj);
         _folderInCustom.add(_gameObj, 'name');
         this.chckPhysicsType(_folderInCustom, _gameObj);
         _folderInCustom.add(_gameObj, 'text').listen();
-        this.createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox);
+        this.createCommonBack(_idx, _folderInCustom, _gameObj);
         this.chckPhysicsBody(_folderInCustom, _gameObj);
 
         this.chckEndSorting(_idx);
     }
     createGraphics(_idx, _folderInCustom, _gameObj) {
         // console.log('GRAPHICS type:', _gameObj);
-        _folderInCustom.add(_gameObj, 'name');
-        _folderInCustom.add(_gameObj, 'type');
-
+        this.createCommonFront(_idx, _folderInCustom, _gameObj);
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
         this.tryCatch(_folderInCustom, _gameObj, 'scale');
         this.tryCatch(_folderInCustom, _gameObj, 'angle');
@@ -171,8 +163,10 @@ export default class TypeSortManager {
 
         this.chckEndSorting(_idx);
     }
-    createEmitter(_idx, _folderInCustom, _gameObj) {
+    createTileSprite(_idx, _folderInCustom, _gameObj) {
         // console.log('EMITTER type:', _gameObj);
+        
+        this.chckEndSorting(_idx);
     }
 
     // check body is arcade or matter
@@ -230,10 +224,14 @@ export default class TypeSortManager {
             this.chckEndSorting(_idx);
         }
     }
-    createCommonFront() {
-        
+    createCommonFront(_idx, _folderInCustom, _gameObj) {
+        // set properties (GUIIdx, name, type)
+        this.tryCatch(_folderInCustom, _gameObj, 'GUIIdx');
+        this.tryCatch(_folderInCustom, _gameObj, 'name');
+        this.tryCatch(_folderInCustom, _gameObj, 'type');
     }
-    createCommonBack(_idx, _folderInCustom, _gameObj, _debugBox) {
+    // findVarNameLogic
+    createCommonBack(_idx, _folderInCustom, _gameObj) {
         // this.tryCatch(_folderInCustom, _gameObj, 'x', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         // this.tryCatch(_folderInCustom, _gameObj, 'y', 'onChange', _debugBox.setClearNFocus.bind(_debugBox, _gameObj));
         this.tryCatch(_folderInCustom, _gameObj, 'x');

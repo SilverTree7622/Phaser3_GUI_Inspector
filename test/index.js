@@ -25,7 +25,7 @@ var tmpSpr = {
 var game = new Phaser.Game(config);
 
 function preload() {
-    this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+    // this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
 }
 
 function create() {
@@ -34,7 +34,7 @@ function create() {
     _trying all the Phaser.GameObjects_
     
     /OBJECT LIST                    /DONE RATE
-    TEXT(normal, arcade, matter)    X
+    TEXT(normal, arcade, matter)    2
     IMAGE(")                        X
     SPRITE(")                       X
     TILESPRITE(")                   X
@@ -49,21 +49,21 @@ function create() {
     //     this.scene.restart();
     // });
 
-    // sprite game object
-    tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
-    tmpSpr.self.name = 'var_tmpSpr';
-    this.anims.create(
-        {
-            key: tmpSpr.animKey,
-            frames: this.anims.generateFrameNames(
-                tmpSpr.key, 
-                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
-            ),
-            repeat: -1 
-        }
-    );
-    // tmpSpr.self.anims.play(tmpSpr.animKey);
-    tmpSpr.self.setDisplaySize(80, 80);
+    // // sprite game object
+    // tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
+    // // tmpSpr.self.name = 'var_tmpSpr';
+    // this.anims.create(
+    //     {
+    //         key: tmpSpr.animKey,
+    //         frames: this.anims.generateFrameNames(
+    //             tmpSpr.key, 
+    //             { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+    //         ),
+    //         repeat: -1 
+    //     }
+    // );
+    // // tmpSpr.self.anims.play(tmpSpr.animKey);
+    // tmpSpr.self.setDisplaySize(80, 80);
 
     // text game object
     var config1 = {
@@ -95,8 +95,10 @@ function create() {
         }
     });
 
-    var tmpCon = this.add.container();
-    tmpCon.add([tmpSpr.self, tmpTxt]);
+    // console
+
+    // var tmpCon = this.add.container();
+    // tmpCon.add([tmpSpr.self, tmpTxt]);
 
     // console.log('tmpCon:', tmpCon);
 

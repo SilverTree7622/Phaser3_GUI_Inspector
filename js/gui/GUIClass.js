@@ -305,7 +305,7 @@ export class GUIClass {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
-            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList, _debugBox);
+            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
         }
     }
     setFocus(_scene, _gameObj) {
