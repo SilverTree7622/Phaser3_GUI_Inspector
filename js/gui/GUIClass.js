@@ -36,7 +36,7 @@
 // lib
 import LibClass from './lib/index.js'; // import whole GUI
 // utils
-import DebugConsole from '../utils/DebugConsoleFunc.js';
+import {DebugConsole, DebugConsoleLogOut} from '../utils/DebugConsoleFunc.js';
 // root
 import TypeSortManager from './TypeSortManager.js';
 import FolderManager from './FolderManager.js';
@@ -121,18 +121,27 @@ export class GUIClass {
     createListInteractive(_scene, _debugBox, _folder) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
-            if (this.objList[i].type !== 'Graphics' &&
-                this.objList[i].type !== 'Container') {
-                try { this.objList[i].setInteractive(); }
-                catch(e) {}
-            } else {}
+            this.createListInteractiveTryException(this.objList[i]);
             this.objList[i].guiIdx = i;
             this.objList[i].isFocusOnGUI = false;
             this.objList[i].focusTw = undefined;
-            this.objList[i].GUI_BACK_2_BASIC = _folder.back2Basic.bind(_folder, i);
+            this.objList[i].GUI_BACK = _folder.back2Basic.bind(_folder, i);
+            this.objList[i].GUI_CONSOLE = DebugConsoleLogOut;
         }
         this.createListInteractiveOverEvent(_scene, _debugBox);
         this.createListInteractiveFocusEvent(_scene, _debugBox, _folder);
+    }
+    createListInteractiveTryException(_obj) {
+        // if (this.objList[i].type !== 'Graphics' &&
+        //     this.objList[i].type !== 'Container') {
+        //     try { this.objList[i].setInteractive(); }
+        //     catch(e) {}
+        // } else {}
+        if (_obj.type !== 'Graphics' &&
+        _obj.type !== 'Container') {
+            try { _obj.setInteractive(); }
+            catch(e) {}
+        } else {}
     }
     createListInteractiveOverEvent(_scene, _debugBox) {
         // just pointer over obj
@@ -275,8 +284,8 @@ export class GUIClass {
             name: 'NONE',
             type: 'NONE',
             texture: 'NONE',
-            FOCUS_OFF: tmpFocusFunc,
-            GO_2_THIS_OBJ: tmpGo2ThisFunc
+            GUI_FOCUS_OFF: tmpFocusFunc,
+            GUI_GO_2_DETAIL: tmpGo2ThisFunc
         };
 
         // setting folder hierarchy list
@@ -294,8 +303,8 @@ export class GUIClass {
         tmpFocus.add(tmpFocusProperties, 'name');
         tmpFocus.add(tmpFocusProperties, 'type');
         tmpFocus.add(tmpFocusProperties, 'texture');
-        tmpFocus.add(tmpFocusProperties, 'FOCUS_OFF'); // function
-        tmpFocus.add(tmpFocusProperties, 'GO_2_THIS_OBJ'); // function
+        tmpFocus.add(tmpFocusProperties, 'GUI_FOCUS_OFF'); // function
+        tmpFocus.add(tmpFocusProperties, 'GUI_GO_2_DETAIL'); // function
 
         _folder.push2FolderList(tmpPointer, 'basic');
         _folder.push2FolderList(tmpObj, 'basic');

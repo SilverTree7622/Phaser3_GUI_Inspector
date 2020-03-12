@@ -3,6 +3,15 @@ var config = {
     width: 800,
     height: 600,
     parent: 'phaser-example',
+    physics: {
+        default: 'matter',
+        arcade: {
+            debug: true
+        },
+        matter: {
+            debug: true,
+        }
+    },
     scene: {
         preload: preload,
         create: create,
@@ -22,10 +31,18 @@ var tmpSpr = {
     animSelf: undefined,
     animKey: 'AnimLazer'
 };
+var tmpImg = {
+    self: undefined,
+    key: 'ConsoleImg',
+    url: {
+        png: './zReadMeSrc/capture_img.png'
+    },
+};
 var game = new Phaser.Game(config);
 
 function preload() {
     // this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+    this.load.image(tmpImg.key, tmpImg.url.png);
 }
 
 function create() {
@@ -95,11 +112,10 @@ function create() {
         }
     });
 
-    // console
+    var tmpTileSprite = this.add.tileSprite(200, 300, 100, 100, tmpImg.key);
 
     // var tmpCon = this.add.container();
     // tmpCon.add([tmpSpr.self, tmpTxt]);
-
     // console.log('tmpCon:', tmpCon);
 
     // PGInspector.js usage

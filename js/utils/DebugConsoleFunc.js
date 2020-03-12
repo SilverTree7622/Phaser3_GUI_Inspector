@@ -1,5 +1,5 @@
 
-export default function DebugConsole(_obj) {
+export function DebugConsole(_obj) {
     let tmpName = _obj.name;
     let tmpVersion = _obj.version;
     let tmpInitConfig = _obj.initConfig;
@@ -37,4 +37,12 @@ export default function DebugConsole(_obj) {
         tmp_nameNversion + tmp_config + tmp_url,
         tmpStyle1, tmpStyle2, tmpStyle3
     );
+}
+
+// debug console log out the specific game object
+export function DebugConsoleLogOut() {
+    let tmpInit = '%c_PGI LogOut_';
+    let tmpInfo = ': GUIIdx(' + this.guiIdx + ')';
+    let tmpStyle = 'color: white; background: rgb(255, 111, 0);';
+    return console.log(tmpInit, tmpStyle, tmpInfo, this);
 }

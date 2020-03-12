@@ -14,7 +14,7 @@ export default class LibClass {
     getStatsSelf() {
         return this.stats.getStats();
     }
-    // GUI
+    // EXTERNAL GUI
     getGUI() {
         return this.GUI;
     }
