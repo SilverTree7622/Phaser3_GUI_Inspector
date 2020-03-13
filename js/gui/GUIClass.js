@@ -61,9 +61,8 @@ export class GUIClass {
     }
     create(_scene) {
         this.createETCClass(_scene);
-        this.createList(_scene, this.debugBox, this.folder, this.typeSort);
-        this.createBasic(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
-        this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort, this.debugBox);
+        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
+        this.createFocusFolder(_scene, this.debugBox, this.folder, this.typeSort);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {
@@ -111,16 +110,16 @@ export class GUIClass {
         tmpFC.gameObj = undefined;
         return tmpFC;
     }
-    createList(_scene, _debugBox, _folder, _typeSort) {
+    createFocusFolder(_scene, _debugBox, _folder, _typeSort) {
         let tmpDisplayList = undefined;
         tmpDisplayList = _scene.children;
         this.objList = tmpDisplayList.list;
-        _typeSort.createListInteractive(this.objList, _folder, DebugConsoleLogOut);
-        this.createListOverEvent(_scene, _debugBox);
-        this.createListFocusEvent(_scene, _debugBox, _folder);
+        _typeSort.createFocusFolder(this.objList, _folder, DebugConsoleLogOut);
+        this.createFocusFolderOverEvent(_scene, _debugBox);
+        this.createFocusFolderFocusEvent(_scene, _debugBox, _folder);
     }
 
-    createListOverEvent(_scene, _debugBox) {
+    createFocusFolderOverEvent(_scene, _debugBox) {
         // just pointer over obj
         _scene.input.on('gameobjectover', (_pointer, _gameObj) => {
             if (!this.chckGameObjIsFocusOnGUI(_gameObj)) {
@@ -138,7 +137,7 @@ export class GUIClass {
             } else {}
         });
     }
-    createListFocusEvent(_scene, _debugBox, _folder) {
+    createFocusFolderFocusEvent(_scene, _debugBox, _folder) {
         // when want to focus logic
         let tmpKey = _scene.input.keyboard.createCursorKeys(); // cursor key 
         _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {
@@ -237,7 +236,7 @@ export class GUIClass {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-    createBasic(_scene, _lib, _folder, _basic, _debugBox) { // create basic pointer
+    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox) { // create basic pointer
         let tmpPointer = undefined;
         let tmpObj = undefined;
         let tmpFocus = undefined;
@@ -288,7 +287,7 @@ export class GUIClass {
         _folder.push2FolderList(tmpObj, 'basic');
     }
     // create each custom folder from Phaser.scene.displayList
-    createCustom(_scene, _custom, _typeSort, _debugBox) {
+    createCustom(_scene, _custom, _typeSort) {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             let tmpFolderInCustom = this.folder.add2CustomFolder(i);
