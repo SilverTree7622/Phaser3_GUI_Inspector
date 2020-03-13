@@ -42,7 +42,7 @@ export function DebugConsole(_obj) {
 // debug console log out the specific game object
 export function DebugConsoleLogOut() {
     let tmpInit = '%c_PGI LogOut_';
-    let tmpInfo = ': GUIIdx(' + this.guiIdx + ')';
+    let tmpInfo = ': GUIIdx[' + this.guiIdx + ']';
     let tmpStyle = 'color: white; background: rgb(255, 111, 0);';
     return console.log(tmpInit, tmpStyle, tmpInfo, this);
 }

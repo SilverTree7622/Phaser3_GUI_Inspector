@@ -62,7 +62,7 @@ export class GUIClass {
     create(_scene) {
         this.createETCClass(_scene);
         this.createList(_scene, this.debugBox, this.folder);
-        this.createBasic(_scene, this.libs, this.folder, this.folder.getBasicFolder());
+        this.createBasic(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
         this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort, this.debugBox);
         this.folder.chckOpenAllList();
     }
@@ -122,26 +122,34 @@ export class GUIClass {
         let tmpLength = this.objList.length;
         for (var i=0; i<tmpLength; i++) {
             this.createListInteractiveTryException(this.objList[i]);
-            this.objList[i].guiIdx = i;
-            this.objList[i].isFocusOnGUI = false;
-            this.objList[i].focusTw = undefined;
-            this.objList[i].GUI_BACK = _folder.back2Basic.bind(_folder, i);
-            this.objList[i].GUI_CONSOLE = DebugConsoleLogOut;
+            this.createListInteractiveSetObj(i, this.objList[i], _folder);
         }
         this.createListInteractiveOverEvent(_scene, _debugBox);
         this.createListInteractiveFocusEvent(_scene, _debugBox, _folder);
     }
     createListInteractiveTryException(_obj) {
-        // if (this.objList[i].type !== 'Graphics' &&
-        //     this.objList[i].type !== 'Container') {
-        //     try { this.objList[i].setInteractive(); }
-        //     catch(e) {}
-        // } else {}
         if (_obj.type !== 'Graphics' &&
         _obj.type !== 'Container') {
             try { _obj.setInteractive(); }
             catch(e) {}
         } else {}
+    }
+
+    // if the gameobj is container obj
+    createListInteractiveContainer() {
+        
+    }
+    // if the gameobj is container obj
+    createListInteractiveNotContainer() {
+
+    }
+
+    createListInteractiveSetObj(_idx, _obj, _folder) {
+        _obj.guiIdx = _idx; // typical GUI index
+        _obj.isFocusOnGUI = false; // focus check boolean
+        _obj.focusTw = undefined; // save focus performance tween in this property
+        _obj.GUI_BACK = _folder.back2Basic.bind(_folder, _idx);
+        _obj.GUI_CONSOLE = DebugConsoleLogOut;
     }
     createListInteractiveOverEvent(_scene, _debugBox) {
         // just pointer over obj
@@ -207,6 +215,7 @@ export class GUIClass {
         this.setFocusConfig(false);
         _debugBox.clearFocusGameObj();
         _folder.setBasicFocusFolder();
+        _folder.back2Basic(_gameObj.guiIdx);
     }
     runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder) {
         // console.log('focus pure');
@@ -259,7 +268,7 @@ export class GUIClass {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-    createBasic(_scene, _lib, _folder, _basic) { // create basic pointer
+    createBasic(_scene, _lib, _folder, _basic, _debugBox) { // create basic pointer
         let tmpPointer = undefined;
         let tmpObj = undefined;
         let tmpFocus = undefined;
@@ -273,7 +282,7 @@ export class GUIClass {
         let tmpFocusFunc = () => {
             this.clearFocus();
             _folder.setBasicFocusFolder();
-            this.debugBox.clearFocusGameObj();
+            _debugBox.clearFocusGameObj();
         }
         // cross2FocusObj
         let tmpGo2ThisFunc = () => {
