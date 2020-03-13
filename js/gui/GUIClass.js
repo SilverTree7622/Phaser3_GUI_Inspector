@@ -35,7 +35,7 @@
 
 // lib
 import LibClass from './lib/index.js'; // import whole GUI
-// utils
+// debug console utils
 import {DebugConsole, DebugConsoleLogOut} from '../utils/DebugConsoleFunc.js';
 // root
 import TypeSortManager from './TypeSortManager.js';
@@ -50,7 +50,7 @@ export class GUIClass {
         this.scene = undefined;
         this.objList = undefined; // all game object list
         this.conAlert = '_PGI System_ :';
-        this.URLPath = this.initConsole(this.libs.getGUIcssObj());
+        this.URLPath = this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
         // this.statusManager = this.initChckStatusManager(this.status);
         this.overConfig = this.initOverConfig();
         this.focusConfig = this.initFocusConfig();
@@ -61,7 +61,7 @@ export class GUIClass {
     }
     create(_scene) {
         this.createETCClass(_scene);
-        this.createList(_scene, this.debugBox, this.folder);
+        this.createList(_scene, this.debugBox, this.folder, this.typeSort);
         this.createBasic(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
         this.createCustom(_scene, this.folder.getCustomFolder(), this.typeSort, this.debugBox);
         this.folder.chckOpenAllList();
@@ -76,11 +76,11 @@ export class GUIClass {
     }
 
 
-    initConsole(_cssObj) {
+    initConsole(_cssObj, _debugConsole) {
         let tmpName = 'PGInspector.js';
         let tmpVersion = '1.1.0';
         let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
-        DebugConsole({
+        _debugConsole({
             name: tmpName,
             version: tmpVersion,
             initConfig: _cssObj,
@@ -111,47 +111,16 @@ export class GUIClass {
         tmpFC.gameObj = undefined;
         return tmpFC;
     }
-    createList(_scene, _debugBox, _folder) {
+    createList(_scene, _debugBox, _folder, _typeSort) {
         let tmpDisplayList = undefined;
         tmpDisplayList = _scene.children;
         this.objList = tmpDisplayList.list;
-        this.createListInteractive(_scene, _debugBox, _folder);
-    }
-    // get scene then set list to form gui set up
-    createListInteractive(_scene, _debugBox, _folder) {
-        let tmpLength = this.objList.length;
-        for (var i=0; i<tmpLength; i++) {
-            this.createListInteractiveTryException(this.objList[i]);
-            this.createListInteractiveSetObj(i, this.objList[i], _folder);
-        }
-        this.createListInteractiveOverEvent(_scene, _debugBox);
-        this.createListInteractiveFocusEvent(_scene, _debugBox, _folder);
-    }
-    createListInteractiveTryException(_obj) {
-        if (_obj.type !== 'Graphics' &&
-        _obj.type !== 'Container') {
-            try { _obj.setInteractive(); }
-            catch(e) {}
-        } else {}
+        _typeSort.createListInteractive(this.objList, _folder, DebugConsoleLogOut);
+        this.createListOverEvent(_scene, _debugBox);
+        this.createListFocusEvent(_scene, _debugBox, _folder);
     }
 
-    // if the gameobj is container obj
-    createListInteractiveContainer() {
-        
-    }
-    // if the gameobj is container obj
-    createListInteractiveNotContainer() {
-
-    }
-
-    createListInteractiveSetObj(_idx, _obj, _folder) {
-        _obj.guiIdx = _idx; // typical GUI index
-        _obj.isFocusOnGUI = false; // focus check boolean
-        _obj.focusTw = undefined; // save focus performance tween in this property
-        _obj.GUI_BACK = _folder.back2Basic.bind(_folder, _idx);
-        _obj.GUI_CONSOLE = DebugConsoleLogOut;
-    }
-    createListInteractiveOverEvent(_scene, _debugBox) {
+    createListOverEvent(_scene, _debugBox) {
         // just pointer over obj
         _scene.input.on('gameobjectover', (_pointer, _gameObj) => {
             if (!this.chckGameObjIsFocusOnGUI(_gameObj)) {
@@ -169,7 +138,7 @@ export class GUIClass {
             } else {}
         });
     }
-    createListInteractiveFocusEvent(_scene, _debugBox, _folder) {
+    createListFocusEvent(_scene, _debugBox, _folder) {
         // when want to focus logic
         let tmpKey = _scene.input.keyboard.createCursorKeys(); // cursor key 
         _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {

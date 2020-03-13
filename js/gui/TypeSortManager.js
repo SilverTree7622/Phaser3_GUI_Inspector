@@ -11,6 +11,82 @@ export default class TypeSortManager {
     }
 
     // EXTERNAL
+    // get scene then set list to form gui set up
+    createListInteractive(_objList, _folder, _DebugConsoleLogOut) {
+        let tmpLength = _objList.length;
+        for (var i=0; i<tmpLength; i++) {
+            this.createListInteractiveTryException(_objList, i, _objList[i], _folder, _DebugConsoleLogOut);
+            this.createListInteractiveSetObj(_objList, i, _objList[i], _folder, _DebugConsoleLogOut);
+        }
+    }
+    createListInteractiveTryException(_objList, _idx, _obj, _folder, _DebugConsoleLogOut) {
+        if (_obj.type !== 'Graphics' &&
+            _obj.type !== 'Container') {
+            this.createListInteractiveTryExceptionNotContainer(_obj); // set interactive function
+        }
+        else if (_obj.type === 'Container') {
+            // container
+            this.createListInteractiveTryExceptionContainer(_objList, _idx, _obj, _folder, _DebugConsoleLogOut);
+        }
+        else {
+            // console.log('graphics confirm!');
+        }
+    }
+    // if the gameobj is container obj
+    createListInteractiveTryExceptionContainer(_objList, _idx, _obj, _folder, _DebugConsoleLogOut) {
+        let tmpList = _obj.list;
+        console.log('tmpList:', tmpList);
+        // add & custom container property
+        this.createListInteractiveSetObj(_objList, _idx, _obj, _folder, _DebugConsoleLogOut);
+        // chck this container list for nested container or just another game objects
+        this.createListInteractiveInContainer(tmpList, _objList, _idx, _obj, _folder, _DebugConsoleLogOut);
+    }
+    // if the gameobj is NOT container obj
+    createListInteractiveTryExceptionNotContainer(_obj) {
+        try { _obj.setInteractive(); }
+        catch(e) {}
+    }
+
+    // custom
+    createListInteractiveInContainer(tmpList, _objList, _folder, _DebugConsoleLogOut) {
+        let tmpLength = _objList.length;
+        for (var i=0; i<tmpLength; i++) {
+            this.createListInteractiveTryException(_objList, i, _objList[i], _folder, _DebugConsoleLogOut);
+            this.createListInteractiveSetObj(_objList, i, _objList[i], _folder, _DebugConsoleLogOut);
+        }
+    }
+    // custom
+    
+    createListInteractiveSetObj(_objList, _idx, _obj, _folder, _DebugConsoleLogOut) {
+        console.log('_idx:', _idx);
+        _obj.isFocusOnGUI = false; // focus check boolean
+        _obj.focusTw = undefined; // save focus performance tween in this property
+        _obj.GUI_BACK = _folder.back2Basic.bind(_folder, _idx);
+        _obj.GUI_CONSOLE = _DebugConsoleLogOut;
+        this.chckParentContainer(_objList, _idx, _obj, _folder);
+    }
+    chckParentContainer(_objList, _idx, _obj, _folder) {
+        // if Parent Container Exist, then implant function
+        let tmpPC = _obj.parentContainer;
+        if (tmpPC) {
+            let tmpGUIIdx = (_objList.length - 1) + _idx; // attach index number to objList total length
+            console.log('tmpGUIIdx:', tmpGUIIdx);
+            _obj.guiIdx = tmpGUIIdx; // typical GUI index
+            _obj.GUI_CONTAINER = _folder.closeThisOpenParentContainer.bind(
+                _folder, [tmpGUIIdx, tmpPC.guiIdx]
+            );
+            this.push2ObjList(_objList, _obj);
+        }
+        // if Parent Container null
+        else {
+            _obj.guiIdx = _idx; // typical GUI index
+        }
+    }
+    push2ObjList(_objList, _obj) {
+        // _objList.push(_obj); // add list to can create each obj folder
+    }
+    
+    // EXTERNAL: sorting
     chckObjType(_custom, _idx, _folderInCustom, _objList) { // check each of objs type
         let tmpGameObj = _objList[_idx];
         let tmpType = tmpGameObj.type;
@@ -64,6 +140,24 @@ export default class TypeSortManager {
     createConsoleLogOut(_idx, _folderInCustom, _gameObj) {
         _folderInCustom.add(_gameObj, 'GUI_CONSOLE');
     }
+    createContainer(_idx, _folderInCustom, _gameObj) {
+        // console.log('CONTAINER type:', _gameObj);
+        this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
+        this.tryCatch(_folderInCustom, _gameObj, 'position');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
+        this.tryCatch(_folderInCustom, _gameObj, 'z');
+        this.tryCatch(_folderInCustom, _gameObj, 'w');
+        
+        let tmpList = _folderInCustom.addFolder('list');
+        tmpList.open();
+        tmpList.add(_gameObj.list, 'length');
+        for (var i=0; i<_gameObj.list.length; i++) {
+            this.tryCatch(tmpList, _gameObj.list, i);
+        }
+
+        this.chckEndSorting(_idx);
+    }
     createListImage(_idx, _folderInCustom, _gameObj) {
         // also check what type of Physics
         // console.log('IMAGE type:', _gameObj);
@@ -96,24 +190,6 @@ export default class TypeSortManager {
         this.tryCatch(_folderInCustom, _gameObj, 'defaultStrokeAlpha');
         this.tryCatch(_folderInCustom, _gameObj, '_lineWidth');
         this.tryCatch(_folderInCustom, _gameObj, 'active');
-
-        this.chckEndSorting(_idx);
-    }
-    createContainer(_idx, _folderInCustom, _gameObj) {
-        // console.log('CONTAINER type:', _gameObj);
-        this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
-        this.tryCatch(_folderInCustom, _gameObj, 'position');
-        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
-        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
-        this.tryCatch(_folderInCustom, _gameObj, 'z');
-        this.tryCatch(_folderInCustom, _gameObj, 'w');
-        
-        let tmpList = _folderInCustom.addFolder('list');
-        tmpList.open();
-        tmpList.add(_gameObj.list, 'length');
-        for (var i=0; i<_gameObj.list.length; i++) {
-            this.tryCatch(tmpList, _gameObj.list, i);
-        }
 
         this.chckEndSorting(_idx);
     }

@@ -155,7 +155,14 @@ export default class FolderManager {
         this.closeFolder(this.custom.folder);
         this.openFolder(this.basic.folder);
     }
-    // get function
+    closeThisOpenParentContainer(_tmpGUIIdx, _tmpPC_guiIdx) {
+        console.log('_idx, _tmpPC_guiIdx:', _idx, _tmpPC_guiIdx);
+        // ++ close the focus on game object folder
+        // ++ clear the focus off
+        // ++ open this object parentContainer(via .guiIdx) folder
+    }
+
+    // EXTERNAL: get function
     getBasicFolder() {
         return this.basic.folder;
     }
