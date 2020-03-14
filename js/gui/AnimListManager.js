@@ -14,7 +14,6 @@ export default class AnimListManager {
     initList(_animList) {
         if (_animList) {
             let tmpList = [];
-            console.log('_animList:', _animList);
             for (var tmpProperty in _animList.entries) {
                 tmpList.push(tmpProperty);
             }
@@ -36,8 +35,6 @@ export default class AnimListManager {
         return this.list;
     }
     getKeyList() {
-        console.log('this scope in getKeyList:', this);
-        console.log('this.keyList:', this.keyList);
         return this.keyList;
     }
 }

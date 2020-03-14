@@ -51,7 +51,7 @@ export class GUIClass {
         this.objList = undefined; // all game object list
         this.cursorKey = undefined;
         this.conAlert = '_PGI System_ :';
-        this.URLPath = this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
+        this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
         // this.statusManager = this.initChckStatusManager(this.status);
         this.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
         this.folder = new FolderManager(this.libs.getGUILib(), this.typeSort);
@@ -61,7 +61,7 @@ export class GUIClass {
     create(_scene) {
         this.createCursorKey(_scene, this.cursorKey);
         this.createETCClass(_scene);
-        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, DebugSceneNAllDisplayList);
+        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, DebugConsole, DebugSceneNAllDisplayList);
         this.createFocusFolder(_scene, this.cursorKey, this.debugBox, this.folder, this.typeSort);
         this.createConsoleCmd(_scene, this.cursorKey, this.debugBox, DebugGetThisConsole);
         this.folder.chckOpenAllList();
@@ -80,7 +80,7 @@ export class GUIClass {
 
 
     initConsole(_cssObj, _debugConsole) {
-        let tmpName = 'PGInspector.js';
+        let tmpName = ' PGInspector.js';
         let tmpVersion = '1.1.0';
         let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
         _debugConsole({
@@ -216,11 +216,17 @@ export class GUIClass {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _DebugSceneNAllDisplayList) { // create basic pointer
-        let tmpAllConsole = {
-            GUI_SCENE_LIST: _DebugSceneNAllDisplayList.bind(_scene)
-        };
+    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _DebugConsole, _DebugSceneNAllDisplayList) { // create basic pointer
+        let tmpAllConsole = {};
+        tmpAllConsole.GUI_SCENE_LIST = _DebugSceneNAllDisplayList.bind(_scene),
+        tmpAllConsole.GUI_CLEAR = () => {
+            console.clear();
+            this.initConsole(this.libs.getGUIcssObj(), _DebugConsole);
+        }
         let tmpPointer = undefined;
+        let tmpXY = {};
+        tmpXY.x = _scene.game.config.width;
+        tmpXY.y = _scene.game.config.height;
         let tmpObj = undefined;
         let tmpFocus = undefined;
         let tmpObjProperties = {
@@ -250,10 +256,11 @@ export class GUIClass {
 
         // setting folder hierarchy list
         _basic.add(tmpAllConsole, 'GUI_SCENE_LIST');
+        _basic.add(tmpAllConsole, 'GUI_CLEAR');
         _lib.addFolderInBasic(_basic);
         tmpPointer = _basic.addFolder('Pointer');
-        tmpPointer.add(_scene.input, 'x').listen();
-        tmpPointer.add(_scene.input, 'y').listen();
+        tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
+        tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
         tmpObj = _basic.addFolder('Obj');
         tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
         tmpObj.add(tmpObjProperties, 'name').listen();

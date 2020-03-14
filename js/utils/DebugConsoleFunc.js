@@ -12,13 +12,13 @@ export function DebugConsole(_obj) {
     let tmp_url = '%c' + tmpURL;
     let tmpShadowGap = 1;
     let tmpShadowList = [
-        tmpShadowGap + 'px ' + tmpShadowGap + 'px 0 rgb(217,31,38)',
-        tmpShadowGap * 2 + 'px ' + tmpShadowGap * 2 + 'px 0 rgb(226,91,14)',
-        tmpShadowGap * 3 + 'px ' + tmpShadowGap * 3 + 'px 0 rgb(245,221,8)',
-        tmpShadowGap * 4 + 'px ' + tmpShadowGap * 4 + 'px 0 rgb(5,148,68)',
-        tmpShadowGap * 5 + 'px ' + tmpShadowGap * 5 + 'px 0 rgb(2,135,206)',
-        tmpShadowGap * 6 + 'px ' + tmpShadowGap * 6 + 'px 0 rgb(4,77,145)',
-        tmpShadowGap * 7 + 'px ' + tmpShadowGap * 7 + 'px 0 rgb(42,21,113)'
+        tmpShadowGap + 'px ' + -tmpShadowGap + 'px 0 rgb(217,31,38)',
+        tmpShadowGap * 2 + 'px ' + -tmpShadowGap * 2 + 'px 0 rgb(226,91,14)',
+        tmpShadowGap * 3 + 'px ' + -tmpShadowGap * 3 + 'px 0 rgb(245,221,8)',
+        tmpShadowGap * 4 + 'px ' + -tmpShadowGap * 4 + 'px 0 rgb(5,148,68)',
+        tmpShadowGap * 5 + 'px ' + -tmpShadowGap * 5 + 'px 0 rgb(2,135,206)',
+        tmpShadowGap * 6 + 'px ' + -tmpShadowGap * 6 + 'px 0 rgb(4,77,145)',
+        tmpShadowGap * 7 + 'px ' + -tmpShadowGap * 7 + 'px 0 rgb(42,21,113)'
     ];
     let tmpShadow = 'text-shadow:';
     for (var i=0; i<tmpShadowList.length; i++) {

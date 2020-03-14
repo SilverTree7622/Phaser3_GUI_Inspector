@@ -180,7 +180,6 @@ export default class TypeSortManager {
 
 
     createContainer(_idx, _folderInCustom, _gameObj) {
-        // console.log('CONTAINER type:', _gameObj);
         this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
         this.tryCatch(_folderInCustom, _gameObj, 'position');
         this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
@@ -199,23 +198,21 @@ export default class TypeSortManager {
     }
     createListImage(_idx, _folderInCustom, _gameObj) {
         // also check what type of Physics
-        // console.log('IMAGE type:', _gameObj);
+        this.createFrame(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
     createListSprite(_idx, _folderInCustom, _gameObj) {
-        // console.log('SPRITE type:', _gameObj);
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
+        this.createFrame(_idx, _folderInCustom, _gameObj);
         this.createAnims(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
     createListText(_idx, _folderInCustom, _gameObj) {
-        // console.log('TEXT type:', _gameObj);
         _folderInCustom.add(_gameObj, 'text').listen();
         this.chckEndSorting(_idx);
     }
     createGraphics(_idx, _folderInCustom, _gameObj) {
-        // console.log('GRAPHICS type:', _gameObj);
         this.tryCatch(_folderInCustom, _gameObj, 'alpha');
         this.tryCatch(_folderInCustom, _gameObj, 'scale');
         this.tryCatch(_folderInCustom, _gameObj, 'angle');
@@ -232,7 +229,6 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createTileSprite(_idx, _folderInCustom, _gameObj) {
-        // console.log('TileSprite type:', _gameObj);
         this.tryCatch(_folderInCustom, _gameObj, 'tilePositionX');
         this.tryCatch(_folderInCustom, _gameObj, 'tilePositionY');
         this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX');
@@ -247,15 +243,12 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createParticleEmitterManager(_idx, _folderInCustom, _gameObj) {
-        // console.log('ParticleEmitter type:', _gameObj);
         this.chckEndSorting(_idx);
     }
     createTilemapLayer(_idx, _folderInCustom, _gameObj) {
-        // console.log('TilemapLayer type:', _gameObj);
         this.chckEndSorting(_idx);
     }
     createSpine(_idx, _folderInCustom, _gameObj) {
-        // console.log('Spine type:', _gameObj);
         this.chckEndSorting(_idx);
     }
     createMatterBody(_folderInCustom, _gameObj) {
@@ -288,19 +281,39 @@ export default class TypeSortManager {
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
     }
-
+    createFrame(_idx, _folderInCustom, _gameObj) {
+        let tmpFrame = {};
+        tmpFrame.frameList = [];
+        tmpFrame.setFrame = () => {
+            let tmpKey = tmpFrameList.getValue();
+            _gameObj.setFrame(tmpKey);
+        }
+        for (var tmpProperty in _gameObj.texture.frames) {
+            tmpFrame.frameList.push(tmpProperty);
+        }
+        let tmpFrameList = _folderInCustom.add(tmpFrame, 'frameList', tmpFrame.frameList).setValue(tmpFrame.frameList[0]);
+        _folderInCustom.add(tmpFrame, 'setFrame');
+    }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
+        let tmpAnimList = undefined;
         let tmpAnimPlay = {};
-        // tmpAnimPlay.play = this.animListManager.playFunc.bind(this.animListManager, []);
-        // function CONSOLEOUT() {
-        //     return console.log('play function press');
-        // }
-        // tmpAnimPlay.play = CONSOLEOUT();
+        tmpAnimPlay.playList = this.animListManager.getList();
+        tmpAnimPlay.play = () => {
+            let tmpKey = tmpAnimList.getValue();
+            let tmpW = _gameObj.width;
+            let tmpH = _gameObj.height;
+            let tmpSX = _gameObj.scaleX;
+            let tmpSY = _gameObj.scaleY;
+            _gameObj.anims.play(tmpKey);
+            _gameObj.setDisplaySize(
+                tmpW * tmpSX, tmpH * tmpSY
+            );
+        } 
         let tmpAnims = _folderInCustom.addFolder('anims');
         tmpAnims.open();
         // play animation
-        // ++ add play list for array
-        tmpAnims.add(_gameObj.anims, 'play', this.animListManager.getList());
+        tmpAnimList = tmpAnims.add(tmpAnimPlay, 'playList', tmpAnimPlay.playList).setValue(tmpAnimPlay.playList[0]);
+        tmpAnims.add(tmpAnimPlay, 'play');
         this.tryCatch(tmpAnims, _gameObj.anims, 'stop');
         this.tryCatch(tmpAnims, _gameObj.anims, 'pause');
         this.tryCatch(tmpAnims, _gameObj.anims, 'resume');

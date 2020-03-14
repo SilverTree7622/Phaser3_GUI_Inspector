@@ -1,8 +1,11 @@
 var config = {
     type: Phaser.WEBGL,
-    width: 800,
-    height: 600,
-    parent: 'phaser-example',
+    scale: {
+        mode: Phaser.Scale.FIT,
+        parent: 'phaser-example',
+        width: 800,
+        height: 600
+    },
     physics: {
         default: 'matter',
         arcade: {
@@ -42,6 +45,7 @@ var game = new Phaser.Game(config);
 
 function preload() {
     this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+    this.load.atlas('cube', './src/cube.png', './src/cube.json');
     this.load.image(tmpImg.key, tmpImg.url.png);
 }
 
@@ -68,6 +72,8 @@ function create() {
 
     // sprite game object
     tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
+    let tmpImg2 = this.add.image(100, 400, tmpSpr.key, 'lazer_00');
+    tmpImg2.setScale(0.2);
     // tmpSpr.self.name = 'var_tmpSpr';
     this.anims.create(
         {
@@ -99,6 +105,15 @@ function create() {
             repeat: -1 
         }
     );
+
+    this.anims.create({
+        key: 'spin',
+        frames: this.anims.generateFrameNames('cube', { prefix: 'frame', start: 0, end: 23 }),
+        frameRate: 50,
+        repeat: -1
+    });
+
+
     tmpSpr.self.anims.play(tmpSpr.animKey);
     tmpSpr.self.setDisplaySize(80, 80);
 
