@@ -12,33 +12,33 @@ export default class TypeSortManager {
 
     // EXTERNAL
     // get scene then set list to form gui set up
-    createFocusFolder(_objList, _folder, _DebugConsoleLogOut) {
+    createFocusFolder(_objList, _folder, _debugBox, _DebugGetThisConsole) {
         let tmpLength = _objList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(_objList, _objList[i], _folder, _DebugConsoleLogOut);
-            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _DebugConsoleLogOut);
+            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _DebugGetThisConsole);
+            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _DebugGetThisConsole);
         }
     }
-    createFocusFolderTryException(_objList, _obj, _folder, _DebugConsoleLogOut) {
+    createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
         if (_obj.type !== 'Graphics' &&
             _obj.type !== 'Container') {
             this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
         }
         else if (_obj.type === 'Container') {
             // container
-            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _DebugConsoleLogOut);
+            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole);
         }
         else {
             // console.log('graphics confirm!');
         }
     }
     // if the gameobj is container obj
-    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _DebugConsoleLogOut) {
+    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
         let tmpList = _obj.list;
         let tmpLength = tmpList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(tmpList, tmpList[i], _folder, _DebugConsoleLogOut);
-            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _DebugConsoleLogOut);
+            this.createFocusFolderTryException(tmpList, tmpList[i], _folder, _DebugGetThisConsole);
+            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _DebugGetThisConsole);
         }
     }
     // if the gameobj is NOT container obj
@@ -47,22 +47,22 @@ export default class TypeSortManager {
         catch(e) {}
     }
 
-    createFocusFolderSetObj(_objList, _obj, _folder, _DebugConsoleLogOut) {
+    createFocusFolderSetObj(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
         let tmpGUIIdx = _folder.getGUIIdx();
         _obj.guiIdx = tmpGUIIdx;
         _obj.isFocusOnGUI = false; // focus check boolean
         _obj.focusTw = undefined; // save focus performance tween in this property
         _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
-        _obj.GUI_CONSOLE = _DebugConsoleLogOut;
-        this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx);
+        _obj.GUI_CONSOLE = _DebugGetThisConsole;
+        this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
         this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
     }
-    chckParentContainer(_obj, _folder, _objList, _tmpGUIIdx) {
+    chckParentContainer(_obj, _folder, _objList, _tmpGUIIdx, _debugBox) {
         // if Parent Container Exist, then implant function
         let tmpPC = _obj.parentContainer;
         if (tmpPC) { // if this object parentContainer is exist
             _obj.GUI_CONTAINER = _folder.closeThisOpenParentContainer.bind(
-                _folder, [_tmpGUIIdx, tmpPC]
+                _obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]
             );
         } else {}
     }
@@ -130,6 +130,54 @@ export default class TypeSortManager {
             _folderInCustom.add(_gameObj, 'GUI_CONTAINER');
         } else {}
     }
+    createCommonFront(_folderInCustom, _gameObj) {
+        // set properties (GUIIdx, name, type)
+        this.tryCatch(_folderInCustom, _gameObj, 'GUIIdx');
+        this.tryCatch(_folderInCustom, _gameObj, 'name');
+        this.tryCatch(_folderInCustom, _gameObj, 'type');
+    }
+    // check body is arcade or matter
+    chckPhysicsType(_folderInCustom, _gameObj) {
+        let tmpType = (_gameObj.body) ? true : false;
+        if (tmpType === true) { // if body exist
+            let tmpStr = _gameObj.type; // check type
+            let tmpBodyType = typeof _gameObj.body.type; // check body type
+            let tmpObj = undefined;
+            switch (tmpBodyType) {
+                case 'string': // matter
+                    tmpObj = {type: 'Matter ' + tmpStr};
+                    _folderInCustom.add(tmpObj, 'type');
+                    this.createMatterBody(_folderInCustom, _gameObj);
+                break;
+                case 'number': // impact
+                    tmpObj = {type: 'Impact ' + tmpStr};
+                    _folderInCustom.add(tmpObj, 'type');
+                break;
+                default: // arcade
+                    tmpObj = {type: 'Arcade ' + tmpStr};
+                    _folderInCustom.add(tmpObj, 'type');
+                    this.createArcadeBody(_folderInCustom, _gameObj);
+                break;
+            }
+        }
+    }
+    createCommonBack(_folderInCustom, _gameObj) {
+        this.tryCatch(_folderInCustom, _gameObj, 'x');
+        this.tryCatch(_folderInCustom, _gameObj, 'y');
+        this.tryCatch(_folderInCustom, _gameObj, 'width');
+        this.tryCatch(_folderInCustom, _gameObj, 'height');
+        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'depth');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'visible');
+        this.tryCatch(_folderInCustom, _gameObj, 'originX');
+        this.tryCatch(_folderInCustom, _gameObj, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj, 'active');
+    }
+
+
+
     createContainer(_idx, _folderInCustom, _gameObj) {
         // console.log('CONTAINER type:', _gameObj);
         this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
@@ -206,31 +254,6 @@ export default class TypeSortManager {
         // console.log('TilemapLayer type:', _gameObj);
         this.chckEndSorting(_idx);
     }
-    // check body is arcade or matter
-    chckPhysicsType(_folderInCustom, _gameObj) {
-        let tmpType = (_gameObj.body) ? true : false;
-        if (tmpType === true) { // if body exist
-            let tmpStr = _gameObj.type; // check type
-            let tmpBodyType = typeof _gameObj.body.type; // check body type
-            let tmpObj = undefined;
-            switch (tmpBodyType) {
-                case 'string': // matter
-                    tmpObj = {type: 'Matter ' + tmpStr};
-                    _folderInCustom.add(tmpObj, 'type');
-                    this.createMatterBody(_folderInCustom, _gameObj);
-                break;
-                case 'number': // impact
-                    tmpObj = {type: 'Impact ' + tmpStr};
-                    _folderInCustom.add(tmpObj, 'type');
-                break;
-                default: // arcade
-                    tmpObj = {type: 'Arcade ' + tmpStr};
-                    _folderInCustom.add(tmpObj, 'type');
-                    this.createArcadeBody(_folderInCustom, _gameObj);
-                break;
-            }
-        }
-    }
     createMatterBody(_folderInCustom, _gameObj) {
         this.tryCatch(tmpBody, _gameObj.body, 'id');
         this.tryCatch(tmpBody, _gameObj.body, 'type');
@@ -292,27 +315,7 @@ export default class TypeSortManager {
             
     //     }
     // }
-    createCommonFront(_folderInCustom, _gameObj) {
-        // set properties (GUIIdx, name, type)
-        this.tryCatch(_folderInCustom, _gameObj, 'GUIIdx');
-        this.tryCatch(_folderInCustom, _gameObj, 'name');
-        this.tryCatch(_folderInCustom, _gameObj, 'type');
-    }
-    // findVarNameLogic
-    createCommonBack(_folderInCustom, _gameObj) {
-        this.tryCatch(_folderInCustom, _gameObj, 'x');
-        this.tryCatch(_folderInCustom, _gameObj, 'y');
-        this.tryCatch(_folderInCustom, _gameObj, 'width');
-        this.tryCatch(_folderInCustom, _gameObj, 'height');
-        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
-        this.tryCatch(_folderInCustom, _gameObj, 'depth');
-        this.tryCatch(_folderInCustom, _gameObj, 'angle');
-        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
-        this.tryCatch(_folderInCustom, _gameObj, 'visible');
-        this.tryCatch(_folderInCustom, _gameObj, 'originX');
-        this.tryCatch(_folderInCustom, _gameObj, 'originY');
-        this.tryCatch(_folderInCustom, _gameObj, 'active');
-    }
+
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
         let tmpAnims = _folderInCustom.addFolder('anims');
         tmpAnims.open();
@@ -391,6 +394,7 @@ export default class TypeSortManager {
                 tmpReturn = _gameObj.displayTexture.key;
                 break;
             case 'Container':
+                break;
             case 'Emitter':
             case 'Arc':
                 console.log('Arc:', _gameObj);

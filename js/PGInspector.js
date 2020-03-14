@@ -4,14 +4,14 @@ window.PhaserGUIAction = PhaserGUIAction; // lib act function
 window.PhaserGUI = undefined; // GUI self class
 
 // Main Phaser3 GUI function **
-function PhaserGUIAction(_configObj) {
+function PhaserGUIAction(_scene, _configObj) {
     let tmpGUIInstance; // GUI instance
 
     // check GUI object is already exist
     ChckGUIObj();
 
     // chck (scene, css Opacity object / phaser scenes)
-    let tmpConfigObj = ChckConfigObj(_configObj);
+    let tmpConfigObj = ChckConfigObj(_scene, _configObj);
 
     // pure declare for callback or plan
     let tmpGUIClass;
@@ -36,7 +36,7 @@ function ChckGUIObj() {
         window.PhaserGUI = undefined;
     } else {}
 }
-function ChckConfigObj(_configObj) {
+function ChckConfigObj(_scene, _configObj) {
     // init config structure
     let tmpReturn = {
         css: {
@@ -48,17 +48,14 @@ function ChckConfigObj(_configObj) {
         scene: undefined
     };
     // check is init config
-    if (!_configObj.sys) {
+    TryCatchObj(tmpReturn, 'scene', _scene);
+    if (typeof _configObj === 'object') {
         TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
         TryCatchObj(tmpReturn.css, 'right', _configObj.right);
         TryCatchObj(tmpReturn.css, 'top', _configObj.top);
         // ++ TryCatchObj(tmpReturn, 'ignoreList', _configObj.ignoreList);
         TryCatchObj(tmpReturn, 'status', _configObj.status);
-        TryCatchObj(tmpReturn, 'scene', _configObj.scene);
-    }
-    else { // only phaser scene
-        TryCatchObj(tmpReturn, 'scene', _configObj);
-    }
+    } else {}
     return tmpReturn;
 }
 function TryCatchObj(_obj, _objPropertyName, _obj2) {

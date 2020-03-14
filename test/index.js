@@ -115,14 +115,17 @@ function create() {
     var tmpTileSprite = this.add.tileSprite(200, 300, 100, 100, tmpImg.key);
 
     var tmpCon = this.add.container();
+    tmpCon.name = 'tmpCon';
+    var tmpCon2 = this.add.container();
+    tmpCon2.name = 'tmpCon2';
+
     tmpCon.add([tmpTxt, tmpTileSprite]);
+    // tmpCon2.add([tmpCon]);
 
     // PGInspector.js usage
-    console.log('Phaser.Scene scope this:', this);
-    PhaserGUIAction({
-        scene: this,
-        top: 10
-    });
+    PhaserGUIAction(
+        this, { top: 10 }
+    );
 }
 
 function update() {

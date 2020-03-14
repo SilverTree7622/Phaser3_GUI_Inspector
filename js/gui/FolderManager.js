@@ -17,13 +17,7 @@ export default class FolderManager {
         tmpC.initFolderCnt = 0;
         tmpC.openBasicDefault = true;
         tmpC.openCustomDefault = false;
-        return tmpC;
-    }
-    initBasic() { // basic folder
-        let tmpB = {};
-        tmpB.folder = undefined;
-        tmpB.list = [];
-        tmpB.tmpStorage = {
+        tmpC.tmpStorage = {
             Obj: {
                 over: {
                     guiIdx: 0,
@@ -37,6 +31,12 @@ export default class FolderManager {
                 }
             }
         };
+        return tmpC;
+    }
+    initBasic() { // basic folder
+        let tmpB = {};
+        tmpB.folder = undefined;
+        tmpB.list = [];
         return tmpB;
     }
     initCustom() { // custom folder
@@ -71,7 +71,6 @@ export default class FolderManager {
         return this.config.initFolderCnt;
     }
     add2CustomFolder() {
-        console.log('this.config.initFolderCnt:', this.config.initFolderCnt);
         let tmpFolder = this.custom.folder.addFolder(this.config.initFolderCnt);
         this.config.initFolderCnt++;
         return tmpFolder;
@@ -146,7 +145,7 @@ export default class FolderManager {
     }
     cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
         if (_gameObj) {
-            let tmpObjFolder = this.custom.folder.__folders;
+            let tmpObjFolder = this.getCustomFoldersInFolder();
             this.closeFolder(this.basic.folder);
             this.openFolder(this.custom.folder);
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
@@ -156,28 +155,36 @@ export default class FolderManager {
         }
     }
     back2Basic(_idx) {
-        let tmpObjFolder = this.custom.folder.__folders;
+        let tmpObjFolder = this.getCustomFoldersInFolder();
         this.closeFolder(tmpObjFolder[_idx]);
         this.closeFolder(this.custom.folder);
         this.openFolder(this.basic.folder);
     }
     closeThisOpenParentContainer(_arr) {
+        // scope: gameObj
         let tmpLength = _arr[0];
         let tmpParentContainer = _arr[1];
-        // let tmpDebugBox = _arr[2];
+        let tmpFolder = _arr[2];
+        let tmpDebugBox = _arr[3];
         let tmpPCIdx = tmpParentContainer.guiIdx;
-        let tmpObjFolder = this.custom.folder.__folders;
-        // + close the focus on game object folder
-        this.closeFolder(tmpObjFolder[tmpLength]);
-
-        // // + clear the focus off
-        // tmpDebugBox.clearFocusGameObj();
-
-        // + open this object parentContainer(via .guiIdx) folder
-        this.openFolder(tmpObjFolder[tmpPCIdx]);
+        let tmpObjFolder = tmpFolder.getCustomFoldersInFolder();
+        
+        tmpFolder.closeFolder(tmpObjFolder[tmpLength]);
+        tmpFolder.setBasicFocusFolder(tmpParentContainer);
+        tmpFolder.openFolder(tmpObjFolder[tmpPCIdx]);
+        
+        tmpDebugBox.clearFocus(this);
+        tmpDebugBox.setClearNFocus(tmpParentContainer);
+        tmpDebugBox.setFocusPerformance(tmpParentContainer, tmpFolder);
     }
 
     // EXTERNAL: get function
+    getBasic() {
+        return this.basic;
+    }
+    getCustom() {
+        return this.custom;
+    }
     getBasicFolder() {
         return this.basic.folder;
     }
@@ -189,5 +196,14 @@ export default class FolderManager {
     }
     getCustomList() {
         return this.custom.list;
+    }
+    getCustomFoldersInFolder() {
+        return this.custom.folder.__folders;
+    }
+    getTmpStorageOver() {
+        return this.config.tmpStorage.Obj.over;
+    }
+    getTmpStorageFocus() {
+        return this.config.tmpStorage.Obj.focus;
     }
 }

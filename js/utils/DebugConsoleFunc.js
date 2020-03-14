@@ -40,9 +40,19 @@ export function DebugConsole(_obj) {
 }
 
 // debug console log out the specific game object
-export function DebugConsoleLogOut() {
+export function DebugGetThisConsole() {
     let tmpInit = '%c_PGI LogOut_';
     let tmpInfo = ': GUIIdx[' + this.guiIdx + ']';
     let tmpStyle = 'color: white; background: rgb(255, 111, 0);';
     return console.log(tmpInit, tmpStyle, tmpInfo, this);
+}
+
+// show Phaser.Scene & Phaser's all the displayList
+export function DebugSceneNAllDisplayList() {
+    // scope: Phaser.Scene
+    let tmpDisplayList = this.children.list;
+    let tmpInit = '%c_PGI Expose_';
+    let tmpInfo = ': |Scene| & |DisplayList|\n';
+    let tmpStyle = 'color: white; background: rgb(250, 0, 0);';
+    return console.log(tmpInit, tmpStyle, tmpInfo, this, '\n', tmpDisplayList);
 }
