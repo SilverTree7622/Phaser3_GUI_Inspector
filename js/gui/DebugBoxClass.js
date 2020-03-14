@@ -177,10 +177,10 @@ export default class DebugBoxClass {
     clearFocus(_gameObj) {
         let tmpObj = undefined;
         (_gameObj) ? (tmpObj = _gameObj) : (tmpObj = this.getFocusGameObj());
-        // (tmpObj.focusTw) ? this.tryCatchFlow(tmpObj.focusTw.remove) : null;
-        tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
-        // tmpObj.clearTint();
-        tmpObj.isFocusOnGUI = false;
+        if (tmpObj) {
+            tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
+            tmpObj.isFocusOnGUI = false;
+        } else {}
     }
     setPointerOver(_gameObj) {
         _gameObj.setAlpha(0.7);

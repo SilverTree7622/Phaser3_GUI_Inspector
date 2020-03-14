@@ -151,7 +151,7 @@ export default class FolderManager {
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
         }
         else {
-            console.warn('_inspector SYSTEM_: NONE Focus');
+            // console.warn('_inspector SYSTEM_: NONE Focus');
         }
     }
     back2Basic(_idx) {

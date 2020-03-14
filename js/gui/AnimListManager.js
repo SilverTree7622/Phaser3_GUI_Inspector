@@ -2,33 +2,42 @@
 // get and set Phaser.Scene.Anims list
 export default class AnimListManager {
     constructor(_scene) {
-        this.animList = undefined;
-        this.isExist = this.initNChckAnimExist(_scene); // boolean
-        this.list = this.initList(this.isExist); // object list
-        this.keyList = this.initKeyList(); // pure list for dat.GUI
+        this.animList = this.initAnimList(_scene); // boolean
+        this.list = this.initList(this.animList); // object list
+        this.keyList = this.initKeyList(this.list); // pure list for dat.GUI
     }
-    initNChckAnimExist(_scene) {
-        this.animList = _scene.anims.anims;
-        return (this.animList.size >= 1) ? true : false;
+    initAnimList(_scene) {
+        let tmpAL = undefined;
+        tmpAL= _scene.anims.anims;
+        return tmpAL;
     }
-    initList(_bool) {
-        if (_bool) {
-            let tmpLength = this.animList.size;
-            for (var i=0; i<tmpLength; i++) {
-                
+    initList(_animList) {
+        if (_animList) {
+            let tmpList = [];
+            console.log('_animList:', _animList);
+            for (var tmpProperty in _animList.entries) {
+                tmpList.push(tmpProperty);
             }
-        }
+            return tmpList;
+        } else {}
     }
-    initKeyList() {
-        let tmpKL;
-        try {
-            tmpKL = this.animList.keys();
-        } catch(e) {}
-        return tmpKL;
+    initKeyList(_list) {
+        if (_list) {
+            let tmpKL = [];
+            for (var i=0; i<_list.length; i++) {
+                tmpKL.push(_list[0].key);
+            }
+            return tmpKL;
+        } else {}
     }
 
-    // give key list object
-    getKeyListObj() {
-        return (this.keyList) ? this.keyList : undefined;
+    // EXTERNAL: give key list object
+    getList() {
+        return this.list;
+    }
+    getKeyList() {
+        console.log('this scope in getKeyList:', this);
+        console.log('this.keyList:', this.keyList);
+        return this.keyList;
     }
 }

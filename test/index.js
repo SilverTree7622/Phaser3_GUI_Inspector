@@ -25,8 +25,8 @@ var tmpSpr = {
     self: undefined,
     key: 'LazerSpr',
     url: {
-        png: 'https://labs.phaser.io/assets/animations/lazer/lazer.png',
-        json: 'https://labs.phaser.io/assets/animations/lazer/lazer.json'
+        png: './src/lazer.png',
+        json: './src/lazer.json'
     },
     animSelf: undefined,
     animKey: 'AnimLazer'
@@ -41,7 +41,7 @@ var tmpImg = {
 var game = new Phaser.Game(config);
 
 function preload() {
-    // this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+    this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
     this.load.image(tmpImg.key, tmpImg.url.png);
 }
 
@@ -52,10 +52,10 @@ function create() {
     
     /OBJECT LIST                    /DONE RATE
     TEXT(normal, arcade, matter)    2
-    IMAGE(")                        X
-    SPRITE(")                       X
-    TILESPRITE(")                   X
-    CONTAINER                       ?
+    IMAGE(")                        O
+    SPRITE(")                       O
+    TILESPRITE(")                   O
+    CONTAINER                       O
     SPINE                           X
 
     */
@@ -66,21 +66,41 @@ function create() {
     //     this.scene.restart();
     // });
 
-    // // sprite game object
-    // tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
-    // // tmpSpr.self.name = 'var_tmpSpr';
-    // this.anims.create(
-    //     {
-    //         key: tmpSpr.animKey,
-    //         frames: this.anims.generateFrameNames(
-    //             tmpSpr.key, 
-    //             { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
-    //         ),
-    //         repeat: -1 
-    //     }
-    // );
-    // // tmpSpr.self.anims.play(tmpSpr.animKey);
-    // tmpSpr.self.setDisplaySize(80, 80);
+    // sprite game object
+    tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
+    // tmpSpr.self.name = 'var_tmpSpr';
+    this.anims.create(
+        {
+            key: tmpSpr.animKey,
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    this.anims.create(
+        {
+            key: '1',
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    this.anims.create(
+        {
+            key: '2',
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    tmpSpr.self.anims.play(tmpSpr.animKey);
+    tmpSpr.self.setDisplaySize(80, 80);
 
     // text game object
     var config1 = {
@@ -116,12 +136,8 @@ function create() {
 
     var tmpCon = this.add.container();
     tmpCon.name = 'tmpCon';
-    var tmpCon2 = this.add.container();
-    tmpCon2.name = 'tmpCon2';
 
     tmpCon.add([tmpTxt, tmpTileSprite]);
-    // tmpCon2.add([tmpCon]);
-
     // PGInspector.js usage
     PhaserGUIAction(
         this, { top: 10 }

@@ -7,7 +7,7 @@ export default class TypeSortManager {
         this.conAlert = '_PGI System_ :';
         this.timeKey = '_PGI CntEnd_ ';
         this.objLength = 0;
-        this.animList = new AnimListManager(_scene);
+        this.animListManager = new AnimListManager(_scene);
     }
 
     // EXTERNAL
@@ -91,6 +91,7 @@ export default class TypeSortManager {
             // ++ TileMap Stuff
             case 'StaticTilemapLayer': this.createTilemapLayer(_idx, _folderInCustom, tmpGameObj); break;
             // ++ Done
+            case 'Spine': this.createSpine(_idx, _folderInCustom, tmpGameObj); break;
             case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
             case 'Arc': // WTF is Arc????
                 this.chckEndSorting(_idx);
@@ -203,7 +204,6 @@ export default class TypeSortManager {
     }
     createListSprite(_idx, _folderInCustom, _gameObj) {
         // console.log('SPRITE type:', _gameObj);
-        _folderInCustom.add(_gameObj, 'name');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
         this.createAnims(_idx, _folderInCustom, _gameObj);
@@ -246,12 +246,16 @@ export default class TypeSortManager {
         // }
         this.chckEndSorting(_idx);
     }
-    createParticleEmitterManager() {
+    createParticleEmitterManager(_idx, _folderInCustom, _gameObj) {
         // console.log('ParticleEmitter type:', _gameObj);
         this.chckEndSorting(_idx);
     }
-    createTilemapLayer() {
+    createTilemapLayer(_idx, _folderInCustom, _gameObj) {
         // console.log('TilemapLayer type:', _gameObj);
+        this.chckEndSorting(_idx);
+    }
+    createSpine(_idx, _folderInCustom, _gameObj) {
+        // console.log('Spine type:', _gameObj);
         this.chckEndSorting(_idx);
     }
     createMatterBody(_folderInCustom, _gameObj) {
@@ -284,44 +288,19 @@ export default class TypeSortManager {
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
     }
-    // chckPhysicsBody(_folderInCustom, _gameObj) {
-    //     let tmpType = (_gameObj.body) ? true : false;
-    //     if (tmpType) { // arcade image
-    //         let tmpOffset = undefined;
-    //         let tmpBody = _folderInCustom.addFolder('body');
-    //         tmpBody.open();
-    //         this.tryCatch(tmpBody, _gameObj.body, 'x');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'y');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'width');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'height');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'angle');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'allowRotation');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'rotation');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'debugShowBody');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'debugShowVelocity');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'debugBodyColor');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'onWorldBounds');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'allowDrag');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'allowGravity');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'onCollide');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'onOverlap');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'enable');
-    //         this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
-            
-    //         tmpOffset = tmpBody.addFolder('offset');
-    //         tmpOffset.open();
-    //         this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
-    //         this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
-            
-    //     }
-    // }
 
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
+        let tmpAnimPlay = {};
+        // tmpAnimPlay.play = this.animListManager.playFunc.bind(this.animListManager, []);
+        // function CONSOLEOUT() {
+        //     return console.log('play function press');
+        // }
+        // tmpAnimPlay.play = CONSOLEOUT();
         let tmpAnims = _folderInCustom.addFolder('anims');
         tmpAnims.open();
         // play animation
-        // this.tryCatch(tmpAnims, _gameObj.anims, 'play');
-        tmpAnims.add(_gameObj.anims, 'play', this.animList.getKeyListObj());
+        // ++ add play list for array
+        tmpAnims.add(_gameObj.anims, 'play', this.animListManager.getList());
         this.tryCatch(tmpAnims, _gameObj.anims, 'stop');
         this.tryCatch(tmpAnims, _gameObj.anims, 'pause');
         this.tryCatch(tmpAnims, _gameObj.anims, 'resume');
