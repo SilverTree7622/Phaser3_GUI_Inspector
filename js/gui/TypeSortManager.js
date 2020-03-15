@@ -1,5 +1,5 @@
 
-import AnimListManager from './AnimListManager.js';
+import SrcManager from './SrcManagerClass.js';
 
 // sort obj type, pointer over properties
 export default class TypeSortManager {
@@ -7,7 +7,7 @@ export default class TypeSortManager {
         this.conAlert = '_PGI System_ :';
         this.timeKey = '_PGI CntEnd_ ';
         this.objLength = 0;
-        this.animListManager = new AnimListManager(_scene);
+        this.srcObj = new SrcManager(_scene);
     }
 
     // EXTERNAL
@@ -83,8 +83,8 @@ export default class TypeSortManager {
         this.createCommonBack(_folderInCustom, tmpGameObj);
         switch (tmpType) {
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
-            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj); break;
-            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj); break;
+            case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, this.srcObj); break;
+            case 'Sprite': this.createListSprite(_idx, _folderInCustom, tmpGameObj, this.srcObj); break;
             case 'Text': this.createListText(_idx, _folderInCustom, tmpGameObj); break;
             case 'TileSprite': this.createTileSprite(_idx, _folderInCustom, tmpGameObj); break;
             case 'ParticleEmitterManager': this.createParticleEmitterManager(_idx, _folderInCustom, tmpGameObj); break;
@@ -196,14 +196,16 @@ export default class TypeSortManager {
 
         this.chckEndSorting(_idx);
     }
-    createListImage(_idx, _folderInCustom, _gameObj) {
+    createListImage(_idx, _folderInCustom, _gameObj, _srcObj) {
         // also check what type of Physics
+        this.createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj);
         this.createFrame(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
-    createListSprite(_idx, _folderInCustom, _gameObj) {
+    createListSprite(_idx, _folderInCustom, _gameObj, _srcObj) {
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
+        this.createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj);
         this.createFrame(_idx, _folderInCustom, _gameObj);
         this.createAnims(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
@@ -281,23 +283,63 @@ export default class TypeSortManager {
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
         this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
     }
-    createFrame(_idx, _folderInCustom, _gameObj) {
+    createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj) {
+        let tmpGameObjTexture = _srcObj.getGameObjTextureKey(_gameObj);
+        let tmpTexture = {};
         let tmpFrame = {};
-        tmpFrame.frameList = [];
+        let tmpT = undefined;
+        let tmpF = undefined;
+        tmpTexture.textureList = _srcObj.getTextureKeyList();
+        tmpTexture.setTexture = () => {
+            let tmpKey = tmpT.getValue();
+            let tmpW = _gameObj.width;
+            let tmpH = _gameObj.height;
+            let tmpSX = _gameObj.scaleX;
+            let tmpSY = _gameObj.scaleY;
+            _gameObj.setTexture(tmpKey);
+            _gameObj.setDisplaySize( tmpW * tmpSX, tmpH * tmpSY );
+            // change frame list
+            let tmpList = _srcObj.getGameObjTextureFrames(_gameObj);
+            console.log('tmpF:', tmpF);
+            console.log('tmpF.options:', tmpF.options);
+            console.log('tmpList in setTexture function:', tmpList);
+            // tmpF.options(tmpList);
+            // tmpF.setValue(tmpList);
+            _srcObj.updateDropdown(tmpF, tmpList);
+        }
+        tmpFrame.frameList = _srcObj.getGameObjTextureFrames(_gameObj);
         tmpFrame.setFrame = () => {
-            let tmpKey = tmpFrameList.getValue();
-            _gameObj.setFrame(tmpKey);
+            let tmpName = tmpF.getValue();
+            _gameObj.setFrame(tmpName);
         }
-        for (var tmpProperty in _gameObj.texture.frames) {
-            tmpFrame.frameList.push(tmpProperty);
-        }
-        let tmpFrameList = _folderInCustom.add(tmpFrame, 'frameList', tmpFrame.frameList).setValue(tmpFrame.frameList[0]);
+
+        tmpT = _folderInCustom.add(tmpTexture, 'textureList', tmpTexture.textureList)
+        .setValue(tmpGameObjTexture);
+        _folderInCustom.add(tmpTexture, 'setTexture');
+        tmpF = _folderInCustom.add(tmpFrame, 'frameList', tmpFrame.frameList);
         _folderInCustom.add(tmpFrame, 'setFrame');
+    }
+    createFrame(_idx, _folderInCustom, _gameObj) {
+        // let tmpFrame = {};
+        // tmpFrame.frameList = [];
+        // tmpFrame.setFrame = () => {
+        //     let tmpKey = tmpFrameList.getValue();
+        //     _gameObj.setFrame(tmpKey);
+        // }
+        // for (var tmpProperty in _gameObj.texture.frames) {
+        //     tmpFrame.frameList.push(tmpProperty);
+        // }
+        // let tmpFrameList = _folderInCustom.add(
+        //     tmpFrame, 'frameList', tmpFrame.frameList
+        //     ).setValue(
+        //         tmpFrame.frameList[0]
+        //     );
+        // _folderInCustom.add(tmpFrame, 'setFrame');
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
         let tmpAnimList = undefined;
         let tmpAnimPlay = {};
-        tmpAnimPlay.playList = this.animListManager.getList();
+        tmpAnimPlay.playList = this.srcObj.getAnimKeyList();
         tmpAnimPlay.play = () => {
             let tmpKey = tmpAnimList.getValue();
             let tmpW = _gameObj.width;
@@ -305,9 +347,7 @@ export default class TypeSortManager {
             let tmpSX = _gameObj.scaleX;
             let tmpSY = _gameObj.scaleY;
             _gameObj.anims.play(tmpKey);
-            _gameObj.setDisplaySize(
-                tmpW * tmpSX, tmpH * tmpSY
-            );
+            _gameObj.setDisplaySize( tmpW * tmpSX, tmpH * tmpSY );
         } 
         let tmpAnims = _folderInCustom.addFolder('anims');
         tmpAnims.open();

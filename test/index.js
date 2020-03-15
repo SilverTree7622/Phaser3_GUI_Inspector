@@ -137,6 +137,7 @@ function create() {
             }
         }
     };
+    
     var tmpTxt = this.make.text(config1);
 
     var tmpTw = this.tweens.addCounter({
