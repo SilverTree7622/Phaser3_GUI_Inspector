@@ -42,10 +42,14 @@
 		// or
 		
 		// add some custom config object
-		PhaserGUIAction({
-			scene: this, //
-			alpha: 0.6 // 0.0 ~ 1.0 (anyvalue, you can change it in GUI)
-		});
+		PhaserGUIAction(
+			this,
+			{
+				alpha: 0.6 // 0.0 ~ 1.0 (any value, you can change it in GUI),
+				right: 100 // any value
+				top: 50 // any value
+			}
+		);
 	}
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
