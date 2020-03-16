@@ -14,7 +14,7 @@
 
 **SCREENSHOT)**
 <p align="center">
-  <img src="./zReadmeSrc/capture_v110.png">
+  <img src="./zReadmeSrc/capture_v110.PNG">
 </p>
 
 **EXAMPLE)**\
@@ -90,7 +90,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
 &nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 
-![Capture_img](./zReadmeSrc/capture_gif.gif)
+![Capture_img](./zReadmeSrc/alphaRightTopControl_v110.gif)
 
 > **If you wanna check status or var name somethning,**\
 > **then change Phaser GameObject name property**\
