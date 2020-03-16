@@ -90,7 +90,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;(if it's not already focused, then focus on it\
 &nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 
-![Capture_img](./zReadmeSrc/alphaRightTopControl_v110.gif)
+<p align="center">
+	<img src="./zReadmeSrc/alphaRightTopControl_v110.gif" width="70%">
+</p>
 
 > **If you wanna check status or var name somethning,**\
 > **then change Phaser GameObject name property**\
@@ -113,11 +115,17 @@
 **VERSION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**1.1.0)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- TEXTURE, FRAME, ANIMATION CONTROL
-![frameControl|200x200,50%](./zReadmeSrc/textureFrameControl_v110.gif)
-![Capture_img](./zReadmeSrc/animationControl_v110.gif)
+<p align="center">
+	<img src="./zReadmeSrc/textureFrameControl_v110.gif" width="70%">
+	<img src="./zReadmeSrc/animationControl_v110.gif" width="70%">
+</p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- SHOW FOCUSED GAME OBJECT CONSOLE
-![Capture_img](./zReadmeSrc/focusedGameObjConsoleControl_v110.gif)
+<p align="center">
+	<img src="./zReadmeSrc/focusedGameObjConsoleControl_v110.gif" width="70%">
+</p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- SHOW SCENE, DISPLAYLIST & CONSOLE.CLEAR FUNCTION
-![Capture_img](./zReadmeSrc/sceneConsoleControl_v110.gif)
+<p align="center">
+	<img src="./zReadmeSrc/sceneConsoleControl_v110.gif" width="70%">
+</p>
