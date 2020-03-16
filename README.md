@@ -82,7 +82,11 @@
 </p>
 
 **USAGE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;mouse command : *click phaser game object with **mouse middle button***\
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command :
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;click phaser game object with\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**(Mouse middle button) or (Shift + F) or (Shift + Left Click)**\
+&nbsp;&nbsp;&nbsp;&nbsp;if you wanna check the focused game object console, then\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**(Shift + C) or (just click the name "GUI_CONSOLE") when the game object focused**\
 &nbsp;&nbsp;&nbsp;&nbsp;(if is not already focused, then focus on it\
 &nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 
