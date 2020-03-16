@@ -110,3 +110,14 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if I finish GAME_STATUS_MANAGER, I also publish Merged PGInspector & GAME_STATUS_MANAGER Lib
     
+**VERSION)**\
+&nbsp;&nbsp;&nbsp;&nbsp;**1.1.0)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- TEXTURE, FRAME, ANIMATION CONTROL
+![Capture_img](./zReadmeSrc/textureFrameControl_v110.gif)
+![Capture_img](./zReadmeSrc/animationControl_v110.gif)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- SHOW FOCUSED GAME OBJECT CONSOLE
+![Capture_img](./zReadmeSrc/focusedGameObjConsoleControl_v110.gif)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- SHOW SCENE, DISPLAYLIST & CONSOLE.CLEAR FUNCTION
+![Capture_img](./zReadmeSrc/sceneConsoleControl_v110.gif)
