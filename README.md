@@ -3,6 +3,9 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/issues)
 [![GitHub license](https://img.shields.io/github/license/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/blob/master/LICENSE.md)
+![GitHub All Releases](https://img.shields.io/github/downloads/SilverTree7622/Phaser3_GUI_inspector/total)
+![jsDelivr](https://img.shields.io/jsdelivr/gh/hm/SilverTree7622/Phaser3_GUI_inspector)
+![npm](https://img.shields.io/jsdelivr/npm/hm/Phaser3_GUI_inspector)
 
 **WARNING)**\
 &nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
