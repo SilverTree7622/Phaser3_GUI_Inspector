@@ -82,7 +82,7 @@
 </p>
 
 **USAGE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;mouse command :
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command :\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;click phaser game object with\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**(Mouse middle button) or (Shift + F) or (Shift + Left Click)**\
 &nbsp;&nbsp;&nbsp;&nbsp;if you wanna check the focused game object console, then\
@@ -98,7 +98,7 @@
 
 **NOTATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project\
-&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this lib so I made it as open source project\
+&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this work so I made this as open source project\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
 &nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
   
