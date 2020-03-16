@@ -14,7 +14,7 @@
 
 **SCREENSHOT)**
 <p align="center">
-  <img src="./zReadmeSrc/capture_img.png">
+  <img src="./zReadmeSrc/capture_v110.png">
 </p>
 
 **EXAMPLE)**\
@@ -78,7 +78,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It has some info in console way
 	
 <p align="center">
-  <img src="./zReadmeSrc/capture_img2.PNG">
+  <img src="./zReadmeSrc/cpatureConsole_v110.PNG">
 </p>
 
 **USAGE)**\
