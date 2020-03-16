@@ -176,9 +176,6 @@ export default class TypeSortManager {
         this.tryCatch(_folderInCustom, _gameObj, 'originY');
         this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
-
-
-
     createContainer(_idx, _folderInCustom, _gameObj) {
         this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
         this.tryCatch(_folderInCustom, _gameObj, 'position');
@@ -199,14 +196,12 @@ export default class TypeSortManager {
     createListImage(_idx, _folderInCustom, _gameObj, _srcObj) {
         // also check what type of Physics
         this.createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj);
-        this.createFrame(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
     createListSprite(_idx, _folderInCustom, _gameObj, _srcObj) {
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originX');
         this.tryCatch(_folderInCustom, _gameObj.texture, 'originY');
         this.createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj);
-        this.createFrame(_idx, _folderInCustom, _gameObj);
         this.createAnims(_idx, _folderInCustom, _gameObj);
         this.chckEndSorting(_idx);
     }
@@ -254,6 +249,8 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createMatterBody(_folderInCustom, _gameObj) {
+        let tmpBody = _folderInCustom.addFolder('body');
+        tmpBody.open();
         this.tryCatch(tmpBody, _gameObj.body, 'id');
         this.tryCatch(tmpBody, _gameObj.body, 'type');
         this.tryCatch(tmpBody, _gameObj.body, 'label');
@@ -262,10 +259,8 @@ export default class TypeSortManager {
 
     }
     createArcadeBody(_folderInCustom, _gameObj) {
-        let tmpOffset = undefined;
         let tmpBody = _folderInCustom.addFolder('body');
         tmpBody.open();
-        this.createCommonBack(tmpBody, _gameObj);
         this.tryCatch(tmpBody, _gameObj.body, 'allowRotation');
         this.tryCatch(tmpBody, _gameObj.body, 'debugShowBody');
         this.tryCatch(tmpBody, _gameObj.body, 'debugShowVelocity');
@@ -277,11 +272,7 @@ export default class TypeSortManager {
         this.tryCatch(tmpBody, _gameObj.body, 'onOverlap');
         this.tryCatch(tmpBody, _gameObj.body, 'enable');
         this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
-        
-        tmpOffset = tmpBody.addFolder('offset');
-        tmpOffset.open();
-        this.tryCatch(tmpOffset, _gameObj.body.offset, 'x');
-        this.tryCatch(tmpOffset, _gameObj.body.offset, 'y');
+        this.createAllThePropertyOfObj(_folderInCustom, 'offset', _gameObj.body.offset);
     }
     createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj) {
         let tmpGameObjTexture = _srcObj.getGameObjTextureKey(_gameObj);
@@ -300,11 +291,6 @@ export default class TypeSortManager {
             _gameObj.setDisplaySize( tmpW * tmpSX, tmpH * tmpSY );
             // change frame list
             let tmpList = _srcObj.getGameObjTextureFrames(_gameObj);
-            console.log('tmpF:', tmpF);
-            console.log('tmpF.options:', tmpF.options);
-            console.log('tmpList in setTexture function:', tmpList);
-            // tmpF.options(tmpList);
-            // tmpF.setValue(tmpList);
             _srcObj.updateDropdown(tmpF, tmpList);
         }
         tmpFrame.frameList = _srcObj.getGameObjTextureFrames(_gameObj);
@@ -312,29 +298,11 @@ export default class TypeSortManager {
             let tmpName = tmpF.getValue();
             _gameObj.setFrame(tmpName);
         }
-
         tmpT = _folderInCustom.add(tmpTexture, 'textureList', tmpTexture.textureList)
         .setValue(tmpGameObjTexture);
         _folderInCustom.add(tmpTexture, 'setTexture');
         tmpF = _folderInCustom.add(tmpFrame, 'frameList', tmpFrame.frameList);
         _folderInCustom.add(tmpFrame, 'setFrame');
-    }
-    createFrame(_idx, _folderInCustom, _gameObj) {
-        // let tmpFrame = {};
-        // tmpFrame.frameList = [];
-        // tmpFrame.setFrame = () => {
-        //     let tmpKey = tmpFrameList.getValue();
-        //     _gameObj.setFrame(tmpKey);
-        // }
-        // for (var tmpProperty in _gameObj.texture.frames) {
-        //     tmpFrame.frameList.push(tmpProperty);
-        // }
-        // let tmpFrameList = _folderInCustom.add(
-        //     tmpFrame, 'frameList', tmpFrame.frameList
-        //     ).setValue(
-        //         tmpFrame.frameList[0]
-        //     );
-        // _folderInCustom.add(tmpFrame, 'setFrame');
     }
     createAnims(_idx, _folderInCustom, _gameObj) { // create anims property folder
         let tmpAnimList = undefined;
@@ -385,6 +353,7 @@ export default class TypeSortManager {
         for (var tmpProperty in tmpFolder) {
             this.tryCatch(tmpFolder, _listenObj, tmpProperty);
         }
+        return tmpFolder;
     }
     tryCatch(_guiObj, _obj, _property, _cmd, _customFunction) {
         let tmpAddFunc = undefined;

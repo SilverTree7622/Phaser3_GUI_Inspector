@@ -77,7 +77,6 @@ export default class SrcManager {
             var str = "<option value='" + _list[i] + "'>" + _list[i] + "</option>";
             innerHTMLStr += str;
         }
-
         if (innerHTMLStr != "") _target.domElement.children[0].innerHTML = innerHTMLStr;
     }
 }
