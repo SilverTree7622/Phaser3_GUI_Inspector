@@ -113,7 +113,7 @@
 **VERSION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**1.1.0)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- TEXTURE, FRAME, ANIMATION CONTROL
-![Capture_img](./zReadmeSrc/textureFrameControl_v110.gif)
+![frameControl|200x200,50%](./zReadmeSrc/textureFrameControl_v110.gif)
 ![Capture_img](./zReadmeSrc/animationControl_v110.gif)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- SHOW FOCUSED GAME OBJECT CONSOLE
