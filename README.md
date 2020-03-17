@@ -28,7 +28,6 @@
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**
 	
-	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@1.1.0/dist/PGInspector.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js"></script>
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
