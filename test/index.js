@@ -6,19 +6,34 @@ var config = {
         width: 800,
         height: 600
     },
-    physics: {
-        default: 'matter',
-        arcade: {
-            debug: true
-        },
-        matter: {
-            debug: true,
-        }
-    },
+    // physics: {
+    //     arcade: {
+    //         debug: true
+    //     },
+    //     matter: {
+    //         debug: true,
+    //         gravity: {
+    //             x: 0,
+    //             y: 0
+    //         }
+    //     }
+    // },
     scene: {
         preload: preload,
         create: create,
         // update: update
+        physics: {
+            arcade: {
+                debug: true
+            },
+            matter: {
+                debug: true,
+                gravity: {
+                    x: 0,
+                    y: 0.01
+                }
+            }
+        },
     }
 };
 
@@ -71,8 +86,9 @@ function create() {
     // });
 
     // sprite game object
-    tmpSpr.self = this.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
-    let tmpImg2 = this.add.image(100, 400, tmpSpr.key, 'lazer_00');
+    console.log('this:', this);
+    tmpSpr.self = this.matter.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
+    let tmpImg2 = this.physics.add.image(100, 400, tmpSpr.key, 'lazer_00');
     tmpImg2.setScale(0.2);
     // tmpSpr.self.name = 'var_tmpSpr';
     this.anims.create(
@@ -154,9 +170,12 @@ function create() {
     tmpCon.name = 'tmpCon';
 
     tmpCon.add([tmpTxt, tmpTileSprite]);
+
+
+
     // PGInspector.js usage
     PhaserGUIAction(
-        this, { top: 10 }
+        this, { right: 485, top: 10 }
     );
 }
 

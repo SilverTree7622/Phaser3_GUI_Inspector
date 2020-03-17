@@ -72,10 +72,8 @@ export default class GUIcss {
     }
     setFolderNameCenter() {
         let tmpFolderList = document.getElementsByClassName('title');
-        console.log('tmpFolderList:', tmpFolderList);
-        console.log('tmpFolderList.length:', tmpFolderList.length);
         for (var i=0; i<tmpFolderList.length; i++) {
-            console.log(i, ':', tmpFolderList[i]);
+            // console.log(i, ':', tmpFolderList[i]);
             tmpFolderList[i].style.textAlign = 'center';
         }
     }

@@ -26,15 +26,16 @@ export default class SaveManager {
     }
     createCommand(_scene) {
         _scene.input.keyboard.on('keydown_S', (_event) => {
-            console.log('_event:', _event);
             if (_event.ctrlKey || _event.shiftKey) {
                 this.useSaveFunc();
             }
         });
     }
     useSaveFunc() {
-        console.log('use save method function');
-        this.saveFunc();
+        // console.log('use save method function');
+        try {
+            this.saveFunc();
+        } catch (e) {}
     }
     saveConfig(_config) {
         let tmpObj = {};
@@ -51,7 +52,7 @@ export default class SaveManager {
         tD.day = tD.self.getDay();
         tD.time = tD.self.now();
         tD.tot = tD.year + '/' + tD.month + '/' + tD.day + '/' + tD.time;
-        console.log('tD.tot:', tD.tot);
+        // console.log('tD.tot:', tD.tot);
     }
     push2saveQ(_obj) {
         this.saveQ.push(_obj);

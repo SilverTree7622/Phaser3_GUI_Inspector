@@ -79,8 +79,8 @@ export default class TypeSortManager {
         this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj);
         this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
         this.createCommonFront(_folderInCustom, tmpGameObj);
-        this.chckPhysicsType(_folderInCustom, tmpGameObj);
         this.createCommonBack(_folderInCustom, tmpGameObj);
+        this.chckPhysicsType(_folderInCustom, tmpGameObj);
         switch (tmpType) {
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
             case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, this.srcObj); break;
@@ -231,6 +231,12 @@ export default class TypeSortManager {
         this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX');
         this.tryCatch(_folderInCustom, _gameObj, 'tileScaleY');
         this.tryCatch(_folderInCustom, _gameObj, 'tabIndex');
+        this.tryCatch(_folderInCustom, _gameObj, 'ignoreDestroy');
+        this.tryCatch(_folderInCustom, _gameObj, 'potWidth');
+        this.tryCatch(_folderInCustom, _gameObj, 'potHeight');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
+        this.tryCatch(_folderInCustom, _gameObj, 'potHeight');
         // // tile crop
         // let tmpCrop = _folderInCustom.addFolder('_crop');
         // tmpCrop.open();
@@ -254,25 +260,65 @@ export default class TypeSortManager {
         this.tryCatch(tmpBody, _gameObj.body, 'id');
         this.tryCatch(tmpBody, _gameObj.body, 'type');
         this.tryCatch(tmpBody, _gameObj.body, 'label');
-        this.createAllThePropertyOfObj(_folderInCustom, 'position', _gameObj.body.position);
-        this.createAllThePropertyOfObj(_folderInCustom, 'force', _gameObj.body.force);
+        this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
+        this.createAllThePropertyOfObj(tmpBody, 'force', _gameObj.body);
+        
+        this.tryCatch(tmpBody, _gameObj.body, 'speed');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularSpeed');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
+        this.tryCatch(tmpBody, _gameObj.body, 'isSensor');
+        this.tryCatch(tmpBody, _gameObj.body, 'isStatic');
+        this.tryCatch(tmpBody, _gameObj.body, 'isSleeping');
+        this.tryCatch(tmpBody, _gameObj.body, 'sleepThreshold');
+        this.tryCatch(tmpBody, _gameObj.body, 'density');
+        this.tryCatch(tmpBody, _gameObj.body, 'restitution');
+        this.tryCatch(tmpBody, _gameObj.body, 'frictionStatic');
+        this.tryCatch(tmpBody, _gameObj.body, 'frictionAir');
 
+        this.tryCatch(tmpBody, _gameObj.body, 'slop');
+        this.tryCatch(tmpBody, _gameObj.body, 'mass');
+        this.tryCatch(tmpBody, _gameObj.body, 'area');
+        this.tryCatch(tmpBody, _gameObj.body, 'inertia');
+        this.tryCatch(tmpBody, _gameObj.body, 'inverseInertia');
+        this.tryCatch(tmpBody, _gameObj.body, 'chamfer');
+
+        this.tryCatch(tmpBody, _gameObj.body, 'ignoreGravity');
+        this.tryCatch(tmpBody, _gameObj.body, 'ignorePointer');
+        this.tryCatch(tmpBody, _gameObj.body, 'ignoreDestroy');
     }
     createArcadeBody(_folderInCustom, _gameObj) {
         let tmpBody = _folderInCustom.addFolder('body');
         tmpBody.open();
-        this.tryCatch(tmpBody, _gameObj.body, 'allowRotation');
         this.tryCatch(tmpBody, _gameObj.body, 'debugShowBody');
         this.tryCatch(tmpBody, _gameObj.body, 'debugShowVelocity');
         this.tryCatch(tmpBody, _gameObj.body, 'debugBodyColor');
         this.tryCatch(tmpBody, _gameObj.body, 'onWorldBounds');
         this.tryCatch(tmpBody, _gameObj.body, 'allowDrag');
         this.tryCatch(tmpBody, _gameObj.body, 'allowGravity');
+        this.tryCatch(tmpBody, _gameObj.body, 'allowRotation');
         this.tryCatch(tmpBody, _gameObj.body, 'onCollide');
         this.tryCatch(tmpBody, _gameObj.body, 'onOverlap');
         this.tryCatch(tmpBody, _gameObj.body, 'enable');
         this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
-        this.createAllThePropertyOfObj(_folderInCustom, 'offset', _gameObj.body.offset);
+        this.createAllThePropertyOfObj(tmpBody, 'offset', _gameObj.body);
+        this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
+        this.tryCatch(tmpBody, _gameObj.body, 'sourceWidth');
+        this.tryCatch(tmpBody, _gameObj.body, 'sourceHeight');
+        this.tryCatch(tmpBody, _gameObj.body, 'halfWidth');
+        this.tryCatch(tmpBody, _gameObj.body, 'halfHeight');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularAcceleration');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularDrag');
+        this.tryCatch(tmpBody, _gameObj.body, 'maxAngular');
+        this.tryCatch(tmpBody, _gameObj.body, 'mass');
+        this.tryCatch(tmpBody, _gameObj.body, 'angle');
+        this.tryCatch(tmpBody, _gameObj.body, 'speed');
+        this.tryCatch(tmpBody, _gameObj.body, 'facing');
+        this.tryCatch(tmpBody, _gameObj.body, 'immovable');
+        this.tryCatch(tmpBody, _gameObj.body, 'moves');
+        this.tryCatch(tmpBody, _gameObj.body, 'collideWorldBounds');
+        this.tryCatch(tmpBody, _gameObj.body, 'syncBounds');
+        
     }
     createTextureNFrame(_idx, _folderInCustom, _gameObj, _srcObj) {
         let tmpGameObjTexture = _srcObj.getGameObjTextureKey(_gameObj);
@@ -349,8 +395,9 @@ export default class TypeSortManager {
     }
     createAllThePropertyOfObj(_folderInCustom, _nameStr, _listenObj) {
         let tmpFolder = _folderInCustom.addFolder(_nameStr);
+        let tmpObj = _listenObj[_nameStr];
         tmpFolder.open();
-        for (var tmpProperty in tmpFolder) {
+        for (var tmpProperty in tmpObj) {
             this.tryCatch(tmpFolder, _listenObj, tmpProperty);
         }
         return tmpFolder;
