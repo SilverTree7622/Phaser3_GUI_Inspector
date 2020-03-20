@@ -1,6 +1,6 @@
 {
 	"name": "phaser3_gui_inspector",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "This is a inspector for only phaser3 framework",
 	"main": "index.js",
 	"directories": {
