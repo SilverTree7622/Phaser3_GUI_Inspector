@@ -44,6 +44,7 @@
 		// or
 		
 		// add some custom config object
+		// first index is Phaser.Scene, second is config object
 		PhaserGUIAction(
 			this,
 			{
