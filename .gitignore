@@ -1,6 +1,7 @@
 .cache
 node_modules
 zExample/ionic/node_modules
+zExample/ionic/package-lock.json
 
 parcel
 parcel.cmd
