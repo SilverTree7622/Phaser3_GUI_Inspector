@@ -1,0 +1,16 @@
+{
+  "name": "ionic_phaser3_testing",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "app.js",
+  "scripts": {
+    "test": "http-server -c-1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^0.12.3",
+    "phaser": "^3.23.0",
+    "phaser3_gui_inspector": "^1.1.4"
+  }
+}

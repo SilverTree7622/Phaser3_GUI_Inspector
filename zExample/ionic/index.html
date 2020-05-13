@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ionic_phaser3</title>
+  <script src="https://unpkg.com/@ionic/core@latest/dist/ionic.js"></script>
+    <link href="https://unpkg.com/@ionic/core@latest/css/ionic.bundle.css" rel="stylesheet" />
+
+    <!-- cdn, or direct path way both works -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.min.js"></script> -->
+    <script src="./api/phaser.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js"></script> -->
+    <script src="./api/PGInspector.min.js"></script>
+</head>
+
+<body>
+    <ion-app>
+        <ion-header>
+            <ion-toolbar color="primary">
+                <ion-title>IONIC_PHASER3</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <div id="phaser-example"></div>
+        </ion-content>
+        <ion-alert-controller></ion-alert-controller>
+
+    </ion-app>
+    <script type="module" src="app.js"></script>
+</body>
+
+</html>

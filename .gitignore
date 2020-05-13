@@ -1,6 +1,6 @@
 .cache
 node_modules
-zExample/ionic
+zExample/ionic/node_modules
 
 parcel
 parcel.cmd
