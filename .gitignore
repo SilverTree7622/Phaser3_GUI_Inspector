@@ -1,1 +1,7 @@
 .cache
+node_modules
+zExample/ionic
+
+parcel
+parcel.cmd
+parcel.ps1

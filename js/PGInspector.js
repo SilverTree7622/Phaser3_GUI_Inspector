@@ -20,7 +20,7 @@ function PhaserGUIAction(_scene, _configObj) {
     // setting value
     tmpGUIClass = InitGUIClassSetting();
     tmpStatusReturn = ChckStatusManager(tmpConfigObj.status);
-    tmpGUIInstance = SetCreateUpdateInstance( tmpConfigObj, tmpStatusReturn, tmpGUIClass);
+    tmpGUIInstance = SetCreateUpdateInstance( tmpConfigObj, tmpStatusReturn, tmpGUIClass );
 
     StoreGUI(tmpGUIInstance);
 
@@ -99,3 +99,6 @@ function ChckStatusManager(_tmpStatus) {
 function StoreGUI(_GUI) {
     window.PhaserGUI = _GUI;
 }
+
+// trying for npm exports
+module.exports = PhaserGUIAction;
