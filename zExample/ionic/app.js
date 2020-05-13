@@ -48,6 +48,7 @@ const clear = () => {
 
 console.log('window Phaser:', Phaser);
 console.log('window PhaserGUIAction:', window.PhaserGUIAction);
+console.log('window.PhaserGUI:', window.PhaserGUI);
 
 var config = {
     type: Phaser.AUTO,
