@@ -101,7 +101,7 @@
 > **then change Phaser GameObject name property**\
 > **PGInspector will detect and show on UI**
 
-**NOTATION)**\
+**NOTIFICATION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project\
 &nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this work so I made this as open source project\
 &nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
