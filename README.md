@@ -1,10 +1,10 @@
 
-# Phaser3_GUI_inspector (PGInspector.js)
+# Phaser3_GUI_Inspector (PGInspector.js)
 
-[![GitHub issues](https://img.shields.io/github/issues/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/issues)
-[![GitHub license](https://img.shields.io/github/license/SilverTree7622/Phaser3_GUI_inspector)](https://github.com/SilverTree7622/Phaser3_GUI_inspector/blob/master/LICENSE.md)
-![GitHub All Releases](https://img.shields.io/github/downloads/SilverTree7622/Phaser3_GUI_inspector/total)
-![jsDelivr](https://img.shields.io/jsdelivr/gh/hm/SilverTree7622/Phaser3_GUI_inspector)
+[![GitHub issues](https://img.shields.io/github/issues/SilverTree7622/Phaser3_GUI_Inspector)](https://github.com/SilverTree7622/Phaser3_GUI_Inspector/issues)
+[![GitHub license](https://img.shields.io/github/license/SilverTree7622/Phaser3_GUI_Inspector)](https://github.com/SilverTree7622/Phaser3_GUI_Inspector/blob/master/LICENSE.md)
+![GitHub All Releases](https://img.shields.io/github/downloads/SilverTree7622/Phaser3_GUI_Inspector/total)
+![jsDelivr](https://img.shields.io/jsdelivr/gh/hm/SilverTree7622/Phaser3_GUI_Inspector)
 ![npm](https://img.shields.io/npm/dy/phaser3_gui_inspector?label=npm)
 
 **WARNING)**\
@@ -28,7 +28,7 @@
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**
 	
-	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_inspector@latest/dist/PGInspector.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.min.js"></script>
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
 
