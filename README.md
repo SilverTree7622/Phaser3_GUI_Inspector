@@ -8,7 +8,7 @@
 ![npm](https://img.shields.io/npm/dy/phaser3_gui_inspector?label=npm)
 
 **WARNING)**\
-&nbsp;&nbsp;&nbsp;&nbsp;This is only for phaser3 framework
+&nbsp;&nbsp;&nbsp;&nbsp;This is the only for phaser3 framework
 
 **DESCRIPTION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;I just inspired by babylon.js inspector\
