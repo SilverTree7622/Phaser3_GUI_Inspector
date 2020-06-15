@@ -23,8 +23,11 @@
 **EXAMPLE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**NODE_JS)**
 	
-	npm install phaser3_gui_inspector
-	npm i phaser3_gui_inspector
+	npm install phaser3_gui_inspector --save-dev
+	npm i phaser3_gui_inspector --save-dev
+	
+	// set in javascript file
+	import PhaserGUIAction from 'phaser3_gui_inspector';
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**
 	
