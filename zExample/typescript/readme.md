@@ -11,5 +11,5 @@ npm run start
 ```
 
 if u wanna see only the difference\
-check under URL
+check under URL\
 https://github.com/SilverTree7622/Phaser3_GUI_Inspector/blob/master/zExample/typescript/src/scenes/HelloWorldScene.ts
