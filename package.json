@@ -28,5 +28,7 @@
 	"bugs": {
 		"url": "https://github.com/SilverTree7622/Phaser3_GUI_inspector/issues"
 	},
-	"homepage": "https://github.com/SilverTree7622/Phaser3_GUI_inspector#readme"
+	"homepage": "https://github.com/SilverTree7622/Phaser3_GUI_inspector#readme",
+	"dependencies": {},
+	"devDependencies": {}
 }
