@@ -64,7 +64,7 @@ function TryCatchObj(_obj, _objPropertyName, _obj2) {
     }
     catch(e) {
         console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
-    };
+    }
 }
 function InitGUIClassSetting() {
     let tmpClass;

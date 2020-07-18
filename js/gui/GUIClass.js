@@ -109,6 +109,7 @@ export class GUIClass {
         _typeSort.createFocusFolder(this.objList, _folder, _debugBox, DebugGetThisConsole);
         this.createFocusFolderOverEvent(_scene, _debugBox, _folder);
         this.createFocusFolderFocusEvent(_scene, _cursorKey, _debugBox, _folder);
+        this.createFocusFolderVisibleEvent(_scene, _cursorKey, _debugBox);
     }
     createConsoleCmd(_scene, _cursorKey, _debugBox, _DebugGetThisConsole) {
         // when press command SHIFT + C
@@ -117,8 +118,8 @@ export class GUIClass {
                 let tmpFocusGameObj = _debugBox.getFocusGameObj();
                 if (tmpFocusGameObj) {
                     _DebugGetThisConsole.call(tmpFocusGameObj);
-                } else {}
-            } else {}
+                }
+            }
         });
     }
     createFocusFolderOverEvent(_scene, _debugBox, _folder) {
@@ -129,7 +130,7 @@ export class GUIClass {
                 _debugBox.setOver(_gameObj);
                 _debugBox.setOverGameObj(_gameObj);
                 _folder.setBasicOverFolder(_gameObj);
-            } else {}
+            }
         });
         // when out from pointer over obj
         _scene.input.on('gameobjectout', (_pointer, _gameObj) => {
@@ -138,7 +139,7 @@ export class GUIClass {
                 _debugBox.clearOverGameObj();
                 _debugBox.setOverGameObj(undefined);
                 _folder.setBasicOverFolder();
-            } else {}
+            }
         });
     }
     createFocusFolderFocusEvent(_scene, _cursorKey, _debugBox, _folder) {
@@ -147,7 +148,7 @@ export class GUIClass {
             // if middle button pressed
             if (this.chckCommandKey(_cursorKey, _pointer)) {
                 this.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
-            } else {}
+            }
         });
         // when press command SHIFT + F
         _scene.input.keyboard.on('keydown-F', () => {
@@ -155,9 +156,22 @@ export class GUIClass {
                 // set gameObj via which pointer over on
                 let tmpGameObj = _debugBox.getOverGameObj();
                 this.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
-            } else {}
+            }
         });
     }
+    createFocusFolderVisibleEvent(_scene, _cursorKey, _debugBox) {
+        // when press command SHIFT + V, visible on/off logic
+        _scene.input.keyboard.on('keydown-V', (_pointer, _gameObj) => {
+            let tmpFocusGameObj = _debugBox.getFocusGameObj();
+            if ( // chck if focus valid & shift key down
+                tmpFocusGameObj &&
+                this.chckCmdShiftKeyDown(_cursorKey)
+                ) {
+                tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+            }
+        });
+    }
+    // chck focus then, focus ON game object or OFF
     runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
         // isFocusOnGUI boolean is true
         // (if u run focusCommand on the focus game object)

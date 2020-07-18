@@ -1,4 +1,3 @@
-
 import SrcManager from './SrcManagerClass.js';
 
 // sort obj type, pointer over properties
@@ -58,13 +57,13 @@ export default class TypeSortManager {
         this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
     }
     chckParentContainer(_obj, _folder, _objList, _tmpGUIIdx, _debugBox) {
-        // if Parent Container Exist, then implant function
+        // if Parent Container exist, then insert the function
         let tmpPC = _obj.parentContainer;
         if (tmpPC) { // if this object parentContainer is exist
             _obj.GUI_CONTAINER = _folder.closeThisOpenParentContainer.bind(
                 _obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]
             );
-        } else {}
+        }
     }
     createCustomInDetail(_obj, _folder, _objList, _tmpGUIIdx) {
         let tmpFolderInCustom = _folder.add2CustomFolder();
@@ -74,13 +73,18 @@ export default class TypeSortManager {
     chckObjType(_custom, _idx, _folderInCustom, _obj) { // check each of objs type
         let tmpGameObj = _obj;
         let tmpType = tmpGameObj.type;
+
         this.chckStartSorting(_idx);
+        // default functions
         this.createBackFunc(_idx, _folderInCustom, tmpGameObj);
         this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj);
+        // chck container exist
         this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
+        // the other stuff
         this.createCommonFront(_folderInCustom, tmpGameObj);
+        this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj);
         this.createCommonBack(_folderInCustom, tmpGameObj);
-        this.chckPhysicsType(_folderInCustom, tmpGameObj);
+        // set each specific type properties
         switch (tmpType) {
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
             case 'Image': this.createListImage(_idx, _folderInCustom, tmpGameObj, this.srcObj); break;
@@ -124,7 +128,8 @@ export default class TypeSortManager {
         _folderInCustom.add(_gameObj, 'GUI_BACK');
     }
     createConsoleFunc(_idx, _folderInCustom, _gameObj) {
-        _folderInCustom.add(_gameObj, 'GUI_CONSOLE');
+        try { _folderInCustom.add(_gameObj, 'GUI_CONSOLE'); }
+        catch(e) {}
     }
     createContainerFunc(_idx, _folderInCustom, _gameObj) {
         if (_gameObj.GUI_CONTAINER) {
@@ -135,12 +140,11 @@ export default class TypeSortManager {
         // set properties (GUIIdx, name, type)
         this.tryCatch(_folderInCustom, _gameObj, 'GUIIdx');
         this.tryCatch(_folderInCustom, _gameObj, 'name');
-        this.tryCatch(_folderInCustom, _gameObj, 'type');
     }
     // check body is arcade or matter
-    chckPhysicsType(_folderInCustom, _gameObj) {
+    chckNCreatePhysicsType(_folderInCustom, _gameObj) {
         let tmpType = (_gameObj.body) ? true : false;
-        if (tmpType === true) { // if body exist
+        if (tmpType === true) { // chck if body exist
             let tmpStr = _gameObj.type; // check type
             let tmpBodyType = typeof _gameObj.body.type; // check body type
             let tmpObj = undefined;
@@ -160,6 +164,10 @@ export default class TypeSortManager {
                     this.createArcadeBody(_folderInCustom, _gameObj);
                 break;
             }
+        }
+        // chck if body is not exist, just set normal type
+        else {
+            this.tryCatch(_folderInCustom, _gameObj, 'type');
         }
     }
     createCommonBack(_folderInCustom, _gameObj) {

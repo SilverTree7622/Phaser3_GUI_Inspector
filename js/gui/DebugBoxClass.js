@@ -220,11 +220,10 @@ export default class DebugBoxClass {
     }
     // ___________________________________________
     
-    
     chckParentContainer(_gameObj) {
         return _gameObj.parentContainer;
     }
-    // clear logic
+    // clear logics
     clearDebugBox() {
         this.graphics.clear();
     }
