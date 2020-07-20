@@ -49,7 +49,7 @@ export default class FolderManager {
         this.basic.folder = this.GUI.addFolder('BASIC');
     }
     createCustom() {
-        this.custom.folder = this.GUI.addFolder('CUSTOM');
+        this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
     }
     push2FolderList(_folder, _isBasic) {
         if (_isBasic === 'basic') {

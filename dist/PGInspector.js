@@ -3389,7 +3389,7 @@ function () {
   }, {
     key: "createCustom",
     value: function createCustom() {
-      this.custom.folder = this.GUI.addFolder('CUSTOM');
+      this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
     }
   }, {
     key: "push2FolderList",
