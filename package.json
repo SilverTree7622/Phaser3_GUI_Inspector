@@ -8,6 +8,7 @@
 	},
 	"scripts": {
 		"build": "parcel build ./js/PGInspector.js",
+		"watch": "parcel watch ./js/PGInspector.js",
 		"dev": "http-server -p 9999 -c-1"
 	},
 	"repository": {

@@ -1,3 +1,5 @@
+
+import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
 import SrcManager from './SrcManagerClass.js';
 
 // sort obj type, pointer over properties
@@ -11,33 +13,33 @@ export default class TypeSortManager {
 
     // EXTERNAL
     // get scene then set list to form gui set up
-    createFocusFolder(_objList, _folder, _debugBox, _DebugGetThisConsole) {
+    createFocusFolder(_objList, _folder, _debugBox) {
         let tmpLength = _objList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _DebugGetThisConsole);
-            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _DebugGetThisConsole);
+            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox);
+            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox);
         }
     }
-    createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
+    createFocusFolderTryException(_objList, _obj, _folder, _debugBox) {
         if (_obj.type !== 'Graphics' &&
             _obj.type !== 'Container') {
             this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
         }
         else if (_obj.type === 'Container') {
             // container
-            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole);
+            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox);
         }
         else {
             // console.log('graphics confirm!');
         }
     }
     // if the gameobj is container obj
-    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
+    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox) {
         let tmpList = _obj.list;
         let tmpLength = tmpList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(tmpList, tmpList[i], _folder, _DebugGetThisConsole);
-            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _DebugGetThisConsole);
+            this.createFocusFolderTryException(tmpList, tmpList[i], _folder);
+            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox);
         }
     }
     // if the gameobj is NOT container obj
@@ -46,13 +48,13 @@ export default class TypeSortManager {
         catch(e) {}
     }
 
-    createFocusFolderSetObj(_objList, _obj, _folder, _debugBox, _DebugGetThisConsole) {
+    createFocusFolderSetObj(_objList, _obj, _folder, _debugBox) {
         let tmpGUIIdx = _folder.getGUIIdx();
         _obj.guiIdx = tmpGUIIdx;
         _obj.isFocusOnGUI = false; // focus check boolean
         _obj.focusTw = undefined; // save focus performance tween in this property
         _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
-        _obj.GUI_CONSOLE = _DebugGetThisConsole;
+        _obj.GUI_CONSOLE = DebugGetThisConsole;
         this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
         this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
     }
@@ -83,7 +85,7 @@ export default class TypeSortManager {
         // the other stuff
         this.createCommonFront(_folderInCustom, tmpGameObj);
         this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj);
-        this.createCommonBack(_folderInCustom, tmpGameObj);
+        
         // set each specific type properties
         switch (tmpType) {
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
@@ -152,15 +154,18 @@ export default class TypeSortManager {
                 case 'string': // matter
                     tmpObj = {type: 'Matter ' + tmpStr};
                     _folderInCustom.add(tmpObj, 'type');
+                    this.createCommonBack(_folderInCustom, _gameObj);
                     this.createMatterBody(_folderInCustom, _gameObj);
                 break;
                 case 'number': // impact
                     tmpObj = {type: 'Impact ' + tmpStr};
                     _folderInCustom.add(tmpObj, 'type');
+                    this.createCommonBack(_folderInCustom, _gameObj);
                 break;
                 default: // arcade
                     tmpObj = {type: 'Arcade ' + tmpStr};
                     _folderInCustom.add(tmpObj, 'type');
+                    this.createCommonBack(_folderInCustom, _gameObj);
                     this.createArcadeBody(_folderInCustom, _gameObj);
                 break;
             }
@@ -168,6 +173,7 @@ export default class TypeSortManager {
         // chck if body is not exist, just set normal type
         else {
             this.tryCatch(_folderInCustom, _gameObj, 'type');
+            this.createCommonBack(_folderInCustom, _gameObj);
         }
     }
     createCommonBack(_folderInCustom, _gameObj) {
