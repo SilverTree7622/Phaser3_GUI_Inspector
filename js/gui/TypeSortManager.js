@@ -62,7 +62,7 @@ export default class TypeSortManager {
         // if Parent Container exist, then insert the function
         let tmpPC = _obj.parentContainer;
         if (tmpPC) { // if this object parentContainer is exist
-            _obj.GUI_CONTAINER = _folder.closeThisOpenParentContainer.bind(
+            _obj.GUI_CONTAINER = _folder.closeThisNopenParentContainer.bind(
                 _obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]
             );
         }

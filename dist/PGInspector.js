@@ -2225,6 +2225,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.DebugConsole = DebugConsole;
 exports.DebugGetThisConsole = DebugGetThisConsole;
 exports.DebugSceneNAllDisplayList = DebugSceneNAllDisplayList;
+exports.DebugPointerPosition = DebugPointerPosition;
 
 function DebugConsole(_obj) {
   var tmpName = _obj.name;
@@ -2246,7 +2247,7 @@ function DebugConsole(_obj) {
 
     if (i === tmpShadowList.length - 1) {
       tmpMiddle = ';';
-    } else {}
+    }
 
     tmpShadow += tmpShadowList[i] + tmpMiddle;
   }
@@ -2274,6 +2275,19 @@ function DebugSceneNAllDisplayList() {
   var tmpInfo = ': |Scene| & |DisplayList|\n';
   var tmpStyle = 'color: white; background: rgb(250, 0, 0);';
   return console.log(tmpInit, tmpStyle, tmpInfo, this, '\n', tmpDisplayList);
+}
+
+function DebugPointerPosition(_mainCamera, _pointer) {
+  var tmpInit = '%c_PGI Pointer Info_';
+  var tmpStyle = 'color: white; background: rgb(125, 0, 125);';
+  var tmpGap = ':';
+  var tmpXStr = 'X:';
+  var tmpX = _pointer.x;
+  var tmpYStr = 'Y:';
+  var tmpY = _pointer.y;
+  var tmpZoomStr = 'ZoomRate:';
+  var tmpZoom = _mainCamera.zoom;
+  return console.log(tmpInit, tmpStyle, tmpGap, '\n', tmpXStr, tmpX, tmpYStr, tmpY, '\n', tmpZoomStr, tmpZoom);
 }
 },{}],"gui/SrcManagerClass.js":[function(require,module,exports) {
 "use strict";
@@ -2515,7 +2529,7 @@ function () {
 
       if (tmpPC) {
         // if this object parentContainer is exist
-        _obj.GUI_CONTAINER = _folder.closeThisOpenParentContainer.bind(_obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]);
+        _obj.GUI_CONTAINER = _folder.closeThisNopenParentContainer.bind(_obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]);
       }
     }
   }, {
@@ -3091,11 +3105,17 @@ function () {
     this.mainCamera = undefined;
     this.cursorKey = undefined;
     this.wheelValue = 150;
+    this.followConfig = {
+      x: 0,
+      y: 0,
+      zoom: 1
+    };
   }
 
   _createClass(InputManager, [{
     key: "create",
     value: function create(_scene, _debugBox, _folder) {
+      this.createDisableRightClick();
       this.createSize(_scene);
       this.createMainCamera(_scene);
       this.createCursorKey(_scene);
@@ -3103,10 +3123,16 @@ function () {
       this.createOverEvent(_scene, _debugBox, _folder);
       this.createFocusEvent(_scene, _debugBox, _folder);
       this.createDetailEvent(_scene, _debugBox, _folder);
-      this.createVisibleEvent(_scene, _debugBox); // + camera zoom event & follow focus game obj event
-
+      this.createVisibleEvent(_scene, _debugBox);
       this.createCameraEvent(_scene);
-      this.createFollowEvent(_scene);
+      this.createFollowEvent(_scene, _debugBox);
+    }
+  }, {
+    key: "createDisableRightClick",
+    value: function createDisableRightClick() {
+      window.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
     }
   }, {
     key: "createSize",
@@ -3130,12 +3156,24 @@ function () {
       return this.cursorKey;
     }
   }, {
+    key: "setFollowConfig",
+    value: function setFollowConfig() {
+      this.followConfig.x = this.size.w - this.mainCamera.scrollX;
+      this.followConfig.y = this.size.h - this.mainCamera.scrollY;
+      this.followConfig.zoom = this.mainCamera.zoom;
+    }
+  }, {
+    key: "getPrevFollowConfig",
+    value: function getPrevFollowConfig() {
+      return this.followConfig;
+    }
+  }, {
     key: "createConsoleCmd",
     value: function createConsoleCmd(_scene, _debugBox) {
       var _this = this;
 
       // when press command SHIFT + C
-      _scene.input.keyboard.on('keydown-C', function () {
+      _scene.input.keyboard.on('keyup-C', function () {
         if (_this.chckCmdShiftKeyDown()) {
           // if focus
           var tmpFocusGameObj = _debugBox.getFocusGameObj();
@@ -3193,7 +3231,7 @@ function () {
       }); // when press command SHIFT + F
 
 
-      _scene.input.keyboard.on('keydown-F', function () {
+      _scene.input.keyboard.on('keyup-F', function () {
         if (_this3.chckCmdShiftKeyDown()) {
           // set gameObj via which pointer over on
           var tmpGameObj = _debugBox.getOverGameObj();
@@ -3208,12 +3246,17 @@ function () {
     value: function createDetailEvent(_scene, _debugBox, _folder) {
       var _this4 = this;
 
-      _scene.input.keyboard.on('keydown-D', function () {
+      _scene.input.keyboard.on('keyup-D', function () {
         var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
         if ( // chck if focus valid & shift key down
         tmpFocusGameObj && _this4.chckCmdShiftKeyDown()) {
-          _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
+          // chck isDetailedOpen boolean then go 2 detailed or basic
+          if (_folder.getDetailedStatus()) {
+            _folder.back2Basic(tmpFocusGameObj.guiIdx);
+          } else {
+            _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
+          }
         }
       });
     }
@@ -3223,7 +3266,7 @@ function () {
       var _this5 = this;
 
       // when press command SHIFT + V, visible on/off logic
-      _scene.input.keyboard.on('keydown-V', function (_pointer, _gameObj) {
+      _scene.input.keyboard.on('keyup-V', function (_pointer, _gameObj) {
         var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
         if ( // chck if focus valid & shift key down
@@ -3250,28 +3293,57 @@ function () {
             _this6.mainCamera.zoomTo(tmpCal, 100);
           }
         }
-      }); // get back to default zoom value
+      }); // SHIFT + RIGHT CLICK to panning camera to pointer position
 
 
-      _scene.input.keyboard.on('keydown-S', function (_pointer, _gameObj) {
+      _scene.input.on('pointerup', function (_pointer, _gameObj) {
+        if (_this6.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
+          _this6.mainCamera.pan(_pointer.x, _pointer.y, 250, 'Power2');
+
+          (0, _DebugConsoleFunc.DebugPointerPosition)(_this6.mainCamera, _pointer);
+        }
+      }); // SHIFT + S get back to default zoom value
+
+
+      _scene.input.keyboard.on('keyup-S', function (_pointer, _gameObj) {
         if (_this6.chckCmdShiftKeyDown()) {
-          _this6.mainCamera.pan(_this6.size.w / 2, _this6.size.h / 2, 250, 'Elastic');
-
-          _this6.mainCamera.zoomTo(1, 0);
+          _this6.set2defaultZoom();
         }
       });
     }
   }, {
+    key: "set2defaultZoom",
+    value: function set2defaultZoom() {
+      this.mainCamera.pan(this.size.w / 2, this.size.h / 2, 250, 'Elastic');
+      this.mainCamera.zoomTo(1, 0);
+    }
+  }, {
     key: "createFollowEvent",
-    value: function createFollowEvent(_scene) {
+    value: function createFollowEvent(_scene, _debugBox) {
       var _this7 = this;
 
       // main camera just follows focus game obj
-      _scene.input.keyboard.on('keydown-A', function (_pointer, _gameObj) {
-        if (_this7.chckCmdShiftKeyDown()) {
-          var tmpFocusGameObj = _debugBox.getFocusGameObj();
+      _scene.input.keyboard.on('keyup-A', function (_pointer, _gameObj) {
+        var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
-          console.log('keydown a working');
+        if (_this7.chckCmdShiftKeyDown() && tmpFocusGameObj) {
+          console.log('this.mainCamera:', _this7.mainCamera);
+
+          if (!_this7.mainCamera._follow) {
+            _this7.setFollowConfig();
+
+            _this7.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3);
+          } else {
+            var tmpP = _this7.getPrevFollowConfig();
+
+            console.log('tmpP:', tmpP);
+
+            _this7.mainCamera.stopFollow();
+
+            _this7.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
+
+            _this7.mainCamera.zoomTo(tmpP.zoom, 0);
+          }
         }
       });
     } // chck focus then, focus ON game object or OFF
@@ -3436,7 +3508,18 @@ function () {
       var tmpC = {};
       tmpC.folder = undefined;
       tmpC.list = [];
+      tmpC.isDetailedOpen = false;
       return tmpC;
+    }
+  }, {
+    key: "setDeatiledStatus",
+    value: function setDeatiledStatus(_bool) {
+      this.custom.folder.isDetailedOpen = _bool;
+    }
+  }, {
+    key: "getDetailedStatus",
+    value: function getDetailedStatus() {
+      return this.custom.folder.isDetailedOpen;
     }
   }, {
     key: "createBasic",
@@ -3640,8 +3723,7 @@ function () {
       } else {
         // change to all 'NONE'
         this.openBigFolder(this.basic.folder);
-        this.closeFolder(tmpFocus); // this.closeFolder(this.custom.folder);
-
+        this.closeFolder(tmpFocus);
         this.closeBigFolder(this.custom.folder);
         var tmpFuncLength = 2;
         var tmpLength = tmpFocus.__controllers.length - tmpFuncLength;
@@ -3656,12 +3738,16 @@ function () {
     value: function cross2FocusObj(_gameObj, _objList) {
       // actually cross 2 custom_folder/focus_folder(config)
       if (_gameObj) {
-        var tmpObjFolder = this.getCustomFoldersInFolder(); // this.closeFolder(this.basic.folder);
+        var tmpObjFolder = this.getCustomFoldersInFolder(); // chck is any displayed folder exist
 
-        this.closeBigFolder(this.basic.folder); // this.openFolder(this.custom.folder);
+        for (var tmpObj in tmpObjFolder) {
+          this.closeFolder(tmpObjFolder[tmpObj]);
+        }
 
+        this.closeBigFolder(this.basic.folder);
         this.openBigFolder(this.custom.folder);
         this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
+        this.setDeatiledStatus(true);
       } else {// console.warn('_inspector SYSTEM_: NONE Focus');
       }
     }
@@ -3669,14 +3755,14 @@ function () {
     key: "back2Basic",
     value: function back2Basic(_idx) {
       var tmpObjFolder = this.getCustomFoldersInFolder();
-      this.closeFolder(tmpObjFolder[_idx]); // this.closeFolder(this.custom.folder);
-
+      this.closeFolder(tmpObjFolder[_idx]);
+      this.setDeatiledStatus(false);
       this.closeBigFolder(this.custom.folder);
       this.openBigFolder(this.basic.folder);
     }
   }, {
-    key: "closeThisOpenParentContainer",
-    value: function closeThisOpenParentContainer(_arr) {
+    key: "closeThisNopenParentContainer",
+    value: function closeThisNopenParentContainer(_arr) {
       // scope: gameObj
       var tmpLength = _arr[0];
       var tmpParentContainer = _arr[1];
@@ -4256,7 +4342,7 @@ function () {
     key: "create",
     value: function create(_scene) {
       this.createETCClass(_scene);
-      this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
+      this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.input);
       this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
       this.folder.chckOpenAllList();
     }
@@ -4303,16 +4389,17 @@ function () {
     }
   }, {
     key: "createBasicFolder",
-    value: function createBasicFolder(_scene, _lib, _folder, _basic, _debugBox) {
+    value: function createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _input) {
       var _this = this;
 
       // create basic pointer
       var tmpAllConsole = {};
-      tmpAllConsole.GUI_SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.GUI_CLEAR = function () {
+      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.CONSOLE_CLEAR = function () {
         console.clear();
 
         _this.initConsole(_this.libs.getGUIcssObj(), _DebugConsoleFunc.DebugConsole);
       };
+      tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
       var tmpPointer = undefined;
       var tmpXY = {};
       tmpXY.x = _scene.game.config.width;
@@ -4348,15 +4435,18 @@ function () {
         GUI_GO_2_DETAIL: tmpGo2ThisFunc
       }; // setting folder hierarchy list
 
-      _basic.add(tmpAllConsole, 'GUI_SCENE_LIST');
+      _basic.add(tmpAllConsole, 'SCENE_LIST');
 
-      _basic.add(tmpAllConsole, 'GUI_CLEAR');
+      _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
+
+      _basic.add(tmpAllConsole, 'DEFAULT_CAM');
 
       _lib.addFolderInBasic(_basic);
 
       tmpPointer = _basic.addFolder('Pointer');
       tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
       tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
+      tmpPointer.add(_scene.cameras.main, 'zoom').min(0.1).listen();
       tmpObj = _basic.addFolder('Obj');
       tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
       tmpObj.add(tmpObjProperties, 'name').listen();
@@ -4568,7 +4658,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51267" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61470" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -62,7 +62,7 @@ export class GUIClass {
     }
     create(_scene) {
         this.createETCClass(_scene);
-        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox);
+        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.input);
         this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
         this.folder.chckOpenAllList();
     }
@@ -100,13 +100,14 @@ export class GUIClass {
         }
         return tmpSM;
     }
-    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox) { // create basic pointer
+    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _input) { // create basic pointer
         let tmpAllConsole = {};
-        tmpAllConsole.GUI_SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
-        tmpAllConsole.GUI_CLEAR = () => {
+        tmpAllConsole.SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
+        tmpAllConsole.CONSOLE_CLEAR = () => {
             console.clear();
             this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
         }
+        tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
         let tmpPointer = undefined;
         let tmpXY = {};
         tmpXY.x = _scene.game.config.width;
@@ -139,12 +140,14 @@ export class GUIClass {
         };
 
         // setting folder hierarchy list
-        _basic.add(tmpAllConsole, 'GUI_SCENE_LIST');
-        _basic.add(tmpAllConsole, 'GUI_CLEAR');
+        _basic.add(tmpAllConsole, 'SCENE_LIST');
+        _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
+        _basic.add(tmpAllConsole, 'DEFAULT_CAM');
         _lib.addFolderInBasic(_basic);
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
         tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
+        tmpPointer.add(_scene.cameras.main, 'zoom').min(0.1).listen();
         tmpObj = _basic.addFolder('Obj');
         tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
         tmpObj.add(tmpObjProperties, 'name').listen();

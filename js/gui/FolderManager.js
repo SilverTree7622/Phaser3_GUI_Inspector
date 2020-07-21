@@ -44,7 +44,14 @@ export default class FolderManager {
         let tmpC = {};
         tmpC.folder = undefined;
         tmpC.list = [];
+        tmpC.isDetailedOpen = false;
         return tmpC;
+    }
+    setDeatiledStatus(_bool) {
+        this.custom.folder.isDetailedOpen = _bool;
+    }
+    getDetailedStatus() {
+        return this.custom.folder.isDetailedOpen;
     }
     createBasic() {
         this.basic.folder = this.GUI.addFolder('BASIC');
@@ -68,7 +75,6 @@ export default class FolderManager {
                 this.closeBigFolder(_basic);
             }
         });
-
         tmpCustomTitle.addEventListener('pointerup', (_event) => {
             if (_custom.closed) { // result is open
                 this.closeChildrenFolder(_custom);
@@ -77,7 +83,6 @@ export default class FolderManager {
                 this.openChildrenFolder(_custom);
             }
         });
-        
     }
 
     push2FolderList(_folder, _isBasic) {
@@ -194,7 +199,6 @@ export default class FolderManager {
         else { // change to all 'NONE'
             this.openBigFolder(this.basic.folder);
             this.closeFolder(tmpFocus);
-            // this.closeFolder(this.custom.folder);
             this.closeBigFolder(this.custom.folder);
             let tmpFuncLength = 2;
             let tmpLength = tmpFocus.__controllers.length - tmpFuncLength;
@@ -206,11 +210,14 @@ export default class FolderManager {
     cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
         if (_gameObj) {
             let tmpObjFolder = this.getCustomFoldersInFolder();
-            // this.closeFolder(this.basic.folder);
+            // chck is any displayed folder exist
+            for (let tmpObj in tmpObjFolder) {
+                this.closeFolder(tmpObjFolder[tmpObj]);
+            }
             this.closeBigFolder(this.basic.folder);
-            // this.openFolder(this.custom.folder);
             this.openBigFolder(this.custom.folder);
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
+            this.setDeatiledStatus(true);
         }
         else {
             // console.warn('_inspector SYSTEM_: NONE Focus');
@@ -219,11 +226,11 @@ export default class FolderManager {
     back2Basic(_idx) {
         let tmpObjFolder = this.getCustomFoldersInFolder();
         this.closeFolder(tmpObjFolder[_idx]);
-        // this.closeFolder(this.custom.folder);
+        this.setDeatiledStatus(false);
         this.closeBigFolder(this.custom.folder);
         this.openBigFolder(this.basic.folder);
     }
-    closeThisOpenParentContainer(_arr) {
+    closeThisNopenParentContainer(_arr) {
         // scope: gameObj
         let tmpLength = _arr[0];
         let tmpParentContainer = _arr[1];

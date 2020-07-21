@@ -1,5 +1,5 @@
 
-import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
+import { DebugGetThisConsole, DebugPointerPosition } from '../utils/DebugConsoleFunc.js';
 
 export default class InputManager {
     constructor() {
@@ -7,8 +7,12 @@ export default class InputManager {
         this.mainCamera = undefined;
         this.cursorKey = undefined;
         this.wheelValue = 150;
+        this.followConfig = {
+            x: 0, y: 0, zoom: 1
+        };
     }
     create(_scene, _debugBox, _folder) {
+        this.createDisableRightClick();
         this.createSize(_scene);
         this.createMainCamera(_scene);
         this.createCursorKey(_scene);
@@ -17,11 +21,15 @@ export default class InputManager {
         this.createFocusEvent(_scene, _debugBox, _folder);
         this.createDetailEvent(_scene, _debugBox, _folder);
         this.createVisibleEvent(_scene, _debugBox);
-        // + camera zoom event & follow focus game obj event
         this.createCameraEvent(_scene);
-        this.createFollowEvent(_scene);
+        this.createFollowEvent(_scene, _debugBox);
     }
-
+    
+    createDisableRightClick() {
+        window.addEventListener('contextmenu', (e) => {
+            e.preventDefault(); 
+        });
+    }
     createSize(_scene) {
         this.size.w = _scene.game.config.width;
         this.size.h = _scene.game.config.height;
@@ -35,10 +43,18 @@ export default class InputManager {
     getCursorKey() {
         return this.cursorKey;
     }
+    setFollowConfig() {
+        this.followConfig.x = this.size.w - this.mainCamera.scrollX;
+        this.followConfig.y = this.size.h - this.mainCamera.scrollY;
+        this.followConfig.zoom = this.mainCamera.zoom;
+    }
+    getPrevFollowConfig() {
+        return this.followConfig;
+    }
 
     createConsoleCmd(_scene, _debugBox) {
         // when press command SHIFT + C
-        _scene.input.keyboard.on('keydown-C', () => {
+        _scene.input.keyboard.on('keyup-C', () => {
             if (this.chckCmdShiftKeyDown()) { // if focus
                 let tmpFocusGameObj = _debugBox.getFocusGameObj();
                 if (tmpFocusGameObj) {
@@ -76,7 +92,7 @@ export default class InputManager {
             }
         });
         // when press command SHIFT + F
-        _scene.input.keyboard.on('keydown-F', () => {
+        _scene.input.keyboard.on('keyup-F', () => {
             if (this.chckCmdShiftKeyDown()) {
                 // set gameObj via which pointer over on
                 let tmpGameObj = _debugBox.getOverGameObj();
@@ -87,21 +103,27 @@ export default class InputManager {
 
     // when focused, SHIFT + D deep into the focused obj in detailed property
     createDetailEvent(_scene, _debugBox, _folder) {
-        _scene.input.keyboard.on('keydown-D', () => {
+        _scene.input.keyboard.on('keyup-D', () => {
             let tmpFocusGameObj = _debugBox.getFocusGameObj();
             if ( // chck if focus valid & shift key down
                 tmpFocusGameObj &&
                 this.chckCmdShiftKeyDown()
                 )
-            {    
-                _folder.cross2FocusObj(_debugBox.getFocusGameObj(), this.objList);
+            {
+                // chck isDetailedOpen boolean then go 2 detailed or basic
+                if (_folder.getDetailedStatus()) {
+                    _folder.back2Basic(tmpFocusGameObj.guiIdx);
+                }
+                else {
+                    _folder.cross2FocusObj(_debugBox.getFocusGameObj(), this.objList);
+                } 
             }
         });
     }
 
     createVisibleEvent(_scene, _debugBox) {
         // when press command SHIFT + V, visible on/off logic
-        _scene.input.keyboard.on('keydown-V', (_pointer, _gameObj) => {
+        _scene.input.keyboard.on('keyup-V', (_pointer, _gameObj) => {
             let tmpFocusGameObj = _debugBox.getFocusGameObj();
             if ( // chck if focus valid & shift key down
                 tmpFocusGameObj &&
@@ -126,21 +148,42 @@ export default class InputManager {
                 }
             }
         });
-        // get back to default zoom value
-        _scene.input.keyboard.on('keydown-S', (_pointer, _gameObj) => {
+        // SHIFT + RIGHT CLICK to panning camera to pointer position
+        _scene.input.on('pointerup', (_pointer, _gameObj) => {
+            if (this.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
+                this.mainCamera.pan(_pointer.x, _pointer.y, 250, 'Power2');
+                DebugPointerPosition(this.mainCamera, _pointer);
+            }
+        });
+        // SHIFT + S get back to default zoom value
+        _scene.input.keyboard.on('keyup-S', (_pointer, _gameObj) => {
             if (this.chckCmdShiftKeyDown()) {
-                this.mainCamera.pan(this.size.w/2, this.size.h/2, 250, 'Elastic');
-                this.mainCamera.zoomTo(1, 0);
+                this.set2defaultZoom();
             }
         });
     }
-    createFollowEvent(_scene) {
+    set2defaultZoom() {
+        this.mainCamera.pan(this.size.w/2, this.size.h/2, 250, 'Elastic');
+        this.mainCamera.zoomTo(1, 0);
+    }
+    createFollowEvent(_scene, _debugBox) {
         // main camera just follows focus game obj
-        _scene.input.keyboard.on('keydown-A', (_pointer, _gameObj) => {
-            if (this.chckCmdShiftKeyDown()) {
-                let tmpFocusGameObj = _debugBox.getFocusGameObj();
-                console.log('keydown a working');
+        _scene.input.keyboard.on('keyup-A', (_pointer, _gameObj) => {
+            let tmpFocusGameObj = _debugBox.getFocusGameObj();
+            if (this.chckCmdShiftKeyDown() && tmpFocusGameObj) {
                 
+                console.log('this.mainCamera:', this.mainCamera);
+                if (!this.mainCamera._follow) {
+                    this.setFollowConfig();
+                    this.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3);
+                }
+                else {
+                    let tmpP = this.getPrevFollowConfig();
+                    console.log('tmpP:', tmpP);
+                    this.mainCamera.stopFollow();
+                    this.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
+                    this.mainCamera.zoomTo(tmpP.zoom, 0);
+                }
             }
         });
     }

@@ -25,7 +25,7 @@ export function DebugConsole(_obj) {
         let tmpMiddle = ',';
         if (i === tmpShadowList.length - 1) {
             tmpMiddle = ';';
-        } else {}
+        }
         tmpShadow += tmpShadowList[i] + tmpMiddle;
     }
     let tmpStyle1 = 'font-weight:bold; font-size:25px; color: rgb(255, 111, 0);' + tmpShadow;
@@ -55,4 +55,22 @@ export function DebugSceneNAllDisplayList() {
     let tmpInfo = ': |Scene| & |DisplayList|\n';
     let tmpStyle = 'color: white; background: rgb(250, 0, 0);';
     return console.log(tmpInit, tmpStyle, tmpInfo, this, '\n', tmpDisplayList);
+}
+
+export function DebugPointerPosition(_mainCamera, _pointer) {
+    let tmpInit = '%c_PGI Pointer Info_';
+    let tmpStyle = 'color: white; background: rgb(125, 0, 125);';
+    let tmpGap = ':';
+    let tmpXStr = 'X:';
+    let tmpX = _pointer.x;
+    let tmpYStr = 'Y:';
+    let tmpY = _pointer.y;
+    let tmpZoomStr = 'ZoomRate:';
+    let tmpZoom = _mainCamera.zoom;
+
+    return console.log(
+        tmpInit, tmpStyle, tmpGap, '\n',
+        tmpXStr, tmpX, tmpYStr, tmpY, '\n',
+        tmpZoomStr, tmpZoom
+    );
 }
