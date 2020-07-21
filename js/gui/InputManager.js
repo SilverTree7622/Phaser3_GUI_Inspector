@@ -44,8 +44,8 @@ export default class InputManager {
         return this.cursorKey;
     }
     setFollowConfig() {
-        this.followConfig.x = this.size.w - this.mainCamera.scrollX;
-        this.followConfig.y = this.size.h - this.mainCamera.scrollY;
+        this.followConfig.x = this.mainCamera.midPoint.x;
+        this.followConfig.y = this.mainCamera.midPoint.y;
         this.followConfig.zoom = this.mainCamera.zoom;
     }
     getPrevFollowConfig() {

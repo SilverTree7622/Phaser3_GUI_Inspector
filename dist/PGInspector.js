@@ -3158,8 +3158,8 @@ function () {
   }, {
     key: "setFollowConfig",
     value: function setFollowConfig() {
-      this.followConfig.x = this.size.w - this.mainCamera.scrollX;
-      this.followConfig.y = this.size.h - this.mainCamera.scrollY;
+      this.followConfig.x = this.mainCamera.midPoint.x;
+      this.followConfig.y = this.mainCamera.midPoint.y;
       this.followConfig.zoom = this.mainCamera.zoom;
     }
   }, {
@@ -4658,7 +4658,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61470" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49870" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
