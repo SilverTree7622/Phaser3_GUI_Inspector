@@ -3101,20 +3101,36 @@ function () {
   function InputManager() {
     _classCallCheck(this, InputManager);
 
-    this.size = {};
-    this.mainCamera = undefined;
-    this.cursorKey = undefined;
-    this.wheelValue = 150;
+    this.scene; // game size width, height
+
+    this.size = {
+      w: 0,
+      h: 0
+    };
+    this.mainCamera;
+    this.cursorKey; // wheel one const tick gap value
+
+    this.wheelValue = 150; // previous follow config
+
     this.followConfig = {
       x: 0,
       y: 0,
       zoom: 1
+    }; // drag values
+
+    this.dragConfig = {
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0
     };
+    this.isDraggable = false;
   }
 
   _createClass(InputManager, [{
     key: "create",
     value: function create(_scene, _debugBox, _folder) {
+      this.createInitScene(_scene);
       this.createDisableRightClick();
       this.createSize(_scene);
       this.createMainCamera(_scene);
@@ -3128,8 +3144,19 @@ function () {
       this.createFollowEvent(_scene, _debugBox);
     }
   }, {
+    key: "update",
+    value: function update() {
+      this.updateDrag();
+    }
+  }, {
+    key: "createInitScene",
+    value: function createInitScene(_scene) {
+      this.scene = _scene;
+    }
+  }, {
     key: "createDisableRightClick",
     value: function createDisableRightClick() {
+      // disable right click pop up
       window.addEventListener('contextmenu', function (e) {
         e.preventDefault();
       });
@@ -3139,6 +3166,11 @@ function () {
     value: function createSize(_scene) {
       this.size.w = _scene.game.config.width;
       this.size.h = _scene.game.config.height;
+    }
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      return this.size;
     }
   }, {
     key: "createMainCamera",
@@ -3166,6 +3198,30 @@ function () {
     key: "getPrevFollowConfig",
     value: function getPrevFollowConfig() {
       return this.followConfig;
+    }
+  }, {
+    key: "setDragStartConfig",
+    value: function setDragStartConfig() {
+      this.mainCamera.scrollX = this.dragConfig.scrollX;
+      this.mainCamera.scrollY = this.dragConfig.scrollY;
+      this.dragConfig.x = this.scene.input.x;
+      this.dragConfig.y = this.scene.input.y;
+    }
+  }, {
+    key: "setDragEndConfig",
+    value: function setDragEndConfig() {
+      this.dragConfig.scrollX = this.mainCamera.scrollX;
+      this.dragConfig.scrollY = this.mainCamera.scrollY;
+    }
+  }, {
+    key: "getIsDraggable",
+    value: function getIsDraggable() {
+      return this.isDraggable;
+    }
+  }, {
+    key: "setIsDraggable",
+    value: function setIsDraggable(_bool) {
+      this.isDraggable = _bool;
     }
   }, {
     key: "createConsoleCmd",
@@ -3223,7 +3279,7 @@ function () {
       var _this3 = this;
 
       // when want to focus logic
-      _scene.input.on('gameobjectdown', function (_pointer, _gameObj) {
+      _scene.input.on('gameobjectup', function (_pointer, _gameObj) {
         // if middle button pressed
         if (_this3.chckCommandKey(_pointer)) {
           _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
@@ -3293,12 +3349,22 @@ function () {
             _this6.mainCamera.zoomTo(tmpCal, 100);
           }
         }
-      }); // SHIFT + RIGHT CLICK to panning camera to pointer position
+      }); // SHIFT + RIGTH CLICK to dragging camera scroll position
 
 
-      _scene.input.on('pointerup', function (_pointer, _gameObj) {
+      _scene.input.on('pointerdown', function (_pointer, _gameObj, _dragX, _dragY) {
+        if (_this6.chckCmdShiftKeyDown() && _pointer.rightButtonDown()) {
+          _this6.setDragStartConfig();
+
+          _this6.setIsDraggable(true);
+        }
+      });
+
+      _scene.input.on('pointerup', function (_pointer, _gameObj, _dragX, _dragY) {
+        _this6.setIsDraggable(false);
+
         if (_this6.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
-          _this6.mainCamera.pan(_pointer.x, _pointer.y, 250, 'Power2');
+          _this6.setDragEndConfig();
 
           (0, _DebugConsoleFunc.DebugPointerPosition)(_this6.mainCamera, _pointer);
         }
@@ -3316,6 +3382,10 @@ function () {
     value: function set2defaultZoom() {
       this.mainCamera.pan(this.size.w / 2, this.size.h / 2, 250, 'Elastic');
       this.mainCamera.zoomTo(1, 0);
+      this.mainCamera.scrollX = 0;
+      this.mainCamera.scrollY = 0;
+      this.dragConfig.scrollX = 0;
+      this.dragConfig.scrollY = 0;
     }
   }, {
     key: "createFollowEvent",
@@ -3327,16 +3397,12 @@ function () {
         var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
         if (_this7.chckCmdShiftKeyDown() && tmpFocusGameObj) {
-          console.log('this.mainCamera:', _this7.mainCamera);
-
           if (!_this7.mainCamera._follow) {
             _this7.setFollowConfig();
 
             _this7.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3);
           } else {
             var tmpP = _this7.getPrevFollowConfig();
-
-            console.log('tmpP:', tmpP);
 
             _this7.mainCamera.stopFollow();
 
@@ -3346,6 +3412,16 @@ function () {
           }
         }
       });
+    }
+  }, {
+    key: "updateDrag",
+    value: function updateDrag() {
+      if (this.getIsDraggable()) {
+        var tmpX = this.dragConfig.scrollX + this.dragConfig.x - this.scene.input.x;
+        var tmpY = this.dragConfig.scrollY + this.dragConfig.y - this.scene.input.y;
+        this.mainCamera.scrollX = tmpX;
+        this.mainCamera.scrollY = tmpY;
+      }
     } // chck focus then, focus ON game object or OFF
 
   }, {
@@ -3402,10 +3478,10 @@ function () {
   }, {
     key: "chckCommandKey",
     value: function chckCommandKey(_pointer) {
-      var tmpBool = undefined;
+      var tmpBool;
 
-      if (this.getCursorKey().shift.isDown && _pointer.leftButtonDown() || // shift + mouse left click or
-      !_pointer.rightButtonDown() && !_pointer.leftButtonDown()) {
+      if (this.getCursorKey().shift.isDown && _pointer.leftButtonReleased() || // shift + mouse left click or
+      !_pointer.rightButtonReleased() && !_pointer.leftButtonReleased()) {
         // mouse middle button
         tmpBool = true;
       } else {
@@ -3947,16 +4023,19 @@ function () {
   function DebugBoxClass() {
     _classCallCheck(this, DebugBoxClass);
 
-    this.scene = undefined;
-    this.graphics = undefined;
-    this.list = undefined;
+    this.input = undefined;
+    this.scene;
+    this.graphics;
+    this.list;
+    this.gameBound = this.initGameBound();
     this.over = this.initOver();
     this.focus = this.initFocus();
   }
 
   _createClass(DebugBoxClass, [{
     key: "create",
-    value: function create(_scene, _list) {
+    value: function create(_scene, _input) {
+      this.input = _input;
       this.createScene(_scene);
       this.createSetting(_scene);
       this.createOver(Phaser.Geom.Rectangle);
@@ -3964,10 +4043,22 @@ function () {
     }
   }, {
     key: "update",
-    value: function update(_time, _delta, _list) {
+    value: function update(_time, _delta) {
       this.clearDebugBox();
+      this.updateSizeBound();
       this.updateChaseOver();
       this.updateChaseFocus();
+    }
+  }, {
+    key: "initGameBound",
+    value: function initGameBound() {
+      var tmpS = {};
+      tmpS.self;
+      tmpS.style = {
+        stroke: 3,
+        color: 0x7fa5e3
+      };
+      return tmpS;
     }
   }, {
     key: "initOver",
@@ -4023,6 +4114,19 @@ function () {
       this.focus.self = new _geomRectangle(0, 0, 1, 1);
     }
   }, {
+    key: "updateSizeBound",
+    value: function updateSizeBound() {
+      if (this.input.getIsDraggable()) {
+        this.graphics.lineStyle(this.gameBound.style.stroke, this.gameBound.style.color);
+        this.graphics.strokeRectShape({
+          x: 0,
+          y: 0,
+          width: this.input.size.w,
+          height: this.input.size.h
+        });
+      }
+    }
+  }, {
     key: "updateChaseOver",
     value: function updateChaseOver() {
       if (this.over.self && this.over.gameObj) {
@@ -4034,8 +4138,6 @@ function () {
     value: function updateChaseFocus() {
       if (this.focus.self && this.focus.gameObj) {
         this.setFocus(this.focus.gameObj);
-      } else {// console.log('this.focus.self:', this.focus.self);
-        // console.log('this.focus.gameObj:', this.focus.gameObj);
       }
     } // EXTERNAL: get logic
 
@@ -4065,13 +4167,7 @@ function () {
     value: function setOver(_gameObj) {
       this.over.gameObj = _gameObj;
       this.setDebugBox(this.over, _gameObj);
-    } // setFocus(_gameObj) {
-    //     if (_gameObj) { // check is gameObj
-    //         this.focus.gameObj = _gameObj;
-    //         this.setDebugBox(this.focus, _gameObj);
-    //     } else {}
-    // }
-
+    }
   }, {
     key: "setClearNFocus",
     value: function setClearNFocus(_gameObj) {
@@ -4115,7 +4211,7 @@ function () {
         _gameObj.isFocusOnGUI = true;
         this.focus.gameObj = _gameObj;
         this.setDebugBox(this.focus, _gameObj);
-      } else {}
+      }
     }
   }, {
     key: "setFocusPerformance",
@@ -4135,7 +4231,7 @@ function () {
         tmpTwConfig.from = 255;
         tmpTwConfig.to = 120;
         tmpTwConfig.isTint = true;
-      } else {}
+      }
 
       _gameObj.focusTw = this.scene.tweens.addCounter({
         from: tmpTwConfig.from,
@@ -4351,20 +4447,21 @@ function () {
     value: function createETCClass(_scene) {
       this.folder.create(_scene);
       this.save.create(_scene);
-      this.debugBox.create(_scene);
+      this.debugBox.create(_scene, this.input);
       this.input.create(_scene, this.debugBox, this.folder);
     }
   }, {
     key: "update",
     value: function update(_time, _delta) {
-      this.debugBox.update(_time, _delta, this.objList);
+      this.debugBox.update(_time, _delta);
+      this.input.update();
     }
   }, {
     key: "initConsole",
     value: function initConsole(_cssObj) {
       var tmpName = ' PGInspector.js';
       var tmpVersion = '1.2.0';
-      var tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
+      var tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
       (0, _DebugConsoleFunc.DebugConsole)({
         name: tmpName,
         version: tmpVersion,
@@ -4394,12 +4491,14 @@ function () {
 
       // create basic pointer
       var tmpAllConsole = {};
-      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.CONSOLE_CLEAR = function () {
+
+      tmpAllConsole.CONSOLE_CLEAR = function () {
         console.clear();
 
         _this.initConsole(_this.libs.getGUIcssObj(), _DebugConsoleFunc.DebugConsole);
       };
-      tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
+
+      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
       var tmpPointer = undefined;
       var tmpXY = {};
       tmpXY.x = _scene.game.config.width;
@@ -4435,9 +4534,9 @@ function () {
         GUI_GO_2_DETAIL: tmpGo2ThisFunc
       }; // setting folder hierarchy list
 
-      _basic.add(tmpAllConsole, 'SCENE_LIST');
-
       _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
+
+      _basic.add(tmpAllConsole, 'SCENE_LIST');
 
       _basic.add(tmpAllConsole, 'DEFAULT_CAM');
 

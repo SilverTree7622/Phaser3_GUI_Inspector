@@ -69,18 +69,19 @@ export class GUIClass {
     createETCClass(_scene) {
         this.folder.create(_scene);
         this.save.create(_scene);
-        this.debugBox.create(_scene);
+        this.debugBox.create(_scene, this.input);
         this.input.create(_scene, this.debugBox, this.folder);
     }
     update(_time, _delta) {
-        this.debugBox.update(_time, _delta, this.objList);
+        this.debugBox.update(_time, _delta);
+        this.input.update();
     }
 
 
     initConsole(_cssObj) {
         let tmpName = ' PGInspector.js';
         let tmpVersion = '1.2.0';
-        let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
+        let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
         DebugConsole({
             name: tmpName,
             version: tmpVersion,
@@ -102,11 +103,11 @@ export class GUIClass {
     }
     createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _input) { // create basic pointer
         let tmpAllConsole = {};
-        tmpAllConsole.SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
         tmpAllConsole.CONSOLE_CLEAR = () => {
             console.clear();
             this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
         }
+        tmpAllConsole.SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
         tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
         let tmpPointer = undefined;
         let tmpXY = {};
@@ -140,8 +141,8 @@ export class GUIClass {
         };
 
         // setting folder hierarchy list
-        _basic.add(tmpAllConsole, 'SCENE_LIST');
         _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
+        _basic.add(tmpAllConsole, 'SCENE_LIST');
         _basic.add(tmpAllConsole, 'DEFAULT_CAM');
         _lib.addFolderInBasic(_basic);
         tmpPointer = _basic.addFolder('Pointer');

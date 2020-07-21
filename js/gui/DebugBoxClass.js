@@ -2,24 +2,37 @@
 // make debug box with phaser graphics
 export default class DebugBoxClass {
     constructor() {
-        this.scene = undefined;
-        this.graphics = undefined;
-        this.list = undefined;
+        this.input = undefined;
+        this.scene;
+        this.graphics;
+        this.list;
+        this.gameBound = this.initGameBound();
         this.over = this.initOver();
         this.focus = this.initFocus();
     }
-    create(_scene, _list) {
+    create(_scene, _input) {
+        this.input = _input;
         this.createScene(_scene);
         this.createSetting(_scene);
         this.createOver(Phaser.Geom.Rectangle);
         this.createFocus(Phaser.Geom.Rectangle);
     }
-    update(_time, _delta, _list) {
+    update(_time, _delta) {
         this.clearDebugBox();
+        this.updateSizeBound();
         this.updateChaseOver();
         this.updateChaseFocus();
     }
 
+    initGameBound() {
+        let tmpS = {};
+        tmpS.self;
+        tmpS.style = {
+            stroke: 3,
+            color: 0x7fa5e3
+        };
+        return tmpS;
+    }
     initOver() {
         let tmpO = {};
         tmpO.gameObj = undefined; // over game object
@@ -53,6 +66,18 @@ export default class DebugBoxClass {
     createFocus(_geomRectangle) {
         this.focus.self = new _geomRectangle(0, 0, 1, 1);
     }
+
+    updateSizeBound() {
+        if (this.input.getIsDraggable()) {
+            this.graphics.lineStyle(this.gameBound.style.stroke, this.gameBound.style.color);
+            this.graphics.strokeRectShape({
+                x: 0,
+                y: 0,
+                width: this.input.size.w,
+                height: this.input.size.h
+            });
+        }
+    }
     updateChaseOver() {
         if (this.over.self && this.over.gameObj) {
             this.setOver(this.over.gameObj);
@@ -61,10 +86,6 @@ export default class DebugBoxClass {
     updateChaseFocus() {
         if (this.focus.self && this.focus.gameObj) {
             this.setFocus(this.focus.gameObj);
-        }
-        else {
-            // console.log('this.focus.self:', this.focus.self);
-            // console.log('this.focus.gameObj:', this.focus.gameObj);
         }
     }
 
@@ -86,12 +107,6 @@ export default class DebugBoxClass {
         this.over.gameObj = _gameObj;
         this.setDebugBox(this.over, _gameObj);
     }
-    // setFocus(_gameObj) {
-    //     if (_gameObj) { // check is gameObj
-    //         this.focus.gameObj = _gameObj;
-    //         this.setDebugBox(this.focus, _gameObj);
-    //     } else {}
-    // }
     setClearNFocus(_gameObj) {
         this.clearDebugBox();
         this.setFocus(_gameObj);
@@ -129,7 +144,7 @@ export default class DebugBoxClass {
             _gameObj.isFocusOnGUI = true;
             this.focus.gameObj = _gameObj;
             this.setDebugBox(this.focus, _gameObj);
-        } else {}
+        }
     }
     setFocusPerformance(_gameObj, _folder) { // flickering tween performance
         let tmpTwConfig = { // basically, this is for container tween setting ALPHA
@@ -141,7 +156,7 @@ export default class DebugBoxClass {
             tmpTwConfig.from = 255;
             tmpTwConfig.to = 120;
             tmpTwConfig.isTint = true;
-        } else {}
+        }
 
         _gameObj.focusTw = this.scene.tweens.addCounter({
             from: tmpTwConfig.from, to: tmpTwConfig.to,

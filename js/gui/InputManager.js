@@ -3,15 +3,21 @@ import { DebugGetThisConsole, DebugPointerPosition } from '../utils/DebugConsole
 
 export default class InputManager {
     constructor() {
-        this.size = {};
-        this.mainCamera = undefined;
-        this.cursorKey = undefined;
+        this.scene;
+        // game size width, height
+        this.size = { w: 0, h: 0 };
+        this.mainCamera;
+        this.cursorKey;
+        // wheel one const tick gap value
         this.wheelValue = 150;
-        this.followConfig = {
-            x: 0, y: 0, zoom: 1
-        };
+        // previous follow config
+        this.followConfig = { x: 0, y: 0, zoom: 1 };
+        // drag values
+        this.dragConfig = { x: 0, y: 0, scrollX: 0, scrollY: 0 };
+        this.isDraggable = false;
     }
     create(_scene, _debugBox, _folder) {
+        this.createInitScene(_scene);
         this.createDisableRightClick();
         this.createSize(_scene);
         this.createMainCamera(_scene);
@@ -24,15 +30,25 @@ export default class InputManager {
         this.createCameraEvent(_scene);
         this.createFollowEvent(_scene, _debugBox);
     }
+    update() {
+        this.updateDrag();
+    }
     
+    createInitScene(_scene) {
+        this.scene = _scene;
+    }
     createDisableRightClick() {
+        // disable right click pop up
         window.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
         });
     }
     createSize(_scene) {
         this.size.w = _scene.game.config.width;
         this.size.h = _scene.game.config.height;
+    }
+    getSize() {
+        return this.size;
     }
     createMainCamera(_scene) {
         this.mainCamera = _scene.cameras.main;
@@ -50,6 +66,22 @@ export default class InputManager {
     }
     getPrevFollowConfig() {
         return this.followConfig;
+    }
+    setDragStartConfig() {
+        this.mainCamera.scrollX = this.dragConfig.scrollX;
+        this.mainCamera.scrollY = this.dragConfig.scrollY;
+        this.dragConfig.x = this.scene.input.x;
+        this.dragConfig.y = this.scene.input.y;
+    }
+    setDragEndConfig() {
+        this.dragConfig.scrollX = this.mainCamera.scrollX;
+        this.dragConfig.scrollY = this.mainCamera.scrollY;
+    }
+    getIsDraggable() {
+        return this.isDraggable;
+    }
+    setIsDraggable(_bool) {
+        this.isDraggable = _bool;
     }
 
     createConsoleCmd(_scene, _debugBox) {
@@ -85,7 +117,7 @@ export default class InputManager {
     }
     createFocusEvent(_scene, _debugBox, _folder) {
         // when want to focus logic
-        _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {
+        _scene.input.on('gameobjectup', (_pointer, _gameObj) => {
             // if middle button pressed
             if (this.chckCommandKey(_pointer)) {
                 this.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
@@ -148,13 +180,22 @@ export default class InputManager {
                 }
             }
         });
-        // SHIFT + RIGHT CLICK to panning camera to pointer position
-        _scene.input.on('pointerup', (_pointer, _gameObj) => {
+
+        // SHIFT + RIGTH CLICK to dragging camera scroll position
+        _scene.input.on('pointerdown', (_pointer, _gameObj, _dragX, _dragY) => {
+            if (this.chckCmdShiftKeyDown() && _pointer.rightButtonDown()) {
+                this.setDragStartConfig();
+                this.setIsDraggable(true);
+            }
+        });
+        _scene.input.on('pointerup', (_pointer, _gameObj, _dragX, _dragY) => {
+            this.setIsDraggable(false);
             if (this.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
-                this.mainCamera.pan(_pointer.x, _pointer.y, 250, 'Power2');
+                this.setDragEndConfig();
                 DebugPointerPosition(this.mainCamera, _pointer);
             }
         });
+        
         // SHIFT + S get back to default zoom value
         _scene.input.keyboard.on('keyup-S', (_pointer, _gameObj) => {
             if (this.chckCmdShiftKeyDown()) {
@@ -165,27 +206,36 @@ export default class InputManager {
     set2defaultZoom() {
         this.mainCamera.pan(this.size.w/2, this.size.h/2, 250, 'Elastic');
         this.mainCamera.zoomTo(1, 0);
+        this.mainCamera.scrollX = 0;
+        this.mainCamera.scrollY = 0;
+        this.dragConfig.scrollX = 0;
+        this.dragConfig.scrollY = 0;
     }
     createFollowEvent(_scene, _debugBox) {
         // main camera just follows focus game obj
         _scene.input.keyboard.on('keyup-A', (_pointer, _gameObj) => {
             let tmpFocusGameObj = _debugBox.getFocusGameObj();
             if (this.chckCmdShiftKeyDown() && tmpFocusGameObj) {
-                
-                console.log('this.mainCamera:', this.mainCamera);
                 if (!this.mainCamera._follow) {
                     this.setFollowConfig();
                     this.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3);
                 }
                 else {
                     let tmpP = this.getPrevFollowConfig();
-                    console.log('tmpP:', tmpP);
                     this.mainCamera.stopFollow();
                     this.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
                     this.mainCamera.zoomTo(tmpP.zoom, 0);
                 }
             }
         });
+    }
+    updateDrag() {
+        if (this.getIsDraggable()) {
+            let tmpX = this.dragConfig.scrollX + this.dragConfig.x - this.scene.input.x;
+            let tmpY = this.dragConfig.scrollY + this.dragConfig.y - this.scene.input.y;
+            this.mainCamera.scrollX = tmpX;
+            this.mainCamera.scrollY = tmpY;
+        }
     }
 
     // chck focus then, focus ON game object or OFF
@@ -231,9 +281,9 @@ export default class InputManager {
         }
     }
     chckCommandKey(_pointer) {
-        let tmpBool = undefined;
-        if ((this.getCursorKey().shift.isDown && _pointer.leftButtonDown()) || // shift + mouse left click or
-            (!_pointer.rightButtonDown() && !_pointer.leftButtonDown())) { // mouse middle button
+        let tmpBool;
+        if ((this.getCursorKey().shift.isDown && _pointer.leftButtonReleased()) || // shift + mouse left click or
+            (!_pointer.rightButtonReleased() && !_pointer.leftButtonReleased())) { // mouse middle button
             tmpBool = true;
         }
         else { tmpBool = false; }
