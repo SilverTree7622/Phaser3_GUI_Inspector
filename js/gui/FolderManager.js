@@ -11,6 +11,7 @@ export default class FolderManager {
     create(_scene) {
         this.createBasic();
         this.createCustom();
+        this.createBtnClickEvent(this.basic.folder, this.custom.folder);
     }
     initConfig() { // config
         let tmpC = {};
@@ -51,6 +52,34 @@ export default class FolderManager {
     createCustom() {
         this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
     }
+
+    // TEST
+    createBtnClickEvent(_basic, _custom) {
+
+        // BASIC & CUSTOM folder div placement
+        let tmpBasicTitle = _basic.domElement.getElementsByClassName('title')[0];
+        let tmpCustomTitle = _custom.domElement.getElementsByClassName('title')[0];
+
+        tmpBasicTitle.addEventListener('pointerup', (_event) => {
+            if (_basic.closed) { // result is open
+                this.openBigFolder(_basic);
+            }
+            else { // result is close
+                this.closeBigFolder(_basic);
+            }
+        });
+
+        tmpCustomTitle.addEventListener('pointerup', (_event) => {
+            if (_custom.closed) { // result is open
+                this.closeChildrenFolder(_custom);
+            }
+            else { // result is close
+                this.openChildrenFolder(_custom);
+            }
+        });
+        
+    }
+
     push2FolderList(_folder, _isBasic) {
         if (_isBasic === 'basic') {
             this.basic.list.push(_folder);
@@ -72,6 +101,7 @@ export default class FolderManager {
     }
     add2CustomFolder() {
         let tmpFolder = this.custom.folder.addFolder(this.config.initFolderCnt);
+        this.push2FolderList(tmpFolder, 'custom');
         this.config.initFolderCnt++;
         return tmpFolder;
     }
@@ -91,19 +121,48 @@ export default class FolderManager {
     }
     chckOpenCustomList() {
         if (this.config.openCustomDefault) {
-            let tmpLength = this.custom.list.length;
             this.openFolder(this.custom.folder);
-            for (var i=0; i<tmpLength; i++) {
-                this.openFolder(this.custom.list[i]);
+        }
+        else {
+            for (let i=0; i<this.config.initFolderCnt; i++) {
+                this.closeFolder(this.custom.list[i]);
             }
         }
     }
     // open folder
+    openBigFolder(_folder) {
+        _folder.open();
+    }
+    closeBigFolder(_folder) {
+        _folder.close();
+    }
     openFolder(_folder) {
         _folder.open();
+        this.setFolderDisplay(_folder, 'default');
     }
     closeFolder(_folder) {
         _folder.close();
+        this.setFolderDisplay(_folder, 'none');
+    }
+    openChildrenFolder(_folder) {
+        _folder.open();
+        this.setFolderChildrenDisplay(_folder, 'default');
+    }
+    closeChildrenFolder(_folder) {
+        _folder.close();
+        this.setFolderChildrenDisplay(_folder, 'none');
+    }
+    setFolderDisplay(_folder, _cmd) {
+        const tmpCmds = {none: 'none', default: ''};
+        _folder.domElement.style.display = tmpCmds[_cmd];
+    }
+    setFolderChildrenDisplay(_folder, _cmd) {
+        const tmpCmds = {none: 'none', default: ''};
+        // control individual property dom display
+        let tmpLength = Object.keys(_folder.__folders).length;
+        for (let i=0; i<tmpLength; i++) {
+            _folder.__folders[String(i)].domElement.style = tmpCmds[_cmd];
+        }
     }
 
     // EXTERNAL
@@ -133,9 +192,10 @@ export default class FolderManager {
             tmpFocus.__controllers[3].setValue(tmpTexture);
         }
         else { // change to all 'NONE'
-            this.openFolder(this.basic.folder);
+            this.openBigFolder(this.basic.folder);
             this.closeFolder(tmpFocus);
-            this.closeFolder(this.custom.folder);
+            // this.closeFolder(this.custom.folder);
+            this.closeBigFolder(this.custom.folder);
             let tmpFuncLength = 2;
             let tmpLength = tmpFocus.__controllers.length - tmpFuncLength;
             for (var i=0; i<tmpLength; i++) {
@@ -146,8 +206,10 @@ export default class FolderManager {
     cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
         if (_gameObj) {
             let tmpObjFolder = this.getCustomFoldersInFolder();
-            this.closeFolder(this.basic.folder);
-            this.openFolder(this.custom.folder);
+            // this.closeFolder(this.basic.folder);
+            this.closeBigFolder(this.basic.folder);
+            // this.openFolder(this.custom.folder);
+            this.openBigFolder(this.custom.folder);
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
         }
         else {
@@ -157,8 +219,9 @@ export default class FolderManager {
     back2Basic(_idx) {
         let tmpObjFolder = this.getCustomFoldersInFolder();
         this.closeFolder(tmpObjFolder[_idx]);
-        this.closeFolder(this.custom.folder);
-        this.openFolder(this.basic.folder);
+        // this.closeFolder(this.custom.folder);
+        this.closeBigFolder(this.custom.folder);
+        this.openBigFolder(this.basic.folder);
     }
     closeThisOpenParentContainer(_arr) {
         // scope: gameObj

@@ -177,24 +177,24 @@ export default class TypeSortManager {
         }
     }
     createCommonBack(_folderInCustom, _gameObj) {
-        this.tryCatch(_folderInCustom, _gameObj, 'x');
-        this.tryCatch(_folderInCustom, _gameObj, 'y');
-        this.tryCatch(_folderInCustom, _gameObj, 'width');
-        this.tryCatch(_folderInCustom, _gameObj, 'height');
-        this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+        this.tryCatch(_folderInCustom, _gameObj, 'x', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'y', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'width', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'height', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'alpha', 'listen');
         this.tryCatch(_folderInCustom, _gameObj, 'depth');
-        this.tryCatch(_folderInCustom, _gameObj, 'angle');
-        this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+        this.tryCatch(_folderInCustom, _gameObj, 'angle', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'listen');
         this.tryCatch(_folderInCustom, _gameObj, 'visible');
-        this.tryCatch(_folderInCustom, _gameObj, 'originX');
-        this.tryCatch(_folderInCustom, _gameObj, 'originY');
+        this.tryCatch(_folderInCustom, _gameObj, 'originX', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'originY', 'listen');
         this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
     createContainer(_idx, _folderInCustom, _gameObj) {
         this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
-        this.tryCatch(_folderInCustom, _gameObj, 'position');
-        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
-        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
+        this.tryCatch(_folderInCustom, _gameObj, 'position', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY', 'listen');
         this.tryCatch(_folderInCustom, _gameObj, 'z');
         this.tryCatch(_folderInCustom, _gameObj, 'w');
         
@@ -240,10 +240,10 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createTileSprite(_idx, _folderInCustom, _gameObj) {
-        this.tryCatch(_folderInCustom, _gameObj, 'tilePositionX');
-        this.tryCatch(_folderInCustom, _gameObj, 'tilePositionY');
-        this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX');
-        this.tryCatch(_folderInCustom, _gameObj, 'tileScaleY');
+        this.tryCatch(_folderInCustom, _gameObj, 'tilePositionX', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'tilePositionY', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX', 'listen');
+        this.tryCatch(_folderInCustom, _gameObj, 'tileScaleY', 'listen');
         this.tryCatch(_folderInCustom, _gameObj, 'tabIndex');
         this.tryCatch(_folderInCustom, _gameObj, 'ignoreDestroy');
         this.tryCatch(_folderInCustom, _gameObj, 'potWidth');
@@ -277,9 +277,9 @@ export default class TypeSortManager {
         this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
         this.createAllThePropertyOfObj(tmpBody, 'force', _gameObj.body);
         
-        this.tryCatch(tmpBody, _gameObj.body, 'speed');
-        this.tryCatch(tmpBody, _gameObj.body, 'angularSpeed');
-        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
+        this.tryCatch(tmpBody, _gameObj.body, 'speed', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularSpeed', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity', 'listen');
         this.tryCatch(tmpBody, _gameObj.body, 'isSensor');
         this.tryCatch(tmpBody, _gameObj.body, 'isStatic');
         this.tryCatch(tmpBody, _gameObj.body, 'isSleeping');
@@ -316,12 +316,12 @@ export default class TypeSortManager {
         this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
         this.createAllThePropertyOfObj(tmpBody, 'offset', _gameObj.body);
         this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
-        this.tryCatch(tmpBody, _gameObj.body, 'sourceWidth');
-        this.tryCatch(tmpBody, _gameObj.body, 'sourceHeight');
-        this.tryCatch(tmpBody, _gameObj.body, 'halfWidth');
-        this.tryCatch(tmpBody, _gameObj.body, 'halfHeight');
-        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
-        this.tryCatch(tmpBody, _gameObj.body, 'angularAcceleration');
+        this.tryCatch(tmpBody, _gameObj.body, 'sourceWidth', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'sourceHeight', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'halfWidth', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'halfHeight', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity', 'listen');
+        this.tryCatch(tmpBody, _gameObj.body, 'angularAcceleration', 'listen');
         this.tryCatch(tmpBody, _gameObj.body, 'angularDrag');
         this.tryCatch(tmpBody, _gameObj.body, 'maxAngular');
         this.tryCatch(tmpBody, _gameObj.body, 'mass');
@@ -421,9 +421,9 @@ export default class TypeSortManager {
         try { tmpAddFunc = _guiObj.add(_obj, _property); } catch(e) {};
         if (tmpAddFunc) {
             switch (_cmd) {
-                // default is listen() function
                 case null:
                 case undefined:
+                break;
                 case 'listen':
                     tmpAddFunc.listen();
                 break;

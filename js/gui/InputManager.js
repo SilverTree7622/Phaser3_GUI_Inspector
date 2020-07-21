@@ -3,24 +3,43 @@ import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
 
 export default class InputManager {
     constructor() {
+        this.size = {};
+        this.mainCamera = undefined;
         this.cursorKey = undefined;
+        this.wheelValue = 150;
     }
     create(_scene, _debugBox, _folder) {
+        this.createSize(_scene);
+        this.createMainCamera(_scene);
         this.createCursorKey(_scene);
-        this.createConsoleCmd(_scene, this.getCursorKey(), _debugBox);
+        this.createConsoleCmd(_scene, _debugBox);
         this.createOverEvent(_scene, _debugBox, _folder);
-        this.createFocusEvent(_scene, this.getCursorKey(), _debugBox, _folder);
-        this.createDetailEvent(_scene, this.getCursorKey(), _debugBox, _folder);
-        this.createVisibleEvent(_scene, this.getCursorKey(), _debugBox);
+        this.createFocusEvent(_scene, _debugBox, _folder);
+        this.createDetailEvent(_scene, _debugBox, _folder);
+        this.createVisibleEvent(_scene, _debugBox);
+        // + camera zoom event & follow focus game obj event
+        this.createCameraEvent(_scene);
+        this.createFollowEvent(_scene);
     }
 
+    createSize(_scene) {
+        this.size.w = _scene.game.config.width;
+        this.size.h = _scene.game.config.height;
+    }
+    createMainCamera(_scene) {
+        this.mainCamera = _scene.cameras.main;
+    }
     createCursorKey(_scene) {
         this.cursorKey = _scene.input.keyboard.createCursorKeys(); // cursor key
     }
-    createConsoleCmd(_scene, _cursorKey, _debugBox) {
+    getCursorKey() {
+        return this.cursorKey;
+    }
+
+    createConsoleCmd(_scene, _debugBox) {
         // when press command SHIFT + C
         _scene.input.keyboard.on('keydown-C', () => {
-            if (this.chckCmdShiftKeyDown(_cursorKey)) { // if focus
+            if (this.chckCmdShiftKeyDown()) { // if focus
                 let tmpFocusGameObj = _debugBox.getFocusGameObj();
                 if (tmpFocusGameObj) {
                     DebugGetThisConsole.call(tmpFocusGameObj);
@@ -48,17 +67,17 @@ export default class InputManager {
             }
         });
     }
-    createFocusEvent(_scene, _cursorKey, _debugBox, _folder) {
+    createFocusEvent(_scene, _debugBox, _folder) {
         // when want to focus logic
         _scene.input.on('gameobjectdown', (_pointer, _gameObj) => {
             // if middle button pressed
-            if (this.chckCommandKey(_cursorKey, _pointer)) {
+            if (this.chckCommandKey(_pointer)) {
                 this.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
             }
         });
         // when press command SHIFT + F
         _scene.input.keyboard.on('keydown-F', () => {
-            if (this.chckCmdShiftKeyDown(_cursorKey)) {
+            if (this.chckCmdShiftKeyDown()) {
                 // set gameObj via which pointer over on
                 let tmpGameObj = _debugBox.getOverGameObj();
                 this.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
@@ -67,12 +86,12 @@ export default class InputManager {
     }
 
     // when focused, SHIFT + D deep into the focused obj in detailed property
-    createDetailEvent(_scene, _cursorKey, _debugBox, _folder) {
+    createDetailEvent(_scene, _debugBox, _folder) {
         _scene.input.keyboard.on('keydown-D', () => {
             let tmpFocusGameObj = _debugBox.getFocusGameObj();
             if ( // chck if focus valid & shift key down
                 tmpFocusGameObj &&
-                this.chckCmdShiftKeyDown(_cursorKey)
+                this.chckCmdShiftKeyDown()
                 )
             {    
                 _folder.cross2FocusObj(_debugBox.getFocusGameObj(), this.objList);
@@ -80,15 +99,48 @@ export default class InputManager {
         });
     }
 
-    createVisibleEvent(_scene, _cursorKey, _debugBox) {
+    createVisibleEvent(_scene, _debugBox) {
         // when press command SHIFT + V, visible on/off logic
         _scene.input.keyboard.on('keydown-V', (_pointer, _gameObj) => {
             let tmpFocusGameObj = _debugBox.getFocusGameObj();
             if ( // chck if focus valid & shift key down
                 tmpFocusGameObj &&
-                this.chckCmdShiftKeyDown(_cursorKey)
+                this.chckCmdShiftKeyDown()
                 ) {
                 tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+            }
+        });
+    }
+    createCameraEvent(_scene) {
+        // when press command SHIFT + SCROLL UP&DOWN, Main Camera zoom changes
+        _scene.input.on('wheel', (_pointer, _gameObj, _deltaX, _deltaY, _deltaZ) => {
+            if (this.chckCmdShiftKeyDown()) {
+                let tmpZoom = this.mainCamera.zoom;
+                let tmpGap = (-1) * (_deltaY / (this.wheelValue * 10));
+                let tmpCal = tmpZoom + tmpGap;
+                // if zoom size under 0.1 & Gap value is minus, no reason to smaller i think
+                if (tmpCal <= 0.1 && tmpGap < 0) {}
+                else {
+                    this.mainCamera.pan(_pointer.x, _pointer.y, 100);
+                    this.mainCamera.zoomTo(tmpCal, 100);
+                }
+            }
+        });
+        // get back to default zoom value
+        _scene.input.keyboard.on('keydown-S', (_pointer, _gameObj) => {
+            if (this.chckCmdShiftKeyDown()) {
+                this.mainCamera.pan(this.size.w/2, this.size.h/2, 250, 'Elastic');
+                this.mainCamera.zoomTo(1, 0);
+            }
+        });
+    }
+    createFollowEvent(_scene) {
+        // main camera just follows focus game obj
+        _scene.input.keyboard.on('keydown-A', (_pointer, _gameObj) => {
+            if (this.chckCmdShiftKeyDown()) {
+                let tmpFocusGameObj = _debugBox.getFocusGameObj();
+                console.log('keydown a working');
+                
             }
         });
     }
@@ -135,29 +187,22 @@ export default class InputManager {
             // nothing is on the pointer so basically nothing happen
         }
     }
-    chckCommandKey(_tmpKey, _pointer) {
+    chckCommandKey(_pointer) {
         let tmpBool = undefined;
-        if ((_tmpKey.shift.isDown && _pointer.leftButtonDown()) || // shift + mouse left click or
+        if ((this.getCursorKey().shift.isDown && _pointer.leftButtonDown()) || // shift + mouse left click or
             (!_pointer.rightButtonDown() && !_pointer.leftButtonDown())) { // mouse middle button
             tmpBool = true;
         }
         else { tmpBool = false; }
         return tmpBool;
     }
-    chckCmdShiftKeyDown(_tmpKey) {
-        let tmpBool = (_tmpKey.shift.isDown) ? true : false; // is shift down?
+    chckCmdShiftKeyDown() {
+        let tmpBool = (this.getCursorKey().shift.isDown) ? true : false; // is shift down?
         return tmpBool;
     }
     chckGameObjIsFocusOnGUI(_gameObj) {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-    chckCmdShiftKeyDown(_tmpKey) {
-        let tmpBool = (_tmpKey.shift.isDown) ? true : false; // is shift down?
-        return tmpBool;
-    }
 
-    getCursorKey() {
-        return this.cursorKey;
-    }
 }

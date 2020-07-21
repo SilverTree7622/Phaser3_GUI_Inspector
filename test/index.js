@@ -86,7 +86,6 @@ function create() {
     // });
 
     // sprite game object
-    console.log('this:', this);
     tmpSpr.self = this.matter.add.sprite(100, 200, tmpSpr.key, 'lazer_00');
     let tmpImg2 = this.physics.add.image(100, 400, tmpSpr.key, 'lazer_00');
     tmpImg2.setScale(0.2);

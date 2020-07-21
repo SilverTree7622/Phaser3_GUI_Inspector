@@ -2251,8 +2251,8 @@ function DebugConsole(_obj) {
     tmpShadow += tmpShadowList[i] + tmpMiddle;
   }
 
-  var tmpStyle1 = 'font-weight:bold; font-size:30px; color: rgb(255, 111, 0);' + tmpShadow;
-  var tmpStyle2 = 'color: white; background: rgb(181, 0, 0); font-size: 15px;';
+  var tmpStyle1 = 'font-weight:bold; font-size:25px; color: rgb(255, 111, 0);' + tmpShadow;
+  var tmpStyle2 = 'color: white; background: rgb(181, 0, 0); font-size: 12px;';
   var tmpStyle3 = 'font-size: 12px;'; // final console log with vars
 
   return console.log(tmp_nameNversion + tmp_config + tmp_url, tmpStyle1, tmpStyle2, tmpStyle3);
@@ -2697,26 +2697,26 @@ function () {
   }, {
     key: "createCommonBack",
     value: function createCommonBack(_folderInCustom, _gameObj) {
-      this.tryCatch(_folderInCustom, _gameObj, 'x');
-      this.tryCatch(_folderInCustom, _gameObj, 'y');
-      this.tryCatch(_folderInCustom, _gameObj, 'width');
-      this.tryCatch(_folderInCustom, _gameObj, 'height');
-      this.tryCatch(_folderInCustom, _gameObj, 'alpha');
+      this.tryCatch(_folderInCustom, _gameObj, 'x', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'y', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'width', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'height', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'alpha', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'depth');
-      this.tryCatch(_folderInCustom, _gameObj, 'angle');
-      this.tryCatch(_folderInCustom, _gameObj, 'rotation');
+      this.tryCatch(_folderInCustom, _gameObj, 'angle', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'visible');
-      this.tryCatch(_folderInCustom, _gameObj, 'originX');
-      this.tryCatch(_folderInCustom, _gameObj, 'originY');
+      this.tryCatch(_folderInCustom, _gameObj, 'originX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'originY', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
   }, {
     key: "createContainer",
     value: function createContainer(_idx, _folderInCustom, _gameObj) {
       this.tryCatch(_folderInCustom, _gameObj, 'exclusive');
-      this.tryCatch(_folderInCustom, _gameObj, 'position');
-      this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX');
-      this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY');
+      this.tryCatch(_folderInCustom, _gameObj, 'position', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'scrollFactorY', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'z');
       this.tryCatch(_folderInCustom, _gameObj, 'w');
 
@@ -2774,10 +2774,10 @@ function () {
   }, {
     key: "createTileSprite",
     value: function createTileSprite(_idx, _folderInCustom, _gameObj) {
-      this.tryCatch(_folderInCustom, _gameObj, 'tilePositionX');
-      this.tryCatch(_folderInCustom, _gameObj, 'tilePositionY');
-      this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX');
-      this.tryCatch(_folderInCustom, _gameObj, 'tileScaleY');
+      this.tryCatch(_folderInCustom, _gameObj, 'tilePositionX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'tilePositionY', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'tileScaleX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'tileScaleY', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'tabIndex');
       this.tryCatch(_folderInCustom, _gameObj, 'ignoreDestroy');
       this.tryCatch(_folderInCustom, _gameObj, 'potWidth');
@@ -2819,9 +2819,9 @@ function () {
       this.tryCatch(tmpBody, _gameObj.body, 'label');
       this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
       this.createAllThePropertyOfObj(tmpBody, 'force', _gameObj.body);
-      this.tryCatch(tmpBody, _gameObj.body, 'speed');
-      this.tryCatch(tmpBody, _gameObj.body, 'angularSpeed');
-      this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
+      this.tryCatch(tmpBody, _gameObj.body, 'speed', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'angularSpeed', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity', 'listen');
       this.tryCatch(tmpBody, _gameObj.body, 'isSensor');
       this.tryCatch(tmpBody, _gameObj.body, 'isStatic');
       this.tryCatch(tmpBody, _gameObj.body, 'isSleeping');
@@ -2859,12 +2859,12 @@ function () {
       this.tryCatch(tmpBody, _gameObj.body, 'isCircle');
       this.createAllThePropertyOfObj(tmpBody, 'offset', _gameObj.body);
       this.createAllThePropertyOfObj(tmpBody, 'position', _gameObj.body);
-      this.tryCatch(tmpBody, _gameObj.body, 'sourceWidth');
-      this.tryCatch(tmpBody, _gameObj.body, 'sourceHeight');
-      this.tryCatch(tmpBody, _gameObj.body, 'halfWidth');
-      this.tryCatch(tmpBody, _gameObj.body, 'halfHeight');
-      this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity');
-      this.tryCatch(tmpBody, _gameObj.body, 'angularAcceleration');
+      this.tryCatch(tmpBody, _gameObj.body, 'sourceWidth', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'sourceHeight', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'halfWidth', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'halfHeight', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'angularVelocity', 'listen');
+      this.tryCatch(tmpBody, _gameObj.body, 'angularAcceleration', 'listen');
       this.tryCatch(tmpBody, _gameObj.body, 'angularDrag');
       this.tryCatch(tmpBody, _gameObj.body, 'maxAngular');
       this.tryCatch(tmpBody, _gameObj.body, 'mass');
@@ -2998,9 +2998,10 @@ function () {
 
       if (tmpAddFunc) {
         switch (_cmd) {
-          // default is listen() function
           case null:
           case undefined:
+            break;
+
           case 'listen':
             tmpAddFunc.listen();
             break;
@@ -3086,18 +3087,37 @@ function () {
   function InputManager() {
     _classCallCheck(this, InputManager);
 
+    this.size = {};
+    this.mainCamera = undefined;
     this.cursorKey = undefined;
+    this.wheelValue = 150;
   }
 
   _createClass(InputManager, [{
     key: "create",
     value: function create(_scene, _debugBox, _folder) {
+      this.createSize(_scene);
+      this.createMainCamera(_scene);
       this.createCursorKey(_scene);
-      this.createConsoleCmd(_scene, this.getCursorKey(), _debugBox);
+      this.createConsoleCmd(_scene, _debugBox);
       this.createOverEvent(_scene, _debugBox, _folder);
-      this.createFocusEvent(_scene, this.getCursorKey(), _debugBox, _folder);
-      this.createDetailEvent(_scene, this.getCursorKey(), _debugBox, _folder);
-      this.createVisibleEvent(_scene, this.getCursorKey(), _debugBox);
+      this.createFocusEvent(_scene, _debugBox, _folder);
+      this.createDetailEvent(_scene, _debugBox, _folder);
+      this.createVisibleEvent(_scene, _debugBox); // + camera zoom event & follow focus game obj event
+
+      this.createCameraEvent(_scene);
+      this.createFollowEvent(_scene);
+    }
+  }, {
+    key: "createSize",
+    value: function createSize(_scene) {
+      this.size.w = _scene.game.config.width;
+      this.size.h = _scene.game.config.height;
+    }
+  }, {
+    key: "createMainCamera",
+    value: function createMainCamera(_scene) {
+      this.mainCamera = _scene.cameras.main;
     }
   }, {
     key: "createCursorKey",
@@ -3105,13 +3125,18 @@ function () {
       this.cursorKey = _scene.input.keyboard.createCursorKeys(); // cursor key
     }
   }, {
+    key: "getCursorKey",
+    value: function getCursorKey() {
+      return this.cursorKey;
+    }
+  }, {
     key: "createConsoleCmd",
-    value: function createConsoleCmd(_scene, _cursorKey, _debugBox) {
+    value: function createConsoleCmd(_scene, _debugBox) {
       var _this = this;
 
       // when press command SHIFT + C
       _scene.input.keyboard.on('keydown-C', function () {
-        if (_this.chckCmdShiftKeyDown(_cursorKey)) {
+        if (_this.chckCmdShiftKeyDown()) {
           // if focus
           var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
@@ -3156,20 +3181,20 @@ function () {
     }
   }, {
     key: "createFocusEvent",
-    value: function createFocusEvent(_scene, _cursorKey, _debugBox, _folder) {
+    value: function createFocusEvent(_scene, _debugBox, _folder) {
       var _this3 = this;
 
       // when want to focus logic
       _scene.input.on('gameobjectdown', function (_pointer, _gameObj) {
         // if middle button pressed
-        if (_this3.chckCommandKey(_cursorKey, _pointer)) {
+        if (_this3.chckCommandKey(_pointer)) {
           _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
         }
       }); // when press command SHIFT + F
 
 
       _scene.input.keyboard.on('keydown-F', function () {
-        if (_this3.chckCmdShiftKeyDown(_cursorKey)) {
+        if (_this3.chckCmdShiftKeyDown()) {
           // set gameObj via which pointer over on
           var tmpGameObj = _debugBox.getOverGameObj();
 
@@ -3180,21 +3205,21 @@ function () {
 
   }, {
     key: "createDetailEvent",
-    value: function createDetailEvent(_scene, _cursorKey, _debugBox, _folder) {
+    value: function createDetailEvent(_scene, _debugBox, _folder) {
       var _this4 = this;
 
       _scene.input.keyboard.on('keydown-D', function () {
         var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
         if ( // chck if focus valid & shift key down
-        tmpFocusGameObj && _this4.chckCmdShiftKeyDown(_cursorKey)) {
+        tmpFocusGameObj && _this4.chckCmdShiftKeyDown()) {
           _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
         }
       });
     }
   }, {
     key: "createVisibleEvent",
-    value: function createVisibleEvent(_scene, _cursorKey, _debugBox) {
+    value: function createVisibleEvent(_scene, _debugBox) {
       var _this5 = this;
 
       // when press command SHIFT + V, visible on/off logic
@@ -3202,8 +3227,51 @@ function () {
         var tmpFocusGameObj = _debugBox.getFocusGameObj();
 
         if ( // chck if focus valid & shift key down
-        tmpFocusGameObj && _this5.chckCmdShiftKeyDown(_cursorKey)) {
+        tmpFocusGameObj && _this5.chckCmdShiftKeyDown()) {
           tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+        }
+      });
+    }
+  }, {
+    key: "createCameraEvent",
+    value: function createCameraEvent(_scene) {
+      var _this6 = this;
+
+      // when press command SHIFT + SCROLL UP&DOWN, Main Camera zoom changes
+      _scene.input.on('wheel', function (_pointer, _gameObj, _deltaX, _deltaY, _deltaZ) {
+        if (_this6.chckCmdShiftKeyDown()) {
+          var tmpZoom = _this6.mainCamera.zoom;
+          var tmpGap = -1 * (_deltaY / (_this6.wheelValue * 10));
+          var tmpCal = tmpZoom + tmpGap; // if zoom size under 0.1 & Gap value is minus, no reason to smaller i think
+
+          if (tmpCal <= 0.1 && tmpGap < 0) {} else {
+            _this6.mainCamera.pan(_pointer.x, _pointer.y, 100);
+
+            _this6.mainCamera.zoomTo(tmpCal, 100);
+          }
+        }
+      }); // get back to default zoom value
+
+
+      _scene.input.keyboard.on('keydown-S', function (_pointer, _gameObj) {
+        if (_this6.chckCmdShiftKeyDown()) {
+          _this6.mainCamera.pan(_this6.size.w / 2, _this6.size.h / 2, 250, 'Elastic');
+
+          _this6.mainCamera.zoomTo(1, 0);
+        }
+      });
+    }
+  }, {
+    key: "createFollowEvent",
+    value: function createFollowEvent(_scene) {
+      var _this7 = this;
+
+      // main camera just follows focus game obj
+      _scene.input.keyboard.on('keydown-A', function (_pointer, _gameObj) {
+        if (_this7.chckCmdShiftKeyDown()) {
+          var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+          console.log('keydown a working');
         }
       });
     } // chck focus then, focus ON game object or OFF
@@ -3261,10 +3329,10 @@ function () {
     }
   }, {
     key: "chckCommandKey",
-    value: function chckCommandKey(_tmpKey, _pointer) {
+    value: function chckCommandKey(_pointer) {
       var tmpBool = undefined;
 
-      if (_tmpKey.shift.isDown && _pointer.leftButtonDown() || // shift + mouse left click or
+      if (this.getCursorKey().shift.isDown && _pointer.leftButtonDown() || // shift + mouse left click or
       !_pointer.rightButtonDown() && !_pointer.leftButtonDown()) {
         // mouse middle button
         tmpBool = true;
@@ -3276,8 +3344,8 @@ function () {
     }
   }, {
     key: "chckCmdShiftKeyDown",
-    value: function chckCmdShiftKeyDown(_tmpKey) {
-      var tmpBool = _tmpKey.shift.isDown ? true : false; // is shift down?
+    value: function chckCmdShiftKeyDown() {
+      var tmpBool = this.getCursorKey().shift.isDown ? true : false; // is shift down?
 
       return tmpBool;
     }
@@ -3286,18 +3354,6 @@ function () {
     value: function chckGameObjIsFocusOnGUI(_gameObj) {
       var tmpGameObjBoolean = _gameObj ? _gameObj.isFocusOnGUI : null;
       return tmpGameObjBoolean;
-    }
-  }, {
-    key: "chckCmdShiftKeyDown",
-    value: function chckCmdShiftKeyDown(_tmpKey) {
-      var tmpBool = _tmpKey.shift.isDown ? true : false; // is shift down?
-
-      return tmpBool;
-    }
-  }, {
-    key: "getCursorKey",
-    value: function getCursorKey() {
-      return this.cursorKey;
     }
   }]);
 
@@ -3338,6 +3394,7 @@ function () {
     value: function create(_scene) {
       this.createBasic();
       this.createCustom();
+      this.createBtnClickEvent(this.basic.folder, this.custom.folder);
     }
   }, {
     key: "initConfig",
@@ -3390,6 +3447,36 @@ function () {
     key: "createCustom",
     value: function createCustom() {
       this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
+    } // TEST
+
+  }, {
+    key: "createBtnClickEvent",
+    value: function createBtnClickEvent(_basic, _custom) {
+      var _this = this;
+
+      // BASIC & CUSTOM folder div placement
+      var tmpBasicTitle = _basic.domElement.getElementsByClassName('title')[0];
+
+      var tmpCustomTitle = _custom.domElement.getElementsByClassName('title')[0];
+
+      tmpBasicTitle.addEventListener('pointerup', function (_event) {
+        if (_basic.closed) {
+          // result is open
+          _this.openBigFolder(_basic);
+        } else {
+          // result is close
+          _this.closeBigFolder(_basic);
+        }
+      });
+      tmpCustomTitle.addEventListener('pointerup', function (_event) {
+        if (_custom.closed) {
+          // result is open
+          _this.closeChildrenFolder(_custom);
+        } else {
+          // result is close
+          _this.openChildrenFolder(_custom);
+        }
+      });
     }
   }, {
     key: "push2FolderList",
@@ -3415,6 +3502,7 @@ function () {
     key: "add2CustomFolder",
     value: function add2CustomFolder() {
       var tmpFolder = this.custom.folder.addFolder(this.config.initFolderCnt);
+      this.push2FolderList(tmpFolder, 'custom');
       this.config.initFolderCnt++;
       return tmpFolder;
     } // check init open or close
@@ -3441,24 +3529,74 @@ function () {
     key: "chckOpenCustomList",
     value: function chckOpenCustomList() {
       if (this.config.openCustomDefault) {
-        var tmpLength = this.custom.list.length;
         this.openFolder(this.custom.folder);
-
-        for (var i = 0; i < tmpLength; i++) {
-          this.openFolder(this.custom.list[i]);
+      } else {
+        for (var i = 0; i < this.config.initFolderCnt; i++) {
+          this.closeFolder(this.custom.list[i]);
         }
       }
     } // open folder
 
   }, {
+    key: "openBigFolder",
+    value: function openBigFolder(_folder) {
+      _folder.open();
+    }
+  }, {
+    key: "closeBigFolder",
+    value: function closeBigFolder(_folder) {
+      _folder.close();
+    }
+  }, {
     key: "openFolder",
     value: function openFolder(_folder) {
       _folder.open();
+
+      this.setFolderDisplay(_folder, 'default');
     }
   }, {
     key: "closeFolder",
     value: function closeFolder(_folder) {
       _folder.close();
+
+      this.setFolderDisplay(_folder, 'none');
+    }
+  }, {
+    key: "openChildrenFolder",
+    value: function openChildrenFolder(_folder) {
+      _folder.open();
+
+      this.setFolderChildrenDisplay(_folder, 'default');
+    }
+  }, {
+    key: "closeChildrenFolder",
+    value: function closeChildrenFolder(_folder) {
+      _folder.close();
+
+      this.setFolderChildrenDisplay(_folder, 'none');
+    }
+  }, {
+    key: "setFolderDisplay",
+    value: function setFolderDisplay(_folder, _cmd) {
+      var tmpCmds = {
+        none: 'none',
+        default: ''
+      };
+      _folder.domElement.style.display = tmpCmds[_cmd];
+    }
+  }, {
+    key: "setFolderChildrenDisplay",
+    value: function setFolderChildrenDisplay(_folder, _cmd) {
+      var tmpCmds = {
+        none: 'none',
+        default: ''
+      }; // control individual property dom display
+
+      var tmpLength = Object.keys(_folder.__folders).length;
+
+      for (var i = 0; i < tmpLength; i++) {
+        _folder.__folders[String(i)].domElement.style = tmpCmds[_cmd];
+      }
     } // EXTERNAL
 
   }, {
@@ -3501,9 +3639,10 @@ function () {
         tmpFocus.__controllers[3].setValue(tmpTexture);
       } else {
         // change to all 'NONE'
-        this.openFolder(this.basic.folder);
-        this.closeFolder(tmpFocus);
-        this.closeFolder(this.custom.folder);
+        this.openBigFolder(this.basic.folder);
+        this.closeFolder(tmpFocus); // this.closeFolder(this.custom.folder);
+
+        this.closeBigFolder(this.custom.folder);
         var tmpFuncLength = 2;
         var tmpLength = tmpFocus.__controllers.length - tmpFuncLength;
 
@@ -3517,9 +3656,11 @@ function () {
     value: function cross2FocusObj(_gameObj, _objList) {
       // actually cross 2 custom_folder/focus_folder(config)
       if (_gameObj) {
-        var tmpObjFolder = this.getCustomFoldersInFolder();
-        this.closeFolder(this.basic.folder);
-        this.openFolder(this.custom.folder);
+        var tmpObjFolder = this.getCustomFoldersInFolder(); // this.closeFolder(this.basic.folder);
+
+        this.closeBigFolder(this.basic.folder); // this.openFolder(this.custom.folder);
+
+        this.openBigFolder(this.custom.folder);
         this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
       } else {// console.warn('_inspector SYSTEM_: NONE Focus');
       }
@@ -3528,9 +3669,10 @@ function () {
     key: "back2Basic",
     value: function back2Basic(_idx) {
       var tmpObjFolder = this.getCustomFoldersInFolder();
-      this.closeFolder(tmpObjFolder[_idx]);
-      this.closeFolder(this.custom.folder);
-      this.openFolder(this.basic.folder);
+      this.closeFolder(tmpObjFolder[_idx]); // this.closeFolder(this.custom.folder);
+
+      this.closeBigFolder(this.custom.folder);
+      this.openBigFolder(this.basic.folder);
     }
   }, {
     key: "closeThisOpenParentContainer",
@@ -4135,7 +4277,7 @@ function () {
     key: "initConsole",
     value: function initConsole(_cssObj) {
       var tmpName = ' PGInspector.js';
-      var tmpVersion = '1.1.0';
+      var tmpVersion = '1.2.0';
       var tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_inspector';
       (0, _DebugConsoleFunc.DebugConsole)({
         name: tmpName,
@@ -4426,7 +4568,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51267" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

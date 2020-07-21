@@ -28,8 +28,8 @@ export function DebugConsole(_obj) {
         } else {}
         tmpShadow += tmpShadowList[i] + tmpMiddle;
     }
-    let tmpStyle1 = 'font-weight:bold; font-size:30px; color: rgb(255, 111, 0);' + tmpShadow;
-    let tmpStyle2 = 'color: white; background: rgb(181, 0, 0); font-size: 15px;';
+    let tmpStyle1 = 'font-weight:bold; font-size:25px; color: rgb(255, 111, 0);' + tmpShadow;
+    let tmpStyle2 = 'color: white; background: rgb(181, 0, 0); font-size: 12px;';
     let tmpStyle3 = 'font-size: 12px;'
 
     // final console log with vars
