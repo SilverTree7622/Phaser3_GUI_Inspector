@@ -4,7 +4,6 @@ export default class FolderManager {
     constructor(_typeSort) {
         this.GUI;
         this.typeSort = _typeSort;
-        console.log('this.typeSort:', this.typeSort);
         this.config = this.initConfig();
         this.basic = this.initBasic();
         this.custom = this.initCustom();

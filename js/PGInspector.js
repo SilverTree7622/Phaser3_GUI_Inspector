@@ -37,15 +37,16 @@ function ChckGUIObj() {
 function ChckConfigObj(_scene, _configObj) {
     // init config structure
     let tmpReturn = {
-        scene: undefined,
+        scene: undefined, // Phaser.Scene
         css: {
-            alpha: undefined,
-            right: undefined,
-            top: undefined
+            alpha: undefined, // float 0 ~ 1
+            right: undefined, // int
+            top: undefined // int
         },
         init: {
-            focus: undefined,
-            ignore: undefined
+            focus: undefined, // GameObj
+            ignore: undefined, // GameObj, array, container
+            noSide: false // boolean
         }
     };
     // check is init config
@@ -57,6 +58,7 @@ function ChckConfigObj(_scene, _configObj) {
 
         TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
         TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
+        TryCatchObj(tmpReturn.init, 'noSide', _configObj.noSide);
     }
     return tmpReturn;
 }

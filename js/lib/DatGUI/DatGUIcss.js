@@ -4,7 +4,6 @@ export default class GUIcss {
         this.name = 'dg ac'; // dat gui class name
         this.class = this.initClass();
         this.gui = this.initGui();
-        console.log('this.gui:', this.gui);
         this.alpha = this.initSetAlpha(_cssObj);
         this.posXY = this.initSetPosXY(_cssObj);
         // delay GUI color all structure

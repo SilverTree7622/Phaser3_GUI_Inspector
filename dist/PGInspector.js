@@ -1772,7 +1772,6 @@ function () {
 
     this.class = this.initClass();
     this.gui = this.initGui();
-    console.log('this.gui:', this.gui);
     this.alpha = this.initSetAlpha(_cssObj);
     this.posXY = this.initSetPosXY(_cssObj); // delay GUI color all structure
     // this.color = this.initSetColor(_cssObj);
@@ -1930,15 +1929,20 @@ var GUIMain =
 /*#__PURE__*/
 function () {
   // GUI property main class
-  function GUIMain(_cssObj) {
+  function GUIMain(_tmpHandOverObj) {
     _classCallCheck(this, GUIMain);
 
     this.lib = new dat.GUI();
-    this.side = new dat.GUI();
-    this.css = new _DatGUIcss.default(_cssObj);
+    this.side = this.chckSideOption(_tmpHandOverObj);
+    this.css = new _DatGUIcss.default(_tmpHandOverObj.css);
   }
 
   _createClass(GUIMain, [{
+    key: "chckSideOption",
+    value: function chckSideOption(_tmpHandOverObj) {
+      return _tmpHandOverObj.init.noSide ? undefined : new dat.GUI();
+    }
+  }, {
     key: "getLib",
     value: function getLib() {
       return this.lib;
@@ -2179,11 +2183,11 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var LibClass =
 /*#__PURE__*/
 function () {
-  function LibClass(_cssObj) {
+  function LibClass(_tmpHandOverObj) {
     _classCallCheck(this, LibClass);
 
-    this.stats = new _index2.default(_cssObj);
-    this.GUI = new _index.default(_cssObj);
+    this.stats = new _index2.default(_tmpHandOverObj.css);
+    this.GUI = new _index.default(_tmpHandOverObj);
   } // stats
 
 
@@ -3194,7 +3198,6 @@ function () {
 
     this.GUI;
     this.typeSort = _typeSort;
-    console.log('this.typeSort:', this.typeSort);
     this.config = this.initConfig();
     this.basic = this.initBasic();
     this.custom = this.initCustom();
@@ -4362,7 +4365,17 @@ function () {
             }
 
             _this.mainCamera.zoomTo(tmpCal, 100);
-          }
+          } // set wheel debug cam bound
+
+
+          _this.setIsDebugCamBound(true);
+
+          setTimeout(function () {
+            // wheel end
+            if (tmpCal == _this.mainCamera.zoom) {
+              _this.setIsDebugCamBound(false);
+            }
+          }, 300);
         }
       }); // SHIFT + RIGTH CLICK to dragging camera scroll position
 
@@ -4618,17 +4631,68 @@ function () {
 
     this.main = _main;
     this.lib = this.main.sideGUI;
+
+    if (!this.main.sideGUI) {
+      return;
+    }
+
     this.manager = this.main.manager;
+    this.cmdFolder;
+    this.cmdList = this.initCmdList();
   }
 
   _createClass(SideGUIClass, [{
     key: "create",
     value: function create(_scene) {
+      if (!this.main.sideGUI) {
+        return;
+      }
+
       console.log('this.lib:', this.lib);
-      console.log('this.main.mainGUI:', this.main.mainGUI);
+      this.createSetConfig();
+      this.createCmdFolder();
+    }
+  }, {
+    key: "initCmdList",
+    value: function initCmdList() {
+      var tmpCL = [];
+      tmpCL.push('SHIFT + V');
+      return tmpCL;
+    }
+  }, {
+    key: "createSetConfig",
+    value: function createSetConfig() {
       this.lib.width = 120;
-      var tmpValue = this.lib.domElement.style.marginRight = '2px';
-      this.lib.addFolder('COMMAND_LIST');
+      this.lib.domElement.style.marginRight = '2px';
+    }
+  }, {
+    key: "createCmdFolder",
+    value: function createCmdFolder() {
+      this.cmdFolder = this.lib.addFolder('COMMAND_LIST'); // add pointer over and out for description (open or close folder)
+
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.cmdList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var i = _step.value;
+          this.cmdFolder.addFolder(i);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     }
   }]);
 
@@ -4709,7 +4773,7 @@ function () {
     _classCallCheck(this, Main);
 
     this.scene = _tmpHandOverObj.scene;
-    this.libs = new _index.default(_tmpHandOverObj.css); // Console
+    this.libs = new _index.default(_tmpHandOverObj); // Console
 
     this.initConsole(this.libs.getGUIcssObj()); // Manager Class
 
@@ -4806,14 +4870,22 @@ function ChckConfigObj(_scene, _configObj) {
   // init config structure
   var tmpReturn = {
     scene: undefined,
+    // Phaser.Scene
     css: {
       alpha: undefined,
+      // float 0 ~ 1
       right: undefined,
-      top: undefined
+      // int
+      top: undefined // int
+
     },
     init: {
       focus: undefined,
-      ignore: undefined
+      // GameObj
+      ignore: undefined,
+      // GameObj, array, container
+      noSide: false // boolean
+
     }
   }; // check is init config
 
@@ -4825,6 +4897,7 @@ function ChckConfigObj(_scene, _configObj) {
     TryCatchObj(tmpReturn.css, 'top', _configObj.top);
     TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
     TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
+    TryCatchObj(tmpReturn.init, 'noSide', _configObj.noSide);
   }
 
   return tmpReturn;
@@ -4906,7 +4979,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59256" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49332" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -3,9 +3,9 @@ import GUIMain from './DatGUI/index.js';
 import StatsMain from './Stats/index.js';
 
 export default class LibClass {
-    constructor(_cssObj) {
-        this.stats = new StatsMain(_cssObj);
-        this.GUI = new GUIMain(_cssObj);
+    constructor(_tmpHandOverObj) {
+        this.stats = new StatsMain(_tmpHandOverObj.css);
+        this.GUI = new GUIMain(_tmpHandOverObj);
     }
     // stats
     getStats() {

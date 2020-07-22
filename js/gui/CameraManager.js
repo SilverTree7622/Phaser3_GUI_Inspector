@@ -102,6 +102,15 @@ export default class CameraManager {
                     }
                     this.mainCamera.zoomTo(tmpCal, 100);
                 }
+
+                // set wheel debug cam bound
+                this.setIsDebugCamBound(true);
+                setTimeout(() => {
+                    // wheel end
+                    if (tmpCal == this.mainCamera.zoom) {
+                        this.setIsDebugCamBound(false);
+                    }
+                }, 300);
             }
         });
 

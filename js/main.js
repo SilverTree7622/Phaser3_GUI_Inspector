@@ -48,7 +48,7 @@ import SideGUIClass from './gui/SideGUIClass.js';
 export class Main {
     constructor(_tmpHandOverObj) {
         this.scene = _tmpHandOverObj.scene;
-        this.libs = new LibClass(_tmpHandOverObj.css);
+        this.libs = new LibClass(_tmpHandOverObj);
         // Console
         this.initConsole(this.libs.getGUIcssObj());
         // Manager Class
