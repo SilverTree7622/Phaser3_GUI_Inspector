@@ -1,14 +1,16 @@
 
 // Folder manager
 export default class FolderManager {
-    constructor(_GUI, _typeSort) {
-        this.GUI = _GUI;
+    constructor(_typeSort) {
+        this.GUI;
         this.typeSort = _typeSort;
+        console.log('this.typeSort:', this.typeSort);
         this.config = this.initConfig();
         this.basic = this.initBasic();
         this.custom = this.initCustom();
     }
-    create(_scene) {
+    create(_scene, _GUI) {
+        this.GUI = _GUI;
         this.createBasic();
         this.createCustom();
         this.createBtnClickEvent(this.basic.folder, this.custom.folder);
@@ -60,9 +62,7 @@ export default class FolderManager {
         this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
     }
 
-    // TEST
     createBtnClickEvent(_basic, _custom) {
-
         // BASIC & CUSTOM folder div placement
         let tmpBasicTitle = _basic.domElement.getElementsByClassName('title')[0];
         let tmpCustomTitle = _custom.domElement.getElementsByClassName('title')[0];
@@ -207,7 +207,7 @@ export default class FolderManager {
             }
         }
     }
-    cross2FocusObj(_gameObj, _objList) { // actually cross 2 custom_folder/focus_folder(config)
+    cross2FocusObj(_gameObj) { // actually cross 2 custom_folder/focus_folder(config)
         if (_gameObj) {
             let tmpObjFolder = this.getCustomFoldersInFolder();
             // chck is any displayed folder exist

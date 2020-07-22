@@ -9,39 +9,52 @@ export default class TypeSortManager {
         this.timeKey = '_PGI CntEnd_ ';
         this.objLength = 0;
         this.srcObj = new SrcManager(_scene);
-        this.classObjs = { folder, debugBox, input, camera };
+        // class objs
+        this.scene = _scene;
+        this.folder;
+        this.debugBox;
+        this.input;
+        this.camera;
+    }
+    create(_guiClass) {
+        this.createInitClassObjs(_guiClass);   
     }
 
     // EXTERNAL
     // get scene then set list to form gui set up
-    createFocusFolder(_objList, _folder, _debugBox, _input) {
+    createInitClassObjs(_guiClass) {
+        this.folder = _guiClass.folder;
+        this.debugBox = _guiClass.debugBox;
+        this.input = _guiClass.input;
+        this.camera = _guiClass.camera;
+    }
+    createFocusFolder(_objList) {
         let tmpLength = _objList.length;
-
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _input);
-            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _input);
+            this.createFocusFolderTryException(_objList, _objList[i]);
+            this.createFocusFolderSetObj(_objList, _objList[i]);
         }
     }
-    createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _input) {
+    createFocusFolderTryException(_objList, _obj) {
         if (_obj.type !== 'Graphics' &&
             _obj.type !== 'Container') {
             this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
         }
         else if (_obj.type === 'Container') {
             // container
-            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input);
+            this.createFocusFolderTryExceptionContainer(_objList, _obj);
         }
         else {
             // console.log('graphics confirm!');
         }
     }
     // if the gameobj is container obj
-    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input) {
+    createFocusFolderTryExceptionContainer(_objList, _obj) {
         let tmpList = _obj.list;
         let tmpLength = tmpList.length;
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(tmpList, tmpList[i], _folder);
-            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _input);
+            this.createFocusFolderTryException(tmpList, tmpList[i]);
+            this.createFocusFolderSetObj(_objList, tmpList[i]);
         }
     }
     // if the gameobj is NOT container obj
@@ -50,32 +63,42 @@ export default class TypeSortManager {
         catch(e) {}
     }
 
-    createFocusFolderSetObj(_objList, _obj, _folder, _debugBox) {
-        let tmpGUIIdx = _folder.getGUIIdx();
+    createFocusFolderSetObj(_objList, _obj) {
+        let tmpGUIIdx = this.folder.getGUIIdx();
+        let tmpObjs = {};
+        tmpObjs.input = this.input;
+        tmpObjs.scene = this.scene;
+        tmpObjs.debugBox = this.debugBox;
+        tmpObjs.folder = this.folder;
         _obj.guiIdx = tmpGUIIdx;
         _obj.isFocusOnGUI = false; // focus check boolean
         _obj.focusTw = undefined; // save focus performance tween in this property
-        _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
-        _obj.GUI_FOCUS_ONOFF = () => {
-            this.runFocusLogic.call(_input, _scene, tmpGameObj, _debugBox, _folder);
-
+        _obj.GUI_BACK = this.folder.back2Basic.bind(this.folder, tmpGUIIdx);
+        _obj.GUI_FOCUS_ONOFF = function () {
+            // focus off => on logic so activate function like focused
+            if (!this.isFocusOnGUI) {
+                tmpObjs.folder.cross2FocusObj(this);
+            }
+            tmpObjs.input.runFocusLogic.call(
+                tmpObjs.input, tmpObjs.scene, this, tmpObjs.debugBox, tmpObjs.folder
+            );
         }
         _obj.GUI_CONSOLE = DebugGetThisConsole;
-        this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
-        this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
+        this.chckParentContainer(_obj, _objList, tmpGUIIdx);
+        this.createCustomInDetail(_obj, _objList, tmpGUIIdx);
     }
-    chckParentContainer(_obj, _folder, _objList, _tmpGUIIdx, _debugBox) {
+    chckParentContainer(_obj, _objList, _tmpGUIIdx) {
         // if Parent Container exist, then insert the function
         let tmpPC = _obj.parentContainer;
         if (tmpPC) { // if this object parentContainer is exist
-            _obj.GUI_CONTAINER = _folder.closeThisNopenParentContainer.bind(
-                _obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]
+            _obj.GUI_CONTAINER = this.folder.closeThisNopenParentContainer.bind(
+                _obj, [_tmpGUIIdx, tmpPC, this.folder, this.debugBox]
             );
         }
     }
-    createCustomInDetail(_obj, _folder, _objList, _tmpGUIIdx) {
-        let tmpFolderInCustom = _folder.add2CustomFolder();
-        this.chckObjType(_folder.getCustomFolder(), _tmpGUIIdx, tmpFolderInCustom, _obj);
+    createCustomInDetail(_obj, _objList, _tmpGUIIdx) {
+        let tmpFolderInCustom = this.folder.add2CustomFolder();
+        this.chckObjType(this.folder.getCustomFolder(), _tmpGUIIdx, tmpFolderInCustom, _obj);
     }
 
     chckObjType(_custom, _idx, _folderInCustom, _obj) { // check each of objs type
@@ -83,14 +106,12 @@ export default class TypeSortManager {
         let tmpType = tmpGameObj.type;
 
         this.chckStartSorting(_idx);
-        // default functions
+        // BACK, FOCUS TOGGLE, CONSOLE
         this.createBackFunc(_idx, _folderInCustom, tmpGameObj);
+        this.createFocusToggle(_folderInCustom, tmpGameObj);
         this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj);
-        // chck container exist
+        // chck container exist & other stuffs
         this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
-        // create focus toggle
-        this.createFocusToggle();
-        // the other stuff
         this.createCommonFront(_folderInCustom, tmpGameObj);
         this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj);
         
@@ -124,18 +145,23 @@ export default class TypeSortManager {
         //     console.log(this.conAlert, 'START CUSTOM SORTING');
         //     console.time(this.timeKey);
         //     this.objLength = _length - 1;
-        // } else {}
+        // }
     }
     chckEndSorting(_idx) {
         // if (_idx === this.objLength) {
         //     console.log(this.conAlert, 'END CUSTOM SORTING');
         //     console.timeEnd(this.timeKey)
         //     console.log(this.conAlert, 'DISPLAY LENGTH IS', this.objLength + 1);
-        // } else {}
+        // }
     }
 
     createBackFunc(_idx, _folderInCustom, _gameObj) { // create back 2 basic function
         _folderInCustom.add(_gameObj, 'GUI_BACK');
+    }
+    createFocusToggle(_folderInCustom, _gameObj) {
+        if (_gameObj.type !== 'Graphics') {
+            _folderInCustom.add(_gameObj, 'GUI_FOCUS_ONOFF');
+        }
     }
     createConsoleFunc(_idx, _folderInCustom, _gameObj) {
         try { _folderInCustom.add(_gameObj, 'GUI_CONSOLE'); }
@@ -144,10 +170,7 @@ export default class TypeSortManager {
     createContainerFunc(_idx, _folderInCustom, _gameObj) {
         if (_gameObj.GUI_CONTAINER) {
             _folderInCustom.add(_gameObj, 'GUI_CONTAINER');
-        } else {}
-    }
-    createFocusToggle() {
-
+        }
     }
     createCommonFront(_folderInCustom, _gameObj) {
         // set properties (GUIIdx, name, type)
@@ -442,13 +465,13 @@ export default class TypeSortManager {
                 case 'onChange':
                     if (_customFunction) {
                         tmpAddFunc.onChange(_customFunction);
-                    } else {}
+                    }
                 break;
                 default:
                     console.log(_cmd, '<= this is not on the options');
                 break;
             }
-        } else {}
+        }
     }
 
     // pointer over texture sorting

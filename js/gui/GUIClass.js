@@ -1,119 +1,29 @@
-/*
-    * Libs
-
-    * Origin ref from under URL
-    https://github.com/dataarts/dat.gui/blob/master/API.md
-
-    * DAT.GUI
-    - particle
-    https://labs.phaser.io/edit.html?src=src/game%20objects\particle%20emitter\particle%20editor.js
-    - physics sprite
-    https://labs.phaser.io/edit.html?src=src/physics\arcade\body%20controls.js
-    - matter
-    - audio
-    https://labs.phaser.io/edit.html?src=src/audio\HTML5%20Audio\Loop%20Delay.js
-    https://labs.phaser.io/view.html?src=src/audio\Web%20Audio\Seek.js
-    - world view
-    https://labs.phaser.io/edit.html?src=src/camera\move%20camera%20with%20keys.js
-
-    * DAT.GUI Control
-    press 'H' to toggle the GUI visibility
-
-    * Another Planning Ref
-    https://github.com/koreezgames/phaser3-particle-editor
-*/
-/*
-    END GOAL:
-        you can get name when you over the objects,
-        and if you click it, you can get its properties in custom GUI list.
-        (my wish is load, save json from phaser scene, then flexible implement
-        for each gameobjects, but this is gonna be hard so i just drawback to next version)
-*/
 
 "use strict";
 
-// import * as dat from './lib/DatGUILib.js'; // import GUI lib
-// import GUIcss from './lib/DatGUIcss'; // import GUI CSS
-
-// lib
-import LibClass from './lib/index.js'; // import whole GUI
 // debug console utils
-import {DebugConsole, DebugGetThisConsole, DebugSceneNAllDisplayList} from '../utils/DebugConsoleFunc.js';
-// root
-import TypeSortManager from './TypeSortManager.js';
-import FolderManager from './FolderManager.js';
-import SaveManager from './SaveManager.js';
-import DebugBoxClass from './DebugBoxClass.js';
-import InputManager from './InputManager.js';
-import CameraManager from './CameraManager.js';
+import { DebugSceneNAllDisplayList } from '../utils/DebugConsoleFunc.js';
 
-
-export class GUIClass {
-    constructor(_tmpHandOverObj) {
-        // Lib class & init stuff
-        this.libs = new LibClass(_tmpHandOverObj.css);
-        this.scene = undefined;
+export default class GUIClass {
+    constructor(_main) {
+        this.main = _main;
+        this.lib = this.main.libs;
+        this.manager = this.main.manager;
         this.objList = undefined; // all game object list
-        this.conAlert = '_PGI System_ :';
-        this.initConsole(this.libs.getGUIcssObj());
-        // Manager class
-        this.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
-        this.folder = new FolderManager(this.libs.getGUILib(), this.typeSort);
-        this.save = new SaveManager();
-        this.debugBox = new DebugBoxClass();
-        this.input = new InputManager();
-        this.camera = new CameraManager();
     }
     create(_scene) {
-        this.createETCClass(_scene);
-        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
-        this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort, this.input);
-        this.folder.chckOpenAllList();
-    }
-    createETCClass(_scene) {
-        this.folder.create(_scene);
-        this.save.create(_scene);
-        this.debugBox.create(_scene, this.camera);
-        this.input.create(_scene, this.debugBox, this.folder);
-        this.camera.create(_scene, this.debugBox);
-    }
-    update(_time, _delta) {
-        this.debugBox.update(_time, _delta);
-        this.camera.update();
+        this.createBasicFolder(_scene, this.manager.folder.getBasicFolder());
+        this.createFocusFolder(_scene);
     }
 
-
-    initConsole(_cssObj) {
-        let tmpName = ' PGInspector.js';
-        let tmpVersion = '1.2.0';
-        let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
-        DebugConsole({
-            name: tmpName,
-            version: tmpVersion,
-            initConfig: _cssObj,
-            url: tmpURL
-        });
-    }
-    initChckStatusManager(_statusManager) {
-        let tmpSM;
-        if (_statusManager) {
-            tmpSM = _statusManager;
-            console.log(this.conAlert, 'USING STATUS MANAGER');
-        }
-        else {
-            tmpSM = undefined;
-            console.log(this.conAlert, 'NOT USING STATUS MANAGER');
-        }
-        return tmpSM;
-    }
-    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _camera) { // create basic pointer
+    createBasicFolder(_scene, _basic) { // create basic pointer
         let tmpAllConsole = {};
         tmpAllConsole.CONSOLE_CLEAR = () => {
             console.clear();
-            this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
+            this.main.initConsole(this.lib.getGUIcssObj());
         }
         tmpAllConsole.SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
-        tmpAllConsole.DEFAULT_CAM = _camera.set2defaultZoom.bind(_camera);
+        tmpAllConsole.DEFAULT_CAM = this.manager.camera.set2defaultZoom.bind(this.manager.camera);
         let tmpPointer = undefined;
         let tmpXY = {};
         tmpXY.x = _scene.game.config.width;
@@ -128,13 +38,13 @@ export class GUIClass {
         };
         // focus off function
         let tmpFocusFunc = () => {
-            _debugBox.clearFocus();
-            _folder.setBasicFocusFolder();
-            _debugBox.clearFocusGameObj();
+            this.manager.debugBox.clearFocus();
+            this.manager.folder.setBasicFocusFolder();
+            this.manager.debugBox.clearFocusGameObj();
         }
         // cross2FocusObj
         let tmpGo2ThisFunc = () => {
-            _folder.cross2FocusObj(_debugBox.getFocusGameObj(), this.objList);
+            this.manager.folder.cross2FocusObj(this.manager.debugBox.getFocusGameObj(), this.objList);
         };
         let tmpFocusProperties = {
             GUIIdx: 'NONE',
@@ -149,7 +59,7 @@ export class GUIClass {
         _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
         _basic.add(tmpAllConsole, 'SCENE_LIST');
         _basic.add(tmpAllConsole, 'DEFAULT_CAM');
-        _lib.addFolderInBasic(_basic);
+        this.lib.addFolderInBasic(_basic);
         tmpPointer = _basic.addFolder('Pointer');
         tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
         tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
@@ -167,37 +77,19 @@ export class GUIClass {
         tmpFocus.add(tmpFocusProperties, 'GUI_FOCUS_OFF'); // function
         tmpFocus.add(tmpFocusProperties, 'GUI_GO_2_DETAIL'); // function
 
-        _folder.push2FolderList(tmpPointer, 'basic');
-        _folder.push2FolderList(tmpObj, 'basic');
+        this.manager.folder.push2FolderList(tmpPointer, 'basic');
+        this.manager.folder.push2FolderList(tmpObj, 'basic');
     }
-    createFocusFolder(_scene, _cursorKey, _debugBox, _folder, _typeSort) {
-        let tmpDisplayList = undefined;
-        tmpDisplayList = _scene.children;
+    createFocusFolder(_scene) {
+        let tmpDisplayList = _scene.children;
         this.objList = tmpDisplayList.list;
-        _typeSort.createFocusFolder(this.objList, _folder, _debugBox);
-    }
-    // create each custom folder from Phaser.scene.displayList
-    createCustom(_scene, _custom, _typeSort) {
-        let tmpLength = this.objList.length;
-        for (var i=0; i<tmpLength; i++) {
-            let tmpFolderInCustom = this.folder.add2CustomFolder(i);
-            _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
-        }
+        this.manager.typeSort.createFocusFolder(this.objList);
     }
 
     // destroy GUI when restart Phaser.Scene
     destroyGUI() {
-        this.libs.destroyGUI();
+        this.lib.destroyGUI();
     }
-
-    // WARNING THIS IS TRIAL: config
-    saveConfig() {
-
-    }
-    loadConfig() {
-
-    }
-
     tryCatchFlow(_function) {
         try {
             _function();

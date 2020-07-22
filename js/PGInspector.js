@@ -5,7 +5,7 @@ window.PhaserGUI = undefined; // GUI self class
 
 // Main Phaser3 GUI function **
 function PhaserGUIAction(_scene, _configObj) {
-    let tmpGUIInstance; // GUI instance
+    let tmpMainInstance; // main(GUI & SideGUI) instance
 
     // check GUI object is already exist
     ChckGUIObj();
@@ -14,18 +14,16 @@ function PhaserGUIAction(_scene, _configObj) {
     let tmpConfigObj = ChckConfigObj(_scene, _configObj);
 
     // pure declare for callback or plan
-    let tmpGUIClass;
-    let tmpStatusReturn;
+    let tmpMainClass;
     
     // setting value
-    tmpGUIClass = InitGUIClassSetting();
-    tmpStatusReturn = ChckStatusManager(tmpConfigObj.status);
-    tmpGUIInstance = SetCreateUpdateInstance( tmpConfigObj, tmpStatusReturn, tmpGUIClass );
+    tmpMainClass = InitMainClass();
+    tmpMainInstance = SetCreateUpdateInstance( tmpConfigObj, tmpMainClass );
 
-    StoreGUI(tmpGUIInstance);
+    StoreGUI(tmpMainInstance);
 
     // return just phaser scene
-    return tmpGUIInstance;
+    return tmpMainInstance;
 }
 
 // detailed functions
@@ -34,18 +32,21 @@ function ChckGUIObj() {
     if (window.PhaserGUI) {
         window.PhaserGUI.destroyGUI();
         window.PhaserGUI = undefined;
-    } else {}
+    }
 }
 function ChckConfigObj(_scene, _configObj) {
     // init config structure
     let tmpReturn = {
+        scene: undefined,
         css: {
             alpha: undefined,
             right: undefined,
             top: undefined
         },
-        status: undefined,
-        scene: undefined
+        init: {
+            focus: undefined,
+            ignore: undefined
+        }
     };
     // check is init config
     TryCatchObj(tmpReturn, 'scene', _scene);
@@ -53,9 +54,10 @@ function ChckConfigObj(_scene, _configObj) {
         TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
         TryCatchObj(tmpReturn.css, 'right', _configObj.right);
         TryCatchObj(tmpReturn.css, 'top', _configObj.top);
-        // ++ TryCatchObj(tmpReturn, 'ignoreList', _configObj.ignoreList);
-        TryCatchObj(tmpReturn, 'status', _configObj.status);
-    } else {}
+
+        TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
+        TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
+    }
     return tmpReturn;
 }
 function TryCatchObj(_obj, _objPropertyName, _obj2) {
@@ -66,35 +68,32 @@ function TryCatchObj(_obj, _objPropertyName, _obj2) {
         console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
     }
 }
-function InitGUIClassSetting() {
-    let tmpClass;
+function InitMainClass() {
+    let tmpMain;
     try {
-        tmpClass = require('./gui/GUIClass.js').GUIClass; // parcel way
+        // parcel way
+        tmpMain = require('./main.js').Main;
     }
-    catch {}
-    return tmpClass;
+    catch (e) {
+        console.warn('failed to load PGInspector.js error message:', e);
+    }
+    return tmpMain;
 }
-function SetCreateUpdateInstance(_tmpConfigObj, _tmpStatusReturn, _tmpGUIClass) {
-    let GUIClass = new _tmpGUIClass(_tmpConfigObj);
-    GUIClass.create(_tmpConfigObj.scene);
-    SetRenewalUpdate(_tmpConfigObj, GUIClass);
-    return GUIClass;
+function SetCreateUpdateInstance(_tmpConfigObj, _tmpMainClass) {
+    let MainClass = new _tmpMainClass(_tmpConfigObj);
+    MainClass.create(_tmpConfigObj.scene);
+    SetRenewalUpdate(_tmpConfigObj, MainClass);
+    return MainClass;
 }
 // setting custom update
-function SetRenewalUpdate(_tmpConfigObj, GUIClass) {
+function SetRenewalUpdate(_tmpConfigObj, MainClass) {
     let tmpUpdate = undefined;
     let tmpSceneUpdate = _tmpConfigObj.scene.update.bind(_tmpConfigObj.scene);
     tmpUpdate = function (_time, _delta) {
         tmpSceneUpdate(_time, _delta);
-        GUIClass.update(_time, _delta);
+        MainClass.update(_time, _delta);
     }
     return _tmpConfigObj.scene.update = tmpUpdate;
-}
-function ChckStatusManager(_tmpStatus) {
-    let tmpSM;
-    if (_tmpStatus) {} // status manager exist
-    else {} // status manager not exist
-    return tmpSM;
 }
 function StoreGUI(_GUI) {
     window.PhaserGUI = _GUI;

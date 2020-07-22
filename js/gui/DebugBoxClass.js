@@ -195,7 +195,7 @@ export default class DebugBoxClass {
         if (tmpObj) {
             tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
             tmpObj.isFocusOnGUI = false;
-        } else {}
+        }
     }
     setPointerOver(_gameObj) {
         _gameObj.setAlpha(0.7);
@@ -211,7 +211,7 @@ export default class DebugBoxClass {
         }
         else if (_folderType === 'CUSTOM') {
             tmpFocus = _folder.getTmpStorageFocus();
-        } else {}
+        }
 
         tmpFocus.guiIdx = _gameObj.guiIdx;
 
@@ -248,7 +248,7 @@ export default class DebugBoxClass {
         if (this.focus.gameObj) {
             this.setDebugBox(this.focus, this.focus.gameObj);
         }
-        else {}
+       
     }
     clearFocusGameObj() {
         this.focus.gameObj = undefined;

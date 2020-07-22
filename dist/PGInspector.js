@@ -117,7 +117,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"gui/lib/DatGUI/DatGUILib.js":[function(require,module,exports) {
+})({"lib/DatGUI/DatGUILib.js":[function(require,module,exports) {
 var define;
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -1748,7 +1748,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     value: !0
   });
 });
-},{}],"gui/lib/DatGUI/DatGUIcss.js":[function(require,module,exports) {
+},{}],"lib/DatGUI/DatGUIcss.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1772,6 +1772,7 @@ function () {
 
     this.class = this.initClass();
     this.gui = this.initGui();
+    console.log('this.gui:', this.gui);
     this.alpha = this.initSetAlpha(_cssObj);
     this.posXY = this.initSetPosXY(_cssObj); // delay GUI color all structure
     // this.color = this.initSetColor(_cssObj);
@@ -1828,6 +1829,34 @@ function () {
     value: function initPosXY() {
       this.gui.style.right = this.posXY.right + "px";
       this.gui.style.top = this.posXY.top + "px";
+    }
+  }, {
+    key: "callbackCSSstringSkipped",
+    value: function callbackCSSstringSkipped() {
+      var tmpList = document.getElementsByClassName('property-name');
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = tmpList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var tmpCompo = _step.value;
+          tmpCompo.style.overflow = 'inherit';
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
     } // EXTERNAL
 
   }, {
@@ -1874,7 +1903,7 @@ function () {
 }();
 
 exports.default = GUIcss;
-},{}],"gui/lib/DatGUI/index.js":[function(require,module,exports) {
+},{}],"lib/DatGUI/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1905,6 +1934,7 @@ function () {
     _classCallCheck(this, GUIMain);
 
     this.lib = new dat.GUI();
+    this.side = new dat.GUI();
     this.css = new _DatGUIcss.default(_cssObj);
   }
 
@@ -1912,6 +1942,11 @@ function () {
     key: "getLib",
     value: function getLib() {
       return this.lib;
+    }
+  }, {
+    key: "getSide",
+    value: function getSide() {
+      return this.side;
     }
   }, {
     key: "getcss",
@@ -1928,13 +1963,18 @@ function () {
     value: function destroy() {
       this.lib.destroy();
     }
+  }, {
+    key: "callbackCSSstringSkipped",
+    value: function callbackCSSstringSkipped() {
+      this.css.callbackCSSstringSkipped();
+    }
   }]);
 
   return GUIMain;
 }();
 
 exports.default = GUIMain;
-},{"./DatGUILib.js":"gui/lib/DatGUI/DatGUILib.js","./DatGUIcss.js":"gui/lib/DatGUI/DatGUIcss.js"}],"gui/lib/Stats/StatsLib.js":[function(require,module,exports) {
+},{"./DatGUILib.js":"lib/DatGUI/DatGUILib.js","./DatGUIcss.js":"lib/DatGUI/DatGUIcss.js"}],"lib/Stats/StatsLib.js":[function(require,module,exports) {
 var define;
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -2047,7 +2087,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
   return f;
 });
-},{}],"gui/lib/Stats/index.js":[function(require,module,exports) {
+},{}],"lib/Stats/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2116,7 +2156,7 @@ function () {
 }();
 
 exports.default = StatsMain;
-},{"./StatsLib.js":"gui/lib/Stats/StatsLib.js"}],"gui/lib/index.js":[function(require,module,exports) {
+},{"./StatsLib.js":"lib/Stats/StatsLib.js"}],"lib/index.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2169,6 +2209,11 @@ function () {
       return this.getGUI().getLib();
     }
   }, {
+    key: "getGUISide",
+    value: function getGUISide() {
+      return this.getGUI().getSide();
+    }
+  }, {
     key: "getGUIcss",
     value: function getGUIcss() {
       return this.getGUI().getcss();
@@ -2183,7 +2228,7 @@ function () {
     key: "destroyGUI",
     value: function destroyGUI() {
       this.getGUI().destroy();
-    } // EXTERNAL
+    } // EXTERNAL : GUI
 
   }, {
     key: "addFolderInBasic",
@@ -2191,7 +2236,8 @@ function () {
       // add in basic folder with events
       var tmpcss = this.getGUIcss(); // gui & stats alpha
 
-      _basic.add(tmpcss, 'alpha').min(0.1).max(1.0).step(0.02).onChange(this.setAlphaInGUINStats.bind(this)); // // gui color
+      _basic.add(tmpcss, 'alpha').min(0.1).max(1.0).step(0.02).onChange(this.setAlphaInGUINStats.bind(this)); // // DEFERRED
+      // // gui color
       // _basic.addColor(this, 'color')
       // .onChange( this.setColorInGUI.bind(this) );
       // gui posXY (right, top)
@@ -2209,6 +2255,13 @@ function () {
       var tmpStats = this.getStats();
       tmpcss.setAlphaInGUI.apply(tmpcss);
       tmpStats.setAlphaInStats.apply(tmpStats, [tmpAlpha]);
+    } // EXTERNAL : Side
+    // EXTERNAL : Main
+
+  }, {
+    key: "callbackCSSstringSkipped",
+    value: function callbackCSSstringSkipped() {
+      this.GUI.callbackCSSstringSkipped();
     }
   }]);
 
@@ -2216,7 +2269,7 @@ function () {
 }();
 
 exports.default = LibClass;
-},{"./DatGUI/index.js":"gui/lib/DatGUI/index.js","./Stats/index.js":"gui/lib/Stats/index.js"}],"utils/DebugConsoleFunc.js":[function(require,module,exports) {
+},{"./DatGUI/index.js":"lib/DatGUI/index.js","./Stats/index.js":"lib/Stats/index.js"}],"utils/DebugConsoleFunc.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2349,7 +2402,7 @@ function () {
           fKeyList: undefined
         });
         return tmpTKL;
-      } else {}
+      }
     }
   }, {
     key: "initAnimList",
@@ -2368,7 +2421,7 @@ function () {
         }
 
         return tmpAKL;
-      } else {}
+      }
     } // EXTERNAL: give key list object
 
   }, {
@@ -2408,7 +2461,7 @@ function () {
         }
 
         return tmpList;
-      } else {}
+      }
     }
   }, {
     key: "updateDropdown",
@@ -2460,48 +2513,61 @@ function () {
     this.conAlert = '_PGI System_ :';
     this.timeKey = '_PGI CntEnd_ ';
     this.objLength = 0;
-    this.srcObj = new _SrcManagerClass.default(_scene);
-    this.classObjs = {
-      folder: folder,
-      debugBox: debugBox,
-      input: input,
-      camera: camera
-    };
-  } // EXTERNAL
-  // get scene then set list to form gui set up
+    this.srcObj = new _SrcManagerClass.default(_scene); // class objs
 
+    this.scene = _scene;
+    this.folder;
+    this.debugBox;
+    this.input;
+    this.camera;
+  }
 
   _createClass(TypeSortManager, [{
+    key: "create",
+    value: function create(_guiClass) {
+      this.createInitClassObjs(_guiClass);
+    } // EXTERNAL
+    // get scene then set list to form gui set up
+
+  }, {
+    key: "createInitClassObjs",
+    value: function createInitClassObjs(_guiClass) {
+      this.folder = _guiClass.folder;
+      this.debugBox = _guiClass.debugBox;
+      this.input = _guiClass.input;
+      this.camera = _guiClass.camera;
+    }
+  }, {
     key: "createFocusFolder",
-    value: function createFocusFolder(_objList, _folder, _debugBox, _input) {
+    value: function createFocusFolder(_objList) {
       var tmpLength = _objList.length;
 
       for (var i = 0; i < tmpLength; i++) {
-        this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _input);
-        this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _input);
+        this.createFocusFolderTryException(_objList, _objList[i]);
+        this.createFocusFolderSetObj(_objList, _objList[i]);
       }
     }
   }, {
     key: "createFocusFolderTryException",
-    value: function createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _input) {
+    value: function createFocusFolderTryException(_objList, _obj) {
       if (_obj.type !== 'Graphics' && _obj.type !== 'Container') {
         this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
       } else if (_obj.type === 'Container') {
         // container
-        this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input);
+        this.createFocusFolderTryExceptionContainer(_objList, _obj);
       } else {// console.log('graphics confirm!');
       }
     } // if the gameobj is container obj
 
   }, {
     key: "createFocusFolderTryExceptionContainer",
-    value: function createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input) {
+    value: function createFocusFolderTryExceptionContainer(_objList, _obj) {
       var tmpList = _obj.list;
       var tmpLength = tmpList.length;
 
       for (var i = 0; i < tmpLength; i++) {
-        this.createFocusFolderTryException(tmpList, tmpList[i], _folder);
-        this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _input);
+        this.createFocusFolderTryException(tmpList, tmpList[i]);
+        this.createFocusFolderSetObj(_objList, tmpList[i]);
       }
     } // if the gameobj is NOT container obj
 
@@ -2514,43 +2580,49 @@ function () {
     }
   }, {
     key: "createFocusFolderSetObj",
-    value: function createFocusFolderSetObj(_objList, _obj, _folder, _debugBox) {
-      var _this = this;
-
-      var tmpGUIIdx = _folder.getGUIIdx();
-
+    value: function createFocusFolderSetObj(_objList, _obj) {
+      var tmpGUIIdx = this.folder.getGUIIdx();
+      var tmpObjs = {};
+      tmpObjs.input = this.input;
+      tmpObjs.scene = this.scene;
+      tmpObjs.debugBox = this.debugBox;
+      tmpObjs.folder = this.folder;
       _obj.guiIdx = tmpGUIIdx;
       _obj.isFocusOnGUI = false; // focus check boolean
 
       _obj.focusTw = undefined; // save focus performance tween in this property
 
-      _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
+      _obj.GUI_BACK = this.folder.back2Basic.bind(this.folder, tmpGUIIdx);
 
       _obj.GUI_FOCUS_ONOFF = function () {
-        _this.runFocusLogic.call(_input, _scene, tmpGameObj, _debugBox, _folder);
+        // focus off => on logic so activate function like focused
+        if (!this.isFocusOnGUI) {
+          tmpObjs.folder.cross2FocusObj(this);
+        }
+
+        tmpObjs.input.runFocusLogic.call(tmpObjs.input, tmpObjs.scene, this, tmpObjs.debugBox, tmpObjs.folder);
       };
 
       _obj.GUI_CONSOLE = _DebugConsoleFunc.DebugGetThisConsole;
-      this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
-      this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
+      this.chckParentContainer(_obj, _objList, tmpGUIIdx);
+      this.createCustomInDetail(_obj, _objList, tmpGUIIdx);
     }
   }, {
     key: "chckParentContainer",
-    value: function chckParentContainer(_obj, _folder, _objList, _tmpGUIIdx, _debugBox) {
+    value: function chckParentContainer(_obj, _objList, _tmpGUIIdx) {
       // if Parent Container exist, then insert the function
       var tmpPC = _obj.parentContainer;
 
       if (tmpPC) {
         // if this object parentContainer is exist
-        _obj.GUI_CONTAINER = _folder.closeThisNopenParentContainer.bind(_obj, [_tmpGUIIdx, tmpPC, _folder, _debugBox]);
+        _obj.GUI_CONTAINER = this.folder.closeThisNopenParentContainer.bind(_obj, [_tmpGUIIdx, tmpPC, this.folder, this.debugBox]);
       }
     }
   }, {
     key: "createCustomInDetail",
-    value: function createCustomInDetail(_obj, _folder, _objList, _tmpGUIIdx) {
-      var tmpFolderInCustom = _folder.add2CustomFolder();
-
-      this.chckObjType(_folder.getCustomFolder(), _tmpGUIIdx, tmpFolderInCustom, _obj);
+    value: function createCustomInDetail(_obj, _objList, _tmpGUIIdx) {
+      var tmpFolderInCustom = this.folder.add2CustomFolder();
+      this.chckObjType(this.folder.getCustomFolder(), _tmpGUIIdx, tmpFolderInCustom, _obj);
     }
   }, {
     key: "chckObjType",
@@ -2558,15 +2630,13 @@ function () {
       // check each of objs type
       var tmpGameObj = _obj;
       var tmpType = tmpGameObj.type;
-      this.chckStartSorting(_idx); // default functions
+      this.chckStartSorting(_idx); // BACK, FOCUS TOGGLE, CONSOLE
 
       this.createBackFunc(_idx, _folderInCustom, tmpGameObj);
-      this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj); // chck container exist
+      this.createFocusToggle(_folderInCustom, tmpGameObj);
+      this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj); // chck container exist & other stuffs
 
-      this.createContainerFunc(_idx, _folderInCustom, tmpGameObj); // create focus toggle
-
-      this.createFocusToggle(); // the other stuff
-
+      this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
       this.createCommonFront(_folderInCustom, tmpGameObj);
       this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj); // set each specific type properties
 
@@ -2629,7 +2699,7 @@ function () {
       //     console.log(this.conAlert, 'START CUSTOM SORTING');
       //     console.time(this.timeKey);
       //     this.objLength = _length - 1;
-      // } else {}
+      // }
     }
   }, {
     key: "chckEndSorting",
@@ -2637,13 +2707,20 @@ function () {
       //     console.log(this.conAlert, 'END CUSTOM SORTING');
       //     console.timeEnd(this.timeKey)
       //     console.log(this.conAlert, 'DISPLAY LENGTH IS', this.objLength + 1);
-      // } else {}
+      // }
     }
   }, {
     key: "createBackFunc",
     value: function createBackFunc(_idx, _folderInCustom, _gameObj) {
       // create back 2 basic function
       _folderInCustom.add(_gameObj, 'GUI_BACK');
+    }
+  }, {
+    key: "createFocusToggle",
+    value: function createFocusToggle(_folderInCustom, _gameObj) {
+      if (_gameObj.type !== 'Graphics') {
+        _folderInCustom.add(_gameObj, 'GUI_FOCUS_ONOFF');
+      }
     }
   }, {
     key: "createConsoleFunc",
@@ -2657,11 +2734,8 @@ function () {
     value: function createContainerFunc(_idx, _folderInCustom, _gameObj) {
       if (_gameObj.GUI_CONTAINER) {
         _folderInCustom.add(_gameObj, 'GUI_CONTAINER');
-      } else {}
+      }
     }
-  }, {
-    key: "createFocusToggle",
-    value: function createFocusToggle() {}
   }, {
     key: "createCommonFront",
     value: function createCommonFront(_folderInCustom, _gameObj) {
@@ -3042,7 +3116,7 @@ function () {
           case 'onChange':
             if (_customFunction) {
               tmpAddFunc.onChange(_customFunction);
-            } else {}
+            }
 
             break;
 
@@ -3050,7 +3124,7 @@ function () {
             console.log(_cmd, '<= this is not on the options');
             break;
         }
-      } else {}
+      }
     } // pointer over texture sorting
 
   }, {
@@ -3115,11 +3189,12 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var FolderManager =
 /*#__PURE__*/
 function () {
-  function FolderManager(_GUI, _typeSort) {
+  function FolderManager(_typeSort) {
     _classCallCheck(this, FolderManager);
 
-    this.GUI = _GUI;
+    this.GUI;
     this.typeSort = _typeSort;
+    console.log('this.typeSort:', this.typeSort);
     this.config = this.initConfig();
     this.basic = this.initBasic();
     this.custom = this.initCustom();
@@ -3127,7 +3202,8 @@ function () {
 
   _createClass(FolderManager, [{
     key: "create",
-    value: function create(_scene) {
+    value: function create(_scene, _GUI) {
+      this.GUI = _GUI;
       this.createBasic();
       this.createCustom();
       this.createBtnClickEvent(this.basic.folder, this.custom.folder);
@@ -3194,8 +3270,7 @@ function () {
     key: "createCustom",
     value: function createCustom() {
       this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
-    } // TEST
-
+    }
   }, {
     key: "createBtnClickEvent",
     value: function createBtnClickEvent(_basic, _custom) {
@@ -3399,7 +3474,7 @@ function () {
     }
   }, {
     key: "cross2FocusObj",
-    value: function cross2FocusObj(_gameObj, _objList) {
+    value: function cross2FocusObj(_gameObj) {
       // actually cross 2 custom_folder/focus_folder(config)
       if (_gameObj) {
         var tmpObjFolder = this.getCustomFoldersInFolder(); // chck is any displayed folder exist
@@ -3493,103 +3568,6 @@ function () {
 }();
 
 exports.default = FolderManager;
-},{}],"gui/SaveManager.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-/*
-    this should work with (Ctrl + S) command
-    included for saving changed GUI touched stuffs
-*/
-var SaveManager =
-/*#__PURE__*/
-function () {
-  function SaveManager(_save) {
-    _classCallCheck(this, SaveManager);
-
-    this.saveFunc = _save;
-    this.saveQ = [];
-    this.date = this.initDate();
-  }
-
-  _createClass(SaveManager, [{
-    key: "create",
-    value: function create(_scene) {
-      this.createCommand(_scene);
-    }
-  }, {
-    key: "initDate",
-    value: function initDate() {
-      var tmpD = {};
-      tmpD.self = new Date(); // web window API
-
-      tmpD.year = 0;
-      tmpD.month = 0;
-      tmpD.day = 0;
-      tmpD.time = 0;
-      tmpD.tot = undefined;
-      return tmpD;
-    }
-  }, {
-    key: "createCommand",
-    value: function createCommand(_scene) {
-      var _this = this;
-
-      _scene.input.keyboard.on('keydown_S', function (_event) {
-        if (_event.ctrlKey || _event.shiftKey) {
-          _this.useSaveFunc();
-        }
-      });
-    }
-  }, {
-    key: "useSaveFunc",
-    value: function useSaveFunc() {
-      // console.log('use save method function');
-      try {
-        this.saveFunc();
-      } catch (e) {}
-    }
-  }, {
-    key: "saveConfig",
-    value: function saveConfig(_config) {
-      var tmpObj = {};
-      tmpObj.name = _config.name;
-      tmpObj.type = _config.type;
-      tmpObj.texture = _config.texture;
-      tmpObj.date = this.getDate();
-      this.push2saveQ();
-    }
-  }, {
-    key: "getDate",
-    value: function getDate() {
-      var tD = this.date;
-      tD.year = tD.self.getFullYear();
-      tD.month = tD.self.getMonth();
-      tD.day = tD.self.getDay();
-      tD.time = tD.self.now();
-      tD.tot = tD.year + '/' + tD.month + '/' + tD.day + '/' + tD.time; // console.log('tD.tot:', tD.tot);
-    }
-  }, {
-    key: "push2saveQ",
-    value: function push2saveQ(_obj) {
-      this.saveQ.push(_obj);
-    }
-  }]);
-
-  return SaveManager;
-}();
-
-exports.default = SaveManager;
 },{}],"gui/DebugBoxClass.js":[function(require,module,exports) {
 "use strict";
 
@@ -3864,7 +3842,7 @@ function () {
         tmpObj.setAlpha(1); // temp (should be set alpha to saved alpha value)
 
         tmpObj.isFocusOnGUI = false;
-      } else {}
+      }
     }
   }, {
     key: "setPointerOver",
@@ -3888,7 +3866,7 @@ function () {
         tmpFocus = _folder.getTmpStorageOver();
       } else if (_folderType === 'CUSTOM') {
         tmpFocus = _folder.getTmpStorageFocus();
-      } else {}
+      }
 
       tmpFocus.guiIdx = _gameObj.guiIdx;
 
@@ -3925,7 +3903,7 @@ function () {
 
       if (this.focus.gameObj) {
         this.setDebugBox(this.focus, this.focus.gameObj);
-      } else {}
+      }
     }
   }, {
     key: "clearFocusGameObj",
@@ -4110,7 +4088,7 @@ function () {
           if (_folder.getDetailedStatus()) {
             _folder.back2Basic(tmpFocusGameObj.guiIdx);
           } else {
-            _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
+            _folder.cross2FocusObj(_debugBox.getFocusGameObj());
           }
         }
       });
@@ -4480,6 +4458,185 @@ function () {
 
 exports.default = CameraManager;
 },{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
+"use strict"; // debug console utils
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var GUIClass =
+/*#__PURE__*/
+function () {
+  function GUIClass(_main) {
+    _classCallCheck(this, GUIClass);
+
+    this.main = _main;
+    this.lib = this.main.libs;
+    this.manager = this.main.manager;
+    this.objList = undefined; // all game object list
+  }
+
+  _createClass(GUIClass, [{
+    key: "create",
+    value: function create(_scene) {
+      this.createBasicFolder(_scene, this.manager.folder.getBasicFolder());
+      this.createFocusFolder(_scene);
+    }
+  }, {
+    key: "createBasicFolder",
+    value: function createBasicFolder(_scene, _basic) {
+      var _this = this;
+
+      // create basic pointer
+      var tmpAllConsole = {};
+
+      tmpAllConsole.CONSOLE_CLEAR = function () {
+        console.clear();
+
+        _this.main.initConsole(_this.lib.getGUIcssObj());
+      };
+
+      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.DEFAULT_CAM = this.manager.camera.set2defaultZoom.bind(this.manager.camera);
+      var tmpPointer = undefined;
+      var tmpXY = {};
+      tmpXY.x = _scene.game.config.width;
+      tmpXY.y = _scene.game.config.height;
+      var tmpObj = undefined;
+      var tmpFocus = undefined;
+      var tmpObjProperties = {
+        GUIIdx: 'NONE',
+        name: 'NONE',
+        type: 'NONE',
+        texture: 'NONE'
+      }; // focus off function
+
+      var tmpFocusFunc = function tmpFocusFunc() {
+        _this.manager.debugBox.clearFocus();
+
+        _this.manager.folder.setBasicFocusFolder();
+
+        _this.manager.debugBox.clearFocusGameObj();
+      }; // cross2FocusObj
+
+
+      var tmpGo2ThisFunc = function tmpGo2ThisFunc() {
+        _this.manager.folder.cross2FocusObj(_this.manager.debugBox.getFocusGameObj(), _this.objList);
+      };
+
+      var tmpFocusProperties = {
+        GUIIdx: 'NONE',
+        name: 'NONE',
+        type: 'NONE',
+        texture: 'NONE',
+        GUI_FOCUS_OFF: tmpFocusFunc,
+        GUI_GO_2_DETAIL: tmpGo2ThisFunc
+      }; // setting folder hierarchy list
+
+      _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
+
+      _basic.add(tmpAllConsole, 'SCENE_LIST');
+
+      _basic.add(tmpAllConsole, 'DEFAULT_CAM');
+
+      this.lib.addFolderInBasic(_basic);
+      tmpPointer = _basic.addFolder('Pointer');
+      tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
+      tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
+      tmpPointer.add(_scene.cameras.main, 'zoom').min(0.1).listen();
+      tmpObj = _basic.addFolder('Obj');
+      tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
+      tmpObj.add(tmpObjProperties, 'name').listen();
+      tmpObj.add(tmpObjProperties, 'type').listen();
+      tmpObj.add(tmpObjProperties, 'texture').listen();
+      tmpFocus = tmpObj.addFolder('Focus'); // add to Parent Obj folder
+
+      tmpFocus.add(tmpFocusProperties, 'GUIIdx').listen();
+      tmpFocus.add(tmpFocusProperties, 'name');
+      tmpFocus.add(tmpFocusProperties, 'type');
+      tmpFocus.add(tmpFocusProperties, 'texture');
+      tmpFocus.add(tmpFocusProperties, 'GUI_FOCUS_OFF'); // function
+
+      tmpFocus.add(tmpFocusProperties, 'GUI_GO_2_DETAIL'); // function
+
+      this.manager.folder.push2FolderList(tmpPointer, 'basic');
+      this.manager.folder.push2FolderList(tmpObj, 'basic');
+    }
+  }, {
+    key: "createFocusFolder",
+    value: function createFocusFolder(_scene) {
+      var tmpDisplayList = _scene.children;
+      this.objList = tmpDisplayList.list;
+      this.manager.typeSort.createFocusFolder(this.objList);
+    } // destroy GUI when restart Phaser.Scene
+
+  }, {
+    key: "destroyGUI",
+    value: function destroyGUI() {
+      this.lib.destroyGUI();
+    }
+  }, {
+    key: "tryCatchFlow",
+    value: function tryCatchFlow(_function) {
+      try {
+        _function();
+      } catch (e) {}
+    }
+  }]);
+
+  return GUIClass;
+}();
+
+exports.default = GUIClass;
+},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/SideGUIClass.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var SideGUIClass =
+/*#__PURE__*/
+function () {
+  function SideGUIClass(_main) {
+    _classCallCheck(this, SideGUIClass);
+
+    this.main = _main;
+    this.lib = this.main.sideGUI;
+    this.manager = this.main.manager;
+  }
+
+  _createClass(SideGUIClass, [{
+    key: "create",
+    value: function create(_scene) {
+      console.log('this.lib:', this.lib);
+      console.log('this.main.mainGUI:', this.main.mainGUI);
+      this.lib.width = 120;
+      var tmpValue = this.lib.domElement.style.marginRight = '2px';
+      this.lib.addFolder('COMMAND_LIST');
+    }
+  }]);
+
+  return SideGUIClass;
+}();
+
+exports.default = SideGUIClass;
+},{}],"main.js":[function(require,module,exports) {
 /*
     * Libs
 
@@ -4512,30 +4669,30 @@ exports.default = CameraManager;
         (my wish is load, save json from phaser scene, then flexible implement
         for each gameobjects, but this is gonna be hard so i just drawback to next version)
 */
-"use strict"; // import * as dat from './lib/DatGUILib.js'; // import GUI lib
-// import GUIcss from './lib/DatGUIcss'; // import GUI CSS
-// lib
+"use strict"; // Lib
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.GUIClass = void 0;
+exports.Main = void 0;
 
 var _index = _interopRequireDefault(require("./lib/index.js"));
 
-var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+var _DebugConsoleFunc = require("./utils/DebugConsoleFunc.js");
 
-var _TypeSortManager = _interopRequireDefault(require("./TypeSortManager.js"));
+var _TypeSortManager = _interopRequireDefault(require("./gui/TypeSortManager.js"));
 
-var _FolderManager = _interopRequireDefault(require("./FolderManager.js"));
+var _FolderManager = _interopRequireDefault(require("./gui/FolderManager.js"));
 
-var _SaveManager = _interopRequireDefault(require("./SaveManager.js"));
+var _DebugBoxClass = _interopRequireDefault(require("./gui/DebugBoxClass.js"));
 
-var _DebugBoxClass = _interopRequireDefault(require("./DebugBoxClass.js"));
+var _InputManager = _interopRequireDefault(require("./gui/InputManager.js"));
 
-var _InputManager = _interopRequireDefault(require("./InputManager.js"));
+var _CameraManager = _interopRequireDefault(require("./gui/CameraManager.js"));
 
-var _CameraManager = _interopRequireDefault(require("./CameraManager.js"));
+var _GUIClass = _interopRequireDefault(require("./gui/GUIClass.js"));
+
+var _SideGUIClass = _interopRequireDefault(require("./gui/SideGUIClass.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4545,50 +4702,51 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var GUIClass =
+var Main =
 /*#__PURE__*/
 function () {
-  function GUIClass(_tmpHandOverObj) {
-    _classCallCheck(this, GUIClass);
+  function Main(_tmpHandOverObj) {
+    _classCallCheck(this, Main);
 
-    // Lib class & init stuff
-    this.libs = new _index.default(_tmpHandOverObj.css);
-    this.scene = undefined;
-    this.objList = undefined; // all game object list
+    this.scene = _tmpHandOverObj.scene;
+    this.libs = new _index.default(_tmpHandOverObj.css); // Console
 
-    this.conAlert = '_PGI System_ :';
-    this.initConsole(this.libs.getGUIcssObj()); // Manager class
+    this.initConsole(this.libs.getGUIcssObj()); // Manager Class
 
-    this.typeSort = new _TypeSortManager.default(_tmpHandOverObj.scene);
-    this.folder = new _FolderManager.default(this.libs.getGUILib(), this.typeSort);
-    this.save = new _SaveManager.default();
-    this.debugBox = new _DebugBoxClass.default();
-    this.input = new _InputManager.default();
-    this.camera = new _CameraManager.default();
+    this.manager = {};
+    this.manager.typeSort = new _TypeSortManager.default(_tmpHandOverObj.scene);
+    this.manager.folder = new _FolderManager.default(this.manager.typeSort);
+    this.manager.debugBox = new _DebugBoxClass.default();
+    this.manager.input = new _InputManager.default();
+    this.manager.camera = new _CameraManager.default(); // GUIs
+
+    this.mainGUI = this.libs.getGUILib();
+    this.sideGUI = this.libs.getGUISide();
+    this.GUI = new _GUIClass.default(this);
+    this.Side = new _SideGUIClass.default(this);
   }
 
-  _createClass(GUIClass, [{
+  _createClass(Main, [{
     key: "create",
     value: function create(_scene) {
-      this.createETCClass(_scene);
-      this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
-      this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort, this.input);
-      this.folder.chckOpenAllList();
-    }
-  }, {
-    key: "createETCClass",
-    value: function createETCClass(_scene) {
-      this.folder.create(_scene);
-      this.save.create(_scene);
-      this.debugBox.create(_scene, this.camera);
-      this.input.create(_scene, this.debugBox, this.folder);
-      this.camera.create(_scene, this.debugBox);
+      // Manager
+      this.manager.typeSort.create(this.manager);
+      this.manager.folder.create(_scene, this.mainGUI);
+      this.manager.debugBox.create(_scene, this.manager.camera);
+      this.manager.input.create(_scene, this.manager.debugBox, this.manager.folder);
+      this.manager.camera.create(_scene, this.manager.debugBox); // GUIs
+
+      this.GUI.create(_scene);
+      this.Side.create(_scene); // Last other stuffs
+
+      this.libs.callbackCSSstringSkipped();
+      this.manager.folder.chckOpenAllList();
     }
   }, {
     key: "update",
     value: function update(_time, _delta) {
-      this.debugBox.update(_time, _delta);
-      this.camera.update();
+      this.manager.debugBox.update(_time, _delta);
+      this.manager.camera.update();
     }
   }, {
     key: "initConsole",
@@ -4603,150 +4761,13 @@ function () {
         url: tmpURL
       });
     }
-  }, {
-    key: "initChckStatusManager",
-    value: function initChckStatusManager(_statusManager) {
-      var tmpSM;
-
-      if (_statusManager) {
-        tmpSM = _statusManager;
-        console.log(this.conAlert, 'USING STATUS MANAGER');
-      } else {
-        tmpSM = undefined;
-        console.log(this.conAlert, 'NOT USING STATUS MANAGER');
-      }
-
-      return tmpSM;
-    }
-  }, {
-    key: "createBasicFolder",
-    value: function createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _camera) {
-      var _this = this;
-
-      // create basic pointer
-      var tmpAllConsole = {};
-
-      tmpAllConsole.CONSOLE_CLEAR = function () {
-        console.clear();
-
-        _this.initConsole(_this.libs.getGUIcssObj(), _DebugConsoleFunc.DebugConsole);
-      };
-
-      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.DEFAULT_CAM = _camera.set2defaultZoom.bind(_camera);
-      var tmpPointer = undefined;
-      var tmpXY = {};
-      tmpXY.x = _scene.game.config.width;
-      tmpXY.y = _scene.game.config.height;
-      var tmpObj = undefined;
-      var tmpFocus = undefined;
-      var tmpObjProperties = {
-        GUIIdx: 'NONE',
-        name: 'NONE',
-        type: 'NONE',
-        texture: 'NONE'
-      }; // focus off function
-
-      var tmpFocusFunc = function tmpFocusFunc() {
-        _debugBox.clearFocus();
-
-        _folder.setBasicFocusFolder();
-
-        _debugBox.clearFocusGameObj();
-      }; // cross2FocusObj
-
-
-      var tmpGo2ThisFunc = function tmpGo2ThisFunc() {
-        _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this.objList);
-      };
-
-      var tmpFocusProperties = {
-        GUIIdx: 'NONE',
-        name: 'NONE',
-        type: 'NONE',
-        texture: 'NONE',
-        GUI_FOCUS_OFF: tmpFocusFunc,
-        GUI_GO_2_DETAIL: tmpGo2ThisFunc
-      }; // setting folder hierarchy list
-
-      _basic.add(tmpAllConsole, 'CONSOLE_CLEAR');
-
-      _basic.add(tmpAllConsole, 'SCENE_LIST');
-
-      _basic.add(tmpAllConsole, 'DEFAULT_CAM');
-
-      _lib.addFolderInBasic(_basic);
-
-      tmpPointer = _basic.addFolder('Pointer');
-      tmpPointer.add(_scene.input, 'x').min(0).max(tmpXY.x).listen();
-      tmpPointer.add(_scene.input, 'y').min(0).max(tmpXY.y).listen();
-      tmpPointer.add(_scene.cameras.main, 'zoom').min(0.1).listen();
-      tmpObj = _basic.addFolder('Obj');
-      tmpObj.add(tmpObjProperties, 'GUIIdx').listen();
-      tmpObj.add(tmpObjProperties, 'name').listen();
-      tmpObj.add(tmpObjProperties, 'type').listen();
-      tmpObj.add(tmpObjProperties, 'texture').listen();
-      tmpFocus = tmpObj.addFolder('Focus'); // add to Parent Obj folder
-
-      tmpFocus.add(tmpFocusProperties, 'GUIIdx').listen();
-      tmpFocus.add(tmpFocusProperties, 'name');
-      tmpFocus.add(tmpFocusProperties, 'type');
-      tmpFocus.add(tmpFocusProperties, 'texture');
-      tmpFocus.add(tmpFocusProperties, 'GUI_FOCUS_OFF'); // function
-
-      tmpFocus.add(tmpFocusProperties, 'GUI_GO_2_DETAIL'); // function
-
-      _folder.push2FolderList(tmpPointer, 'basic');
-
-      _folder.push2FolderList(tmpObj, 'basic');
-    }
-  }, {
-    key: "createFocusFolder",
-    value: function createFocusFolder(_scene, _cursorKey, _debugBox, _folder, _typeSort) {
-      var tmpDisplayList = undefined;
-      tmpDisplayList = _scene.children;
-      this.objList = tmpDisplayList.list;
-
-      _typeSort.createFocusFolder(this.objList, _folder, _debugBox);
-    } // create each custom folder from Phaser.scene.displayList
-
-  }, {
-    key: "createCustom",
-    value: function createCustom(_scene, _custom, _typeSort) {
-      var tmpLength = this.objList.length;
-
-      for (var i = 0; i < tmpLength; i++) {
-        var tmpFolderInCustom = this.folder.add2CustomFolder(i);
-
-        _typeSort.chckObjType(_custom, i, tmpFolderInCustom, this.objList);
-      }
-    } // destroy GUI when restart Phaser.Scene
-
-  }, {
-    key: "destroyGUI",
-    value: function destroyGUI() {
-      this.libs.destroyGUI();
-    } // WARNING THIS IS TRIAL: config
-
-  }, {
-    key: "saveConfig",
-    value: function saveConfig() {}
-  }, {
-    key: "loadConfig",
-    value: function loadConfig() {}
-  }, {
-    key: "tryCatchFlow",
-    value: function tryCatchFlow(_function) {
-      try {
-        _function();
-      } catch (e) {}
-    }
   }]);
 
-  return GUIClass;
+  return Main;
 }();
 
-exports.GUIClass = GUIClass;
-},{"./lib/index.js":"gui/lib/index.js","../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./TypeSortManager.js":"gui/TypeSortManager.js","./FolderManager.js":"gui/FolderManager.js","./SaveManager.js":"gui/SaveManager.js","./DebugBoxClass.js":"gui/DebugBoxClass.js","./InputManager.js":"gui/InputManager.js","./CameraManager.js":"gui/CameraManager.js"}],"PGInspector.js":[function(require,module,exports) {
+exports.Main = Main;
+},{"./lib/index.js":"lib/index.js","./utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./gui/TypeSortManager.js":"gui/TypeSortManager.js","./gui/FolderManager.js":"gui/FolderManager.js","./gui/DebugBoxClass.js":"gui/DebugBoxClass.js","./gui/InputManager.js":"gui/InputManager.js","./gui/CameraManager.js":"gui/CameraManager.js","./gui/GUIClass.js":"gui/GUIClass.js","./gui/SideGUIClass.js":"gui/SideGUIClass.js"}],"PGInspector.js":[function(require,module,exports) {
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // FINFAL WORK: ADD TO WINDOW OBJECT
@@ -4756,22 +4777,20 @@ window.PhaserGUI = undefined; // GUI self class
 // Main Phaser3 GUI function **
 
 function PhaserGUIAction(_scene, _configObj) {
-  var tmpGUIInstance; // GUI instance
+  var tmpMainInstance; // main(GUI & SideGUI) instance
   // check GUI object is already exist
 
   ChckGUIObj(); // chck (scene, css Opacity object / phaser scenes)
 
   var tmpConfigObj = ChckConfigObj(_scene, _configObj); // pure declare for callback or plan
 
-  var tmpGUIClass;
-  var tmpStatusReturn; // setting value
+  var tmpMainClass; // setting value
 
-  tmpGUIClass = InitGUIClassSetting();
-  tmpStatusReturn = ChckStatusManager(tmpConfigObj.status);
-  tmpGUIInstance = SetCreateUpdateInstance(tmpConfigObj, tmpStatusReturn, tmpGUIClass);
-  StoreGUI(tmpGUIInstance); // return just phaser scene
+  tmpMainClass = InitMainClass();
+  tmpMainInstance = SetCreateUpdateInstance(tmpConfigObj, tmpMainClass);
+  StoreGUI(tmpMainInstance); // return just phaser scene
 
-  return tmpGUIInstance;
+  return tmpMainInstance;
 } // detailed functions
 
 
@@ -4780,19 +4799,22 @@ function ChckGUIObj() {
   if (window.PhaserGUI) {
     window.PhaserGUI.destroyGUI();
     window.PhaserGUI = undefined;
-  } else {}
+  }
 }
 
 function ChckConfigObj(_scene, _configObj) {
   // init config structure
   var tmpReturn = {
+    scene: undefined,
     css: {
       alpha: undefined,
       right: undefined,
       top: undefined
     },
-    status: undefined,
-    scene: undefined
+    init: {
+      focus: undefined,
+      ignore: undefined
+    }
   }; // check is init config
 
   TryCatchObj(tmpReturn, 'scene', _scene);
@@ -4800,10 +4822,10 @@ function ChckConfigObj(_scene, _configObj) {
   if (_typeof(_configObj) === 'object') {
     TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
     TryCatchObj(tmpReturn.css, 'right', _configObj.right);
-    TryCatchObj(tmpReturn.css, 'top', _configObj.top); // ++ TryCatchObj(tmpReturn, 'ignoreList', _configObj.ignoreList);
-
-    TryCatchObj(tmpReturn, 'status', _configObj.status);
-  } else {}
+    TryCatchObj(tmpReturn.css, 'top', _configObj.top);
+    TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
+    TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
+  }
 
   return tmpReturn;
 }
@@ -4816,45 +4838,38 @@ function TryCatchObj(_obj, _objPropertyName, _obj2) {
   }
 }
 
-function InitGUIClassSetting() {
-  var tmpClass;
+function InitMainClass() {
+  var tmpMain;
 
   try {
-    tmpClass = require('./gui/GUIClass.js').GUIClass; // parcel way
-  } catch (_unused) {}
+    // parcel way
+    tmpMain = require('./main.js').Main;
+  } catch (e) {
+    console.warn('failed to load PGInspector.js error message:', e);
+  }
 
-  return tmpClass;
+  return tmpMain;
 }
 
-function SetCreateUpdateInstance(_tmpConfigObj, _tmpStatusReturn, _tmpGUIClass) {
-  var GUIClass = new _tmpGUIClass(_tmpConfigObj);
-  GUIClass.create(_tmpConfigObj.scene);
-  SetRenewalUpdate(_tmpConfigObj, GUIClass);
-  return GUIClass;
+function SetCreateUpdateInstance(_tmpConfigObj, _tmpMainClass) {
+  var MainClass = new _tmpMainClass(_tmpConfigObj);
+  MainClass.create(_tmpConfigObj.scene);
+  SetRenewalUpdate(_tmpConfigObj, MainClass);
+  return MainClass;
 } // setting custom update
 
 
-function SetRenewalUpdate(_tmpConfigObj, GUIClass) {
+function SetRenewalUpdate(_tmpConfigObj, MainClass) {
   var tmpUpdate = undefined;
 
   var tmpSceneUpdate = _tmpConfigObj.scene.update.bind(_tmpConfigObj.scene);
 
   tmpUpdate = function tmpUpdate(_time, _delta) {
     tmpSceneUpdate(_time, _delta);
-    GUIClass.update(_time, _delta);
+    MainClass.update(_time, _delta);
   };
 
   return _tmpConfigObj.scene.update = tmpUpdate;
-}
-
-function ChckStatusManager(_tmpStatus) {
-  var tmpSM;
-
-  if (_tmpStatus) {} // status manager exist
-  else {} // status manager not exist
-
-
-  return tmpSM;
 }
 
 function StoreGUI(_GUI) {
@@ -4863,7 +4878,7 @@ function StoreGUI(_GUI) {
 
 
 module.exports = PhaserGUIAction;
-},{"./gui/GUIClass.js":"gui/GUIClass.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./main.js":"main.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4891,7 +4906,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49871" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59256" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -108,7 +108,7 @@ export default class InputManager {
                     _folder.back2Basic(tmpFocusGameObj.guiIdx);
                 }
                 else {
-                    _folder.cross2FocusObj(_debugBox.getFocusGameObj(), this.objList);
+                    _folder.cross2FocusObj(_debugBox.getFocusGameObj());
                 } 
             }
         });

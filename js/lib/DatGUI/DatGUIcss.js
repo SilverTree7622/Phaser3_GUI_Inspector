@@ -4,6 +4,7 @@ export default class GUIcss {
         this.name = 'dg ac'; // dat gui class name
         this.class = this.initClass();
         this.gui = this.initGui();
+        console.log('this.gui:', this.gui);
         this.alpha = this.initSetAlpha(_cssObj);
         this.posXY = this.initSetPosXY(_cssObj);
         // delay GUI color all structure
@@ -47,6 +48,12 @@ export default class GUIcss {
     initPosXY() {
         this.gui.style.right = this.posXY.right + "px";
         this.gui.style.top = this.posXY.top + "px";
+    }
+    callbackCSSstringSkipped() {
+        let tmpList = document.getElementsByClassName('property-name');
+        for (let tmpCompo of tmpList) {
+            tmpCompo.style.overflow = 'inherit';
+        }
     }
 
     // EXTERNAL

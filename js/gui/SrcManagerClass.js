@@ -29,7 +29,7 @@ export default class SrcManager {
             }
             tmpTKL.unshift({tKey: tmpPropertyList, fKeyList: undefined});
             return tmpTKL;
-        } else {}
+        }
     }
     initAnimList(_scene) {
         let tmpAL = _scene.anims.anims;
@@ -42,7 +42,7 @@ export default class SrcManager {
                 tmpAKL.push(tmpProperty);
             }
             return tmpAKL;
-        } else {}
+        }
     }
 
     // EXTERNAL: give key list object
@@ -69,7 +69,7 @@ export default class SrcManager {
                 tmpList.push(tmpProperty);
             }
             return tmpList;
-        } else {}
+        }
     }
     updateDropdown(_target, _list){
         let innerHTMLStr = "";

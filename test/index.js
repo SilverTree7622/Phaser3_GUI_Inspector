@@ -1,3 +1,4 @@
+
 var config = {
     type: Phaser.WEBGL,
     scale: {
