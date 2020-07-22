@@ -2461,41 +2461,47 @@ function () {
     this.timeKey = '_PGI CntEnd_ ';
     this.objLength = 0;
     this.srcObj = new _SrcManagerClass.default(_scene);
+    this.classObjs = {
+      folder: folder,
+      debugBox: debugBox,
+      input: input,
+      camera: camera
+    };
   } // EXTERNAL
   // get scene then set list to form gui set up
 
 
   _createClass(TypeSortManager, [{
     key: "createFocusFolder",
-    value: function createFocusFolder(_objList, _folder, _debugBox) {
+    value: function createFocusFolder(_objList, _folder, _debugBox, _input) {
       var tmpLength = _objList.length;
 
       for (var i = 0; i < tmpLength; i++) {
-        this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox);
-        this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox);
+        this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _input);
+        this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _input);
       }
     }
   }, {
     key: "createFocusFolderTryException",
-    value: function createFocusFolderTryException(_objList, _obj, _folder, _debugBox) {
+    value: function createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _input) {
       if (_obj.type !== 'Graphics' && _obj.type !== 'Container') {
         this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
       } else if (_obj.type === 'Container') {
         // container
-        this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox);
+        this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input);
       } else {// console.log('graphics confirm!');
       }
     } // if the gameobj is container obj
 
   }, {
     key: "createFocusFolderTryExceptionContainer",
-    value: function createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox) {
+    value: function createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input) {
       var tmpList = _obj.list;
       var tmpLength = tmpList.length;
 
       for (var i = 0; i < tmpLength; i++) {
         this.createFocusFolderTryException(tmpList, tmpList[i], _folder);
-        this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox);
+        this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _input);
       }
     } // if the gameobj is NOT container obj
 
@@ -2509,6 +2515,8 @@ function () {
   }, {
     key: "createFocusFolderSetObj",
     value: function createFocusFolderSetObj(_objList, _obj, _folder, _debugBox) {
+      var _this = this;
+
       var tmpGUIIdx = _folder.getGUIIdx();
 
       _obj.guiIdx = tmpGUIIdx;
@@ -2517,6 +2525,11 @@ function () {
       _obj.focusTw = undefined; // save focus performance tween in this property
 
       _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
+
+      _obj.GUI_FOCUS_ONOFF = function () {
+        _this.runFocusLogic.call(_input, _scene, tmpGameObj, _debugBox, _folder);
+      };
+
       _obj.GUI_CONSOLE = _DebugConsoleFunc.DebugGetThisConsole;
       this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
       this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
@@ -2550,7 +2563,9 @@ function () {
       this.createBackFunc(_idx, _folderInCustom, tmpGameObj);
       this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj); // chck container exist
 
-      this.createContainerFunc(_idx, _folderInCustom, tmpGameObj); // the other stuff
+      this.createContainerFunc(_idx, _folderInCustom, tmpGameObj); // create focus toggle
+
+      this.createFocusToggle(); // the other stuff
 
       this.createCommonFront(_folderInCustom, tmpGameObj);
       this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj); // set each specific type properties
@@ -2644,6 +2659,9 @@ function () {
         _folderInCustom.add(_gameObj, 'GUI_CONTAINER');
       } else {}
     }
+  }, {
+    key: "createFocusToggle",
+    value: function createFocusToggle() {}
   }, {
     key: "createCommonFront",
     value: function createCommonFront(_folderInCustom, _gameObj) {
@@ -3593,8 +3611,8 @@ function () {
   function DebugBoxClass() {
     _classCallCheck(this, DebugBoxClass);
 
-    this.camera;
     this.scene;
+    this.camera;
     this.graphics;
     this.list;
     this.gameBound = this.initGameBound();
@@ -3605,8 +3623,8 @@ function () {
   _createClass(DebugBoxClass, [{
     key: "create",
     value: function create(_scene, _camera) {
-      this.camera = _camera;
       this.createScene(_scene);
+      this.camera = _camera;
       this.createSetting(_scene);
       this.createOver(Phaser.Geom.Rectangle);
       this.createFocus(Phaser.Geom.Rectangle);
@@ -3686,7 +3704,7 @@ function () {
   }, {
     key: "updateSizeBound",
     value: function updateSizeBound() {
-      if (this.camera.getIsDraggable()) {
+      if (this.camera.getIsDebugCamBound() || this.camera.getIsDraggable()) {
         this.graphics.lineStyle(this.gameBound.style.stroke, this.gameBound.style.color);
         this.graphics.strokeRectShape({
           x: 0,
@@ -4161,7 +4179,6 @@ function () {
         _debugBox.setFocusPerformance(_gameObj, _folder);
 
         _folder.setBasicFocusFolder(_gameObj);
-      } else {// nothing is on the pointer so basically nothing happen
       }
     }
   }, {
@@ -4244,6 +4261,7 @@ function () {
       scrollY: 0
     };
     this.isDraggable = false;
+    this.isDebugCamBound = false;
   }
 
   _createClass(CameraManager, [{
@@ -4321,6 +4339,16 @@ function () {
     key: "setIsDraggable",
     value: function setIsDraggable(_bool) {
       this.isDraggable = _bool;
+    }
+  }, {
+    key: "getIsDebugCamBound",
+    value: function getIsDebugCamBound() {
+      return this.isDebugCamBound;
+    }
+  }, {
+    key: "setIsDebugCamBound",
+    value: function setIsDebugCamBound(_bool) {
+      this.isDebugCamBound = _bool;
     }
   }, {
     key: "createSize",
@@ -4423,6 +4451,8 @@ function () {
 
             _this2.mainCamera.zoomTo(tmpP.zoom, 0);
           }
+
+          _this2.setIsDebugCamBound(_this2.getIsFollowing());
         }
       });
     }
@@ -4451,25 +4481,27 @@ function () {
 exports.default = CameraManager;
 },{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
 /*
+    * Libs
+
     * Origin ref from under URL
     https://github.com/dataarts/dat.gui/blob/master/API.md
-    
+
     * DAT.GUI
-    particle
+    - particle
     https://labs.phaser.io/edit.html?src=src/game%20objects\particle%20emitter\particle%20editor.js
-    physics sprite
+    - physics sprite
     https://labs.phaser.io/edit.html?src=src/physics\arcade\body%20controls.js
-    matter
-    audio
+    - matter
+    - audio
     https://labs.phaser.io/edit.html?src=src/audio\HTML5%20Audio\Loop%20Delay.js
     https://labs.phaser.io/view.html?src=src/audio\Web%20Audio\Seek.js
-    world view
+    - world view
     https://labs.phaser.io/edit.html?src=src/camera\move%20camera%20with%20keys.js
 
     * DAT.GUI Control
     press 'H' to toggle the GUI visibility
 
-    * Another Ref
+    * Another Planning Ref
     https://github.com/koreezgames/phaser3-particle-editor
 */
 
@@ -4477,8 +4509,8 @@ exports.default = CameraManager;
     END GOAL:
         you can get name when you over the objects,
         and if you click it, you can get its properties in custom GUI list.
-        (my wish is load, save json from phaser scene, then flexible implement,
-        for each gameobjects, but this is gonna be hard so i just drawback for next version)
+        (my wish is load, save json from phaser scene, then flexible implement
+        for each gameobjects, but this is gonna be hard so i just drawback to next version)
 */
 "use strict"; // import * as dat from './lib/DatGUILib.js'; // import GUI lib
 // import GUIcss from './lib/DatGUIcss'; // import GUI CSS
@@ -4540,7 +4572,7 @@ function () {
     value: function create(_scene) {
       this.createETCClass(_scene);
       this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
-      this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
+      this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort, this.input);
       this.folder.chckOpenAllList();
     }
   }, {
@@ -4859,7 +4891,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50390" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49871" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

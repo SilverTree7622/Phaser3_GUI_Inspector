@@ -94,7 +94,6 @@ export default class InputManager {
             }
         });
     }
-
     // when focused, SHIFT + D deep into the focused obj in detailed property
     createDetailEvent(_scene, _debugBox, _folder) {
         _scene.input.keyboard.on('keyup-D', () => {
@@ -114,7 +113,6 @@ export default class InputManager {
             }
         });
     }
-
     createVisibleEvent(_scene, _debugBox) {
         // when press command SHIFT + V, visible on/off logic
         _scene.input.keyboard.on('keyup-V', (_pointer, _gameObj) => {
@@ -165,9 +163,6 @@ export default class InputManager {
             _debugBox.setFocusPerformance(_gameObj, _folder);
             _folder.setBasicFocusFolder(_gameObj);
         }
-        else {
-            // nothing is on the pointer so basically nothing happen
-        }
     }
     chckCommandKey(_pointer) {
         let tmpBool;
@@ -186,5 +181,4 @@ export default class InputManager {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
     }
-
 }

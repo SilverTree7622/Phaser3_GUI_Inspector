@@ -1,31 +1,33 @@
 /*
+    * Libs
+
     * Origin ref from under URL
     https://github.com/dataarts/dat.gui/blob/master/API.md
-    
+
     * DAT.GUI
-    particle
+    - particle
     https://labs.phaser.io/edit.html?src=src/game%20objects\particle%20emitter\particle%20editor.js
-    physics sprite
+    - physics sprite
     https://labs.phaser.io/edit.html?src=src/physics\arcade\body%20controls.js
-    matter
-    audio
+    - matter
+    - audio
     https://labs.phaser.io/edit.html?src=src/audio\HTML5%20Audio\Loop%20Delay.js
     https://labs.phaser.io/view.html?src=src/audio\Web%20Audio\Seek.js
-    world view
+    - world view
     https://labs.phaser.io/edit.html?src=src/camera\move%20camera%20with%20keys.js
 
     * DAT.GUI Control
     press 'H' to toggle the GUI visibility
 
-    * Another Ref
+    * Another Planning Ref
     https://github.com/koreezgames/phaser3-particle-editor
 */
 /*
     END GOAL:
         you can get name when you over the objects,
         and if you click it, you can get its properties in custom GUI list.
-        (my wish is load, save json from phaser scene, then flexible implement,
-        for each gameobjects, but this is gonna be hard so i just drawback for next version)
+        (my wish is load, save json from phaser scene, then flexible implement
+        for each gameobjects, but this is gonna be hard so i just drawback to next version)
 */
 
 "use strict";
@@ -65,7 +67,7 @@ export class GUIClass {
     create(_scene) {
         this.createETCClass(_scene);
         this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
-        this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
+        this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort, this.input);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {

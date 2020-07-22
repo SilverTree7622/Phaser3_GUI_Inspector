@@ -15,6 +15,7 @@ export default class CameraManager {
         // drag values
         this.dragConfig = { x: 0, y: 0, scrollX: 0, scrollY: 0 };
         this.isDraggable = false;
+        this.isDebugCamBound = false;
     }
     create(_scene, _debugBox) {
         this.createInitScene(_scene);
@@ -67,6 +68,12 @@ export default class CameraManager {
     }
     setIsDraggable(_bool) {
         this.isDraggable = _bool;
+    }
+    getIsDebugCamBound() {
+        return this.isDebugCamBound;
+    }
+    setIsDebugCamBound(_bool) {
+        this.isDebugCamBound = _bool;
     }
 
 
@@ -147,6 +154,7 @@ export default class CameraManager {
                     this.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
                     this.mainCamera.zoomTo(tmpP.zoom, 0);
                 }
+                this.setIsDebugCamBound(this.getIsFollowing());
             }
         });
     }

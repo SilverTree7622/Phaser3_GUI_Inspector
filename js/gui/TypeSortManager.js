@@ -9,37 +9,39 @@ export default class TypeSortManager {
         this.timeKey = '_PGI CntEnd_ ';
         this.objLength = 0;
         this.srcObj = new SrcManager(_scene);
+        this.classObjs = { folder, debugBox, input, camera };
     }
 
     // EXTERNAL
     // get scene then set list to form gui set up
-    createFocusFolder(_objList, _folder, _debugBox) {
+    createFocusFolder(_objList, _folder, _debugBox, _input) {
         let tmpLength = _objList.length;
+
         for (var i=0; i<tmpLength; i++) {
-            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox);
-            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox);
+            this.createFocusFolderTryException(_objList, _objList[i], _folder, _debugBox, _input);
+            this.createFocusFolderSetObj(_objList, _objList[i], _folder, _debugBox, _input);
         }
     }
-    createFocusFolderTryException(_objList, _obj, _folder, _debugBox) {
+    createFocusFolderTryException(_objList, _obj, _folder, _debugBox, _input) {
         if (_obj.type !== 'Graphics' &&
             _obj.type !== 'Container') {
             this.createFocusFolderTryExceptionNotContainer(_obj); // set interactive function
         }
         else if (_obj.type === 'Container') {
             // container
-            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox);
+            this.createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input);
         }
         else {
             // console.log('graphics confirm!');
         }
     }
     // if the gameobj is container obj
-    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox) {
+    createFocusFolderTryExceptionContainer(_objList, _obj, _folder, _debugBox, _input) {
         let tmpList = _obj.list;
         let tmpLength = tmpList.length;
         for (var i=0; i<tmpLength; i++) {
             this.createFocusFolderTryException(tmpList, tmpList[i], _folder);
-            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox);
+            this.createFocusFolderSetObj(_objList, tmpList[i], _folder, _debugBox, _input);
         }
     }
     // if the gameobj is NOT container obj
@@ -54,6 +56,10 @@ export default class TypeSortManager {
         _obj.isFocusOnGUI = false; // focus check boolean
         _obj.focusTw = undefined; // save focus performance tween in this property
         _obj.GUI_BACK = _folder.back2Basic.bind(_folder, tmpGUIIdx);
+        _obj.GUI_FOCUS_ONOFF = () => {
+            this.runFocusLogic.call(_input, _scene, tmpGameObj, _debugBox, _folder);
+
+        }
         _obj.GUI_CONSOLE = DebugGetThisConsole;
         this.chckParentContainer(_obj, _folder, _objList, tmpGUIIdx, _debugBox);
         this.createCustomInDetail(_obj, _folder, _objList, tmpGUIIdx);
@@ -82,6 +88,8 @@ export default class TypeSortManager {
         this.createConsoleFunc(_idx, _folderInCustom, tmpGameObj);
         // chck container exist
         this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
+        // create focus toggle
+        this.createFocusToggle();
         // the other stuff
         this.createCommonFront(_folderInCustom, tmpGameObj);
         this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj);
@@ -137,6 +145,9 @@ export default class TypeSortManager {
         if (_gameObj.GUI_CONTAINER) {
             _folderInCustom.add(_gameObj, 'GUI_CONTAINER');
         } else {}
+    }
+    createFocusToggle() {
+
     }
     createCommonFront(_folderInCustom, _gameObj) {
         // set properties (GUIIdx, name, type)
