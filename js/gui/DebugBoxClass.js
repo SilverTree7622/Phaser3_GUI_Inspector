@@ -2,7 +2,7 @@
 // make debug box with phaser graphics
 export default class DebugBoxClass {
     constructor() {
-        this.input = undefined;
+        this.camera;
         this.scene;
         this.graphics;
         this.list;
@@ -10,8 +10,8 @@ export default class DebugBoxClass {
         this.over = this.initOver();
         this.focus = this.initFocus();
     }
-    create(_scene, _input) {
-        this.input = _input;
+    create(_scene, _camera) {
+        this.camera = _camera;
         this.createScene(_scene);
         this.createSetting(_scene);
         this.createOver(Phaser.Geom.Rectangle);
@@ -68,13 +68,13 @@ export default class DebugBoxClass {
     }
 
     updateSizeBound() {
-        if (this.input.getIsDraggable()) {
+        if (this.camera.getIsDraggable()) {
             this.graphics.lineStyle(this.gameBound.style.stroke, this.gameBound.style.color);
             this.graphics.strokeRectShape({
                 x: 0,
                 y: 0,
-                width: this.input.size.w,
-                height: this.input.size.h
+                width: this.camera.getSize().w,
+                height: this.camera.getSize().h
             });
         }
     }

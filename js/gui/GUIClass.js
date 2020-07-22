@@ -39,10 +39,11 @@ import LibClass from './lib/index.js'; // import whole GUI
 import {DebugConsole, DebugGetThisConsole, DebugSceneNAllDisplayList} from '../utils/DebugConsoleFunc.js';
 // root
 import TypeSortManager from './TypeSortManager.js';
-import InputManager from './InputManager.js';
 import FolderManager from './FolderManager.js';
 import SaveManager from './SaveManager.js';
 import DebugBoxClass from './DebugBoxClass.js';
+import InputManager from './InputManager.js';
+import CameraManager from './CameraManager.js';
 
 
 export class GUIClass {
@@ -59,22 +60,24 @@ export class GUIClass {
         this.save = new SaveManager();
         this.debugBox = new DebugBoxClass();
         this.input = new InputManager();
+        this.camera = new CameraManager();
     }
     create(_scene) {
         this.createETCClass(_scene);
-        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.input);
+        this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
         this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
         this.folder.chckOpenAllList();
     }
     createETCClass(_scene) {
         this.folder.create(_scene);
         this.save.create(_scene);
-        this.debugBox.create(_scene, this.input);
+        this.debugBox.create(_scene, this.camera);
         this.input.create(_scene, this.debugBox, this.folder);
+        this.camera.create(_scene, this.debugBox);
     }
     update(_time, _delta) {
         this.debugBox.update(_time, _delta);
-        this.input.update();
+        this.camera.update();
     }
 
 
@@ -101,14 +104,14 @@ export class GUIClass {
         }
         return tmpSM;
     }
-    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _input) { // create basic pointer
+    createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _camera) { // create basic pointer
         let tmpAllConsole = {};
         tmpAllConsole.CONSOLE_CLEAR = () => {
             console.clear();
             this.initConsole(this.libs.getGUIcssObj(), DebugConsole);
         }
         tmpAllConsole.SCENE_LIST = DebugSceneNAllDisplayList.bind(_scene),
-        tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
+        tmpAllConsole.DEFAULT_CAM = _camera.set2defaultZoom.bind(_camera);
         let tmpPointer = undefined;
         let tmpXY = {};
         tmpXY.x = _scene.game.config.width;

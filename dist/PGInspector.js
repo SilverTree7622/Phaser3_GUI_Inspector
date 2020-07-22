@@ -3079,437 +3079,7 @@ function () {
 }();
 
 exports.default = TypeSortManager;
-},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManagerClass.js":"gui/SrcManagerClass.js"}],"gui/InputManager.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var InputManager =
-/*#__PURE__*/
-function () {
-  function InputManager() {
-    _classCallCheck(this, InputManager);
-
-    this.scene; // game size width, height
-
-    this.size = {
-      w: 0,
-      h: 0
-    };
-    this.mainCamera;
-    this.cursorKey; // wheel one const tick gap value
-
-    this.wheelValue = 150; // previous follow config
-
-    this.followConfig = {
-      x: 0,
-      y: 0,
-      zoom: 1
-    }; // drag values
-
-    this.dragConfig = {
-      x: 0,
-      y: 0,
-      scrollX: 0,
-      scrollY: 0
-    };
-    this.isDraggable = false;
-  }
-
-  _createClass(InputManager, [{
-    key: "create",
-    value: function create(_scene, _debugBox, _folder) {
-      this.createInitScene(_scene);
-      this.createDisableRightClick();
-      this.createSize(_scene);
-      this.createMainCamera(_scene);
-      this.createCursorKey(_scene);
-      this.createConsoleCmd(_scene, _debugBox);
-      this.createOverEvent(_scene, _debugBox, _folder);
-      this.createFocusEvent(_scene, _debugBox, _folder);
-      this.createDetailEvent(_scene, _debugBox, _folder);
-      this.createVisibleEvent(_scene, _debugBox);
-      this.createCameraEvent(_scene);
-      this.createFollowEvent(_scene, _debugBox);
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      this.updateDrag();
-    }
-  }, {
-    key: "createInitScene",
-    value: function createInitScene(_scene) {
-      this.scene = _scene;
-    }
-  }, {
-    key: "createDisableRightClick",
-    value: function createDisableRightClick() {
-      // disable right click pop up
-      window.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-      });
-    }
-  }, {
-    key: "createSize",
-    value: function createSize(_scene) {
-      this.size.w = _scene.game.config.width;
-      this.size.h = _scene.game.config.height;
-    }
-  }, {
-    key: "getSize",
-    value: function getSize() {
-      return this.size;
-    }
-  }, {
-    key: "createMainCamera",
-    value: function createMainCamera(_scene) {
-      this.mainCamera = _scene.cameras.main;
-    }
-  }, {
-    key: "createCursorKey",
-    value: function createCursorKey(_scene) {
-      this.cursorKey = _scene.input.keyboard.createCursorKeys(); // cursor key
-    }
-  }, {
-    key: "getCursorKey",
-    value: function getCursorKey() {
-      return this.cursorKey;
-    }
-  }, {
-    key: "setFollowConfig",
-    value: function setFollowConfig() {
-      this.followConfig.x = this.mainCamera.midPoint.x;
-      this.followConfig.y = this.mainCamera.midPoint.y;
-      this.followConfig.zoom = this.mainCamera.zoom;
-    }
-  }, {
-    key: "getPrevFollowConfig",
-    value: function getPrevFollowConfig() {
-      return this.followConfig;
-    }
-  }, {
-    key: "setDragStartConfig",
-    value: function setDragStartConfig() {
-      this.mainCamera.scrollX = this.dragConfig.scrollX;
-      this.mainCamera.scrollY = this.dragConfig.scrollY;
-      this.dragConfig.x = this.scene.input.x;
-      this.dragConfig.y = this.scene.input.y;
-    }
-  }, {
-    key: "setDragEndConfig",
-    value: function setDragEndConfig() {
-      this.dragConfig.scrollX = this.mainCamera.scrollX;
-      this.dragConfig.scrollY = this.mainCamera.scrollY;
-    }
-  }, {
-    key: "getIsDraggable",
-    value: function getIsDraggable() {
-      return this.isDraggable;
-    }
-  }, {
-    key: "setIsDraggable",
-    value: function setIsDraggable(_bool) {
-      this.isDraggable = _bool;
-    }
-  }, {
-    key: "createConsoleCmd",
-    value: function createConsoleCmd(_scene, _debugBox) {
-      var _this = this;
-
-      // when press command SHIFT + C
-      _scene.input.keyboard.on('keyup-C', function () {
-        if (_this.chckCmdShiftKeyDown()) {
-          // if focus
-          var tmpFocusGameObj = _debugBox.getFocusGameObj();
-
-          if (tmpFocusGameObj) {
-            _DebugConsoleFunc.DebugGetThisConsole.call(tmpFocusGameObj);
-          }
-        }
-      });
-    }
-  }, {
-    key: "createOverEvent",
-    value: function createOverEvent(_scene, _debugBox, _folder) {
-      var _this2 = this;
-
-      // just pointer over obj
-      _scene.input.on('gameobjectover', function (_pointer, _gameObj) {
-        if (!_this2.chckGameObjIsFocusOnGUI(_gameObj)) {
-          // not focus
-          _debugBox.setPointerOver(_gameObj);
-
-          _debugBox.setOver(_gameObj);
-
-          _debugBox.setOverGameObj(_gameObj);
-
-          _folder.setBasicOverFolder(_gameObj);
-        }
-      }); // when out from pointer over obj
-
-
-      _scene.input.on('gameobjectout', function (_pointer, _gameObj) {
-        if (!_this2.chckGameObjIsFocusOnGUI(_gameObj)) {
-          // not focus
-          _debugBox.clearPointerOver(_gameObj);
-
-          _debugBox.clearOverGameObj();
-
-          _debugBox.setOverGameObj(undefined);
-
-          _folder.setBasicOverFolder();
-        }
-      });
-    }
-  }, {
-    key: "createFocusEvent",
-    value: function createFocusEvent(_scene, _debugBox, _folder) {
-      var _this3 = this;
-
-      // when want to focus logic
-      _scene.input.on('gameobjectup', function (_pointer, _gameObj) {
-        // if middle button pressed
-        if (_this3.chckCommandKey(_pointer)) {
-          _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
-        }
-      }); // when press command SHIFT + F
-
-
-      _scene.input.keyboard.on('keyup-F', function () {
-        if (_this3.chckCmdShiftKeyDown()) {
-          // set gameObj via which pointer over on
-          var tmpGameObj = _debugBox.getOverGameObj();
-
-          _this3.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
-        }
-      });
-    } // when focused, SHIFT + D deep into the focused obj in detailed property
-
-  }, {
-    key: "createDetailEvent",
-    value: function createDetailEvent(_scene, _debugBox, _folder) {
-      var _this4 = this;
-
-      _scene.input.keyboard.on('keyup-D', function () {
-        var tmpFocusGameObj = _debugBox.getFocusGameObj();
-
-        if ( // chck if focus valid & shift key down
-        tmpFocusGameObj && _this4.chckCmdShiftKeyDown()) {
-          // chck isDetailedOpen boolean then go 2 detailed or basic
-          if (_folder.getDetailedStatus()) {
-            _folder.back2Basic(tmpFocusGameObj.guiIdx);
-          } else {
-            _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
-          }
-        }
-      });
-    }
-  }, {
-    key: "createVisibleEvent",
-    value: function createVisibleEvent(_scene, _debugBox) {
-      var _this5 = this;
-
-      // when press command SHIFT + V, visible on/off logic
-      _scene.input.keyboard.on('keyup-V', function (_pointer, _gameObj) {
-        var tmpFocusGameObj = _debugBox.getFocusGameObj();
-
-        if ( // chck if focus valid & shift key down
-        tmpFocusGameObj && _this5.chckCmdShiftKeyDown()) {
-          tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
-        }
-      });
-    }
-  }, {
-    key: "createCameraEvent",
-    value: function createCameraEvent(_scene) {
-      var _this6 = this;
-
-      // when press command SHIFT + SCROLL UP&DOWN, Main Camera zoom changes
-      _scene.input.on('wheel', function (_pointer, _gameObj, _deltaX, _deltaY, _deltaZ) {
-        if (_this6.chckCmdShiftKeyDown()) {
-          var tmpZoom = _this6.mainCamera.zoom;
-          var tmpGap = -1 * (_deltaY / (_this6.wheelValue * 10));
-          var tmpCal = tmpZoom + tmpGap; // if zoom size under 0.1 & Gap value is minus, no reason to smaller i think
-
-          if (tmpCal <= 0.1 && tmpGap < 0) {} else {
-            _this6.mainCamera.pan(_pointer.x, _pointer.y, 100);
-
-            _this6.mainCamera.zoomTo(tmpCal, 100);
-          }
-        }
-      }); // SHIFT + RIGTH CLICK to dragging camera scroll position
-
-
-      _scene.input.on('pointerdown', function (_pointer, _gameObj, _dragX, _dragY) {
-        if (_this6.chckCmdShiftKeyDown() && _pointer.rightButtonDown()) {
-          _this6.setDragStartConfig();
-
-          _this6.setIsDraggable(true);
-        }
-      });
-
-      _scene.input.on('pointerup', function (_pointer, _gameObj, _dragX, _dragY) {
-        _this6.setIsDraggable(false);
-
-        if (_this6.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
-          _this6.setDragEndConfig();
-
-          (0, _DebugConsoleFunc.DebugPointerPosition)(_this6.mainCamera, _pointer);
-        }
-      }); // SHIFT + S get back to default zoom value
-
-
-      _scene.input.keyboard.on('keyup-S', function (_pointer, _gameObj) {
-        if (_this6.chckCmdShiftKeyDown()) {
-          _this6.set2defaultZoom();
-        }
-      });
-    }
-  }, {
-    key: "set2defaultZoom",
-    value: function set2defaultZoom() {
-      this.mainCamera.pan(this.size.w / 2, this.size.h / 2, 250, 'Elastic');
-      this.mainCamera.zoomTo(1, 0);
-      this.mainCamera.scrollX = 0;
-      this.mainCamera.scrollY = 0;
-      this.dragConfig.scrollX = 0;
-      this.dragConfig.scrollY = 0;
-    }
-  }, {
-    key: "createFollowEvent",
-    value: function createFollowEvent(_scene, _debugBox) {
-      var _this7 = this;
-
-      // main camera just follows focus game obj
-      _scene.input.keyboard.on('keyup-A', function (_pointer, _gameObj) {
-        var tmpFocusGameObj = _debugBox.getFocusGameObj();
-
-        if (_this7.chckCmdShiftKeyDown() && tmpFocusGameObj) {
-          if (!_this7.mainCamera._follow) {
-            _this7.setFollowConfig();
-
-            _this7.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3);
-          } else {
-            var tmpP = _this7.getPrevFollowConfig();
-
-            _this7.mainCamera.stopFollow();
-
-            _this7.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
-
-            _this7.mainCamera.zoomTo(tmpP.zoom, 0);
-          }
-        }
-      });
-    }
-  }, {
-    key: "updateDrag",
-    value: function updateDrag() {
-      if (this.getIsDraggable()) {
-        var tmpX = this.dragConfig.scrollX + this.dragConfig.x - this.scene.input.x;
-        var tmpY = this.dragConfig.scrollY + this.dragConfig.y - this.scene.input.y;
-        this.mainCamera.scrollX = tmpX;
-        this.mainCamera.scrollY = tmpY;
-      }
-    } // chck focus then, focus ON game object or OFF
-
-  }, {
-    key: "runFocusLogic",
-    value: function runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
-      // isFocusOnGUI boolean is true
-      // (if u run focusCommand on the focus game object)
-      if (this.chckGameObjIsFocusOnGUI(_gameObj)) {
-        // clear the focus object
-        this.runFocusLogic_focus_clear(_gameObj, _debugBox, _folder);
-      } // isFocusOnGUI boolean is false
-      // (if u run focusCommand on the not focus game object)
-      else {
-          var tmpFocusGameObj = _debugBox.getFocusGameObj();
-
-          if (tmpFocusGameObj) {
-            // clear the focus during object focusing
-            // init focus check
-            this.runFocusLogic_focus_clear(tmpFocusGameObj, _debugBox, _folder);
-          } else {
-            // pure game object focus
-            // set to this game object
-            this.runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder);
-          }
-        }
-    }
-  }, {
-    key: "runFocusLogic_focus_clear",
-    value: function runFocusLogic_focus_clear(_gameObj, _debugBox, _folder) {
-      _debugBox.clearFocus(_gameObj);
-
-      _debugBox.setFocusGameObj(undefined);
-
-      _debugBox.clearFocusGameObj();
-
-      _folder.setBasicFocusFolder();
-
-      _folder.back2Basic(_gameObj.guiIdx);
-    }
-  }, {
-    key: "runFocusLogic_focus_pure",
-    value: function runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder) {
-      if (_gameObj) {
-        _debugBox.setFocusGameObj(_gameObj);
-
-        _debugBox.setFocus(_gameObj);
-
-        _debugBox.setFocusPerformance(_gameObj, _folder);
-
-        _folder.setBasicFocusFolder(_gameObj);
-      } else {// nothing is on the pointer so basically nothing happen
-      }
-    }
-  }, {
-    key: "chckCommandKey",
-    value: function chckCommandKey(_pointer) {
-      var tmpBool;
-
-      if (this.getCursorKey().shift.isDown && _pointer.leftButtonReleased() || // shift + mouse left click or
-      !_pointer.rightButtonReleased() && !_pointer.leftButtonReleased()) {
-        // mouse middle button
-        tmpBool = true;
-      } else {
-        tmpBool = false;
-      }
-
-      return tmpBool;
-    }
-  }, {
-    key: "chckCmdShiftKeyDown",
-    value: function chckCmdShiftKeyDown() {
-      var tmpBool = this.getCursorKey().shift.isDown ? true : false; // is shift down?
-
-      return tmpBool;
-    }
-  }, {
-    key: "chckGameObjIsFocusOnGUI",
-    value: function chckGameObjIsFocusOnGUI(_gameObj) {
-      var tmpGameObjBoolean = _gameObj ? _gameObj.isFocusOnGUI : null;
-      return tmpGameObjBoolean;
-    }
-  }]);
-
-  return InputManager;
-}();
-
-exports.default = InputManager;
-},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/FolderManager.js":[function(require,module,exports) {
+},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManagerClass.js":"gui/SrcManagerClass.js"}],"gui/FolderManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4023,7 +3593,7 @@ function () {
   function DebugBoxClass() {
     _classCallCheck(this, DebugBoxClass);
 
-    this.input = undefined;
+    this.camera;
     this.scene;
     this.graphics;
     this.list;
@@ -4034,8 +3604,8 @@ function () {
 
   _createClass(DebugBoxClass, [{
     key: "create",
-    value: function create(_scene, _input) {
-      this.input = _input;
+    value: function create(_scene, _camera) {
+      this.camera = _camera;
       this.createScene(_scene);
       this.createSetting(_scene);
       this.createOver(Phaser.Geom.Rectangle);
@@ -4116,13 +3686,13 @@ function () {
   }, {
     key: "updateSizeBound",
     value: function updateSizeBound() {
-      if (this.input.getIsDraggable()) {
+      if (this.camera.getIsDraggable()) {
         this.graphics.lineStyle(this.gameBound.style.stroke, this.gameBound.style.color);
         this.graphics.strokeRectShape({
           x: 0,
           y: 0,
-          width: this.input.size.w,
-          height: this.input.size.h
+          width: this.camera.getSize().w,
+          height: this.camera.getSize().h
         });
       }
     }
@@ -4351,7 +3921,535 @@ function () {
 }();
 
 exports.default = DebugBoxClass;
-},{}],"gui/GUIClass.js":[function(require,module,exports) {
+},{}],"gui/InputManager.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var InputManager =
+/*#__PURE__*/
+function () {
+  function InputManager() {
+    _classCallCheck(this, InputManager);
+
+    this.scene; // game size width, height
+
+    this.size = {
+      w: 0,
+      h: 0
+    };
+    this.cursorKey;
+  }
+
+  _createClass(InputManager, [{
+    key: "create",
+    value: function create(_scene, _debugBox, _folder) {
+      this.createInitScene(_scene);
+      this.createDisableRightClick();
+      this.createSize(_scene);
+      this.createCursorKey(_scene);
+      this.createConsoleCmd(_scene, _debugBox);
+      this.createOverEvent(_scene, _debugBox, _folder);
+      this.createFocusEvent(_scene, _debugBox, _folder);
+      this.createDetailEvent(_scene, _debugBox, _folder);
+      this.createVisibleEvent(_scene, _debugBox);
+    }
+  }, {
+    key: "createInitScene",
+    value: function createInitScene(_scene) {
+      this.scene = _scene;
+    }
+  }, {
+    key: "createDisableRightClick",
+    value: function createDisableRightClick() {
+      // disable right click pop up
+      window.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+    }
+  }, {
+    key: "createSize",
+    value: function createSize(_scene) {
+      this.size.w = _scene.game.config.width;
+      this.size.h = _scene.game.config.height;
+    }
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      return this.size;
+    }
+  }, {
+    key: "createMainCamera",
+    value: function createMainCamera(_scene) {
+      this.mainCamera = _scene.cameras.main;
+    }
+  }, {
+    key: "createCursorKey",
+    value: function createCursorKey(_scene) {
+      this.cursorKey = _scene.input.keyboard.createCursorKeys(); // cursor key
+    }
+  }, {
+    key: "getCursorKey",
+    value: function getCursorKey() {
+      return this.cursorKey;
+    }
+  }, {
+    key: "createConsoleCmd",
+    value: function createConsoleCmd(_scene, _debugBox) {
+      var _this = this;
+
+      // when press command SHIFT + C
+      _scene.input.keyboard.on('keyup-C', function () {
+        if (_this.chckCmdShiftKeyDown()) {
+          // if focus
+          var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+          if (tmpFocusGameObj) {
+            _DebugConsoleFunc.DebugGetThisConsole.call(tmpFocusGameObj);
+          }
+        }
+      });
+    }
+  }, {
+    key: "createOverEvent",
+    value: function createOverEvent(_scene, _debugBox, _folder) {
+      var _this2 = this;
+
+      // just pointer over obj
+      _scene.input.on('gameobjectover', function (_pointer, _gameObj) {
+        if (!_this2.chckGameObjIsFocusOnGUI(_gameObj)) {
+          // not focus
+          _debugBox.setPointerOver(_gameObj);
+
+          _debugBox.setOver(_gameObj);
+
+          _debugBox.setOverGameObj(_gameObj);
+
+          _folder.setBasicOverFolder(_gameObj);
+        }
+      }); // when out from pointer over obj
+
+
+      _scene.input.on('gameobjectout', function (_pointer, _gameObj) {
+        if (!_this2.chckGameObjIsFocusOnGUI(_gameObj)) {
+          // not focus
+          _debugBox.clearPointerOver(_gameObj);
+
+          _debugBox.clearOverGameObj();
+
+          _debugBox.setOverGameObj(undefined);
+
+          _folder.setBasicOverFolder();
+        }
+      });
+    }
+  }, {
+    key: "createFocusEvent",
+    value: function createFocusEvent(_scene, _debugBox, _folder) {
+      var _this3 = this;
+
+      // when want to focus logic
+      _scene.input.on('gameobjectup', function (_pointer, _gameObj) {
+        // if middle button pressed
+        if (_this3.chckCommandKey(_pointer)) {
+          _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
+        }
+      }); // when press command SHIFT + F
+
+
+      _scene.input.keyboard.on('keyup-F', function () {
+        if (_this3.chckCmdShiftKeyDown()) {
+          // set gameObj via which pointer over on
+          var tmpGameObj = _debugBox.getOverGameObj();
+
+          _this3.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
+        }
+      });
+    } // when focused, SHIFT + D deep into the focused obj in detailed property
+
+  }, {
+    key: "createDetailEvent",
+    value: function createDetailEvent(_scene, _debugBox, _folder) {
+      var _this4 = this;
+
+      _scene.input.keyboard.on('keyup-D', function () {
+        var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+        if ( // chck if focus valid & shift key down
+        tmpFocusGameObj && _this4.chckCmdShiftKeyDown()) {
+          // chck isDetailedOpen boolean then go 2 detailed or basic
+          if (_folder.getDetailedStatus()) {
+            _folder.back2Basic(tmpFocusGameObj.guiIdx);
+          } else {
+            _folder.cross2FocusObj(_debugBox.getFocusGameObj(), _this4.objList);
+          }
+        }
+      });
+    }
+  }, {
+    key: "createVisibleEvent",
+    value: function createVisibleEvent(_scene, _debugBox) {
+      var _this5 = this;
+
+      // when press command SHIFT + V, visible on/off logic
+      _scene.input.keyboard.on('keyup-V', function (_pointer, _gameObj) {
+        var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+        if ( // chck if focus valid & shift key down
+        tmpFocusGameObj && _this5.chckCmdShiftKeyDown()) {
+          tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+        }
+      });
+    } // chck focus then, focus ON game object or OFF
+
+  }, {
+    key: "runFocusLogic",
+    value: function runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
+      // isFocusOnGUI boolean is true
+      // (if u run focusCommand on the focus game object)
+      if (this.chckGameObjIsFocusOnGUI(_gameObj)) {
+        // clear the focus object
+        this.runFocusLogic_focus_clear(_gameObj, _debugBox, _folder);
+      } // isFocusOnGUI boolean is false
+      // (if u run focusCommand on the not focus game object)
+      else {
+          var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+          if (tmpFocusGameObj) {
+            // clear the focus during object focusing
+            // init focus check
+            this.runFocusLogic_focus_clear(tmpFocusGameObj, _debugBox, _folder);
+          } else {
+            // pure game object focus
+            // set to this game object
+            this.runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder);
+          }
+        }
+    }
+  }, {
+    key: "runFocusLogic_focus_clear",
+    value: function runFocusLogic_focus_clear(_gameObj, _debugBox, _folder) {
+      _debugBox.clearFocus(_gameObj);
+
+      _debugBox.setFocusGameObj(undefined);
+
+      _debugBox.clearFocusGameObj();
+
+      _folder.setBasicFocusFolder();
+
+      _folder.back2Basic(_gameObj.guiIdx);
+    }
+  }, {
+    key: "runFocusLogic_focus_pure",
+    value: function runFocusLogic_focus_pure(_scene, _gameObj, _debugBox, _folder) {
+      if (_gameObj) {
+        _debugBox.setFocusGameObj(_gameObj);
+
+        _debugBox.setFocus(_gameObj);
+
+        _debugBox.setFocusPerformance(_gameObj, _folder);
+
+        _folder.setBasicFocusFolder(_gameObj);
+      } else {// nothing is on the pointer so basically nothing happen
+      }
+    }
+  }, {
+    key: "chckCommandKey",
+    value: function chckCommandKey(_pointer) {
+      var tmpBool;
+
+      if (this.getCursorKey().shift.isDown && _pointer.leftButtonReleased() || // shift + mouse left click or
+      !_pointer.rightButtonReleased() && !_pointer.leftButtonReleased()) {
+        // mouse middle button
+        tmpBool = true;
+      } else {
+        tmpBool = false;
+      }
+
+      return tmpBool;
+    }
+  }, {
+    key: "chckCmdShiftKeyDown",
+    value: function chckCmdShiftKeyDown() {
+      var tmpBool = this.getCursorKey().shift.isDown ? true : false; // is shift down?
+
+      return tmpBool;
+    }
+  }, {
+    key: "chckGameObjIsFocusOnGUI",
+    value: function chckGameObjIsFocusOnGUI(_gameObj) {
+      var tmpGameObjBoolean = _gameObj ? _gameObj.isFocusOnGUI : null;
+      return tmpGameObjBoolean;
+    }
+  }]);
+
+  return InputManager;
+}();
+
+exports.default = InputManager;
+},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/CameraManager.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var CameraManager =
+/*#__PURE__*/
+function () {
+  function CameraManager() {
+    _classCallCheck(this, CameraManager);
+
+    this.scene;
+    this.size = {
+      w: 0,
+      h: 0
+    };
+    this.cursorKey;
+    this.mainCamera; // wheel one const tick gap value
+
+    this.wheelValue = 150; // previous follow config
+
+    this.followConfig = {
+      x: 0,
+      y: 0,
+      zoom: 1
+    };
+    this.isFollowing = false; // drag values
+
+    this.dragConfig = {
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0
+    };
+    this.isDraggable = false;
+  }
+
+  _createClass(CameraManager, [{
+    key: "create",
+    value: function create(_scene, _debugBox) {
+      this.createInitScene(_scene);
+      this.createSize(_scene);
+      this.createCursorKey(_scene);
+      this.createMainCamera(_scene);
+      this.createCameraEvent(_scene);
+      this.createFollowEvent(_scene, _debugBox);
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      this.updateDrag();
+    }
+  }, {
+    key: "createInitScene",
+    value: function createInitScene(_scene) {
+      this.scene = _scene;
+    }
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      return this.size;
+    }
+  }, {
+    key: "getCursorKey",
+    value: function getCursorKey() {
+      return this.cursorKey;
+    }
+  }, {
+    key: "setFollowConfig",
+    value: function setFollowConfig() {
+      this.followConfig.x = this.mainCamera.midPoint.x;
+      this.followConfig.y = this.mainCamera.midPoint.y;
+      this.followConfig.zoom = this.mainCamera.zoom;
+    }
+  }, {
+    key: "getPrevFollowConfig",
+    value: function getPrevFollowConfig() {
+      return this.followConfig;
+    }
+  }, {
+    key: "setIsFollowing",
+    value: function setIsFollowing(_bool) {
+      this.isFollowing = _bool;
+    }
+  }, {
+    key: "getIsFollowing",
+    value: function getIsFollowing() {
+      return this.isFollowing;
+    }
+  }, {
+    key: "setDragStartConfig",
+    value: function setDragStartConfig() {
+      this.mainCamera.scrollX = this.dragConfig.scrollX;
+      this.mainCamera.scrollY = this.dragConfig.scrollY;
+      this.dragConfig.x = this.scene.input.x;
+      this.dragConfig.y = this.scene.input.y;
+    }
+  }, {
+    key: "setDragEndConfig",
+    value: function setDragEndConfig() {
+      this.dragConfig.scrollX = this.mainCamera.scrollX;
+      this.dragConfig.scrollY = this.mainCamera.scrollY;
+    }
+  }, {
+    key: "getIsDraggable",
+    value: function getIsDraggable() {
+      return this.isDraggable;
+    }
+  }, {
+    key: "setIsDraggable",
+    value: function setIsDraggable(_bool) {
+      this.isDraggable = _bool;
+    }
+  }, {
+    key: "createSize",
+    value: function createSize(_scene) {
+      this.size.w = _scene.game.config.width;
+      this.size.h = _scene.game.config.height;
+    }
+  }, {
+    key: "createCursorKey",
+    value: function createCursorKey(_scene) {
+      this.cursorKey = _scene.input.keyboard.createCursorKeys(); // cursor key
+    }
+  }, {
+    key: "createMainCamera",
+    value: function createMainCamera(_scene) {
+      this.mainCamera = _scene.cameras.main;
+    }
+  }, {
+    key: "createCameraEvent",
+    value: function createCameraEvent(_scene) {
+      var _this = this;
+
+      // when press command SHIFT + SCROLL UP&DOWN, Main Camera zoom changes
+      _scene.input.on('wheel', function (_pointer, _gameObj, _deltaX, _deltaY, _deltaZ) {
+        if (_this.chckCmdShiftKeyDown()) {
+          var tmpZoom = _this.mainCamera.zoom;
+          var tmpGap = -1 * (_deltaY / (_this.wheelValue * 10));
+          var tmpCal = tmpZoom + tmpGap; // if zoom size under 0.1 & Gap value is minus, no reason to smaller i think
+
+          if (tmpCal <= 0.1 && tmpGap < 0) {} else {
+            if (!_this.getIsFollowing()) {
+              _this.mainCamera.pan(_pointer.x, _pointer.y, 100);
+            }
+
+            _this.mainCamera.zoomTo(tmpCal, 100);
+          }
+        }
+      }); // SHIFT + RIGTH CLICK to dragging camera scroll position
+
+
+      _scene.input.on('pointerdown', function (_pointer, _gameObj, _dragX, _dragY) {
+        if (_this.chckCmdShiftKeyDown() && _pointer.rightButtonDown()) {
+          _this.setDragStartConfig();
+
+          _this.setIsDraggable(true);
+        }
+      });
+
+      _scene.input.on('pointerup', function (_pointer, _gameObj, _dragX, _dragY) {
+        _this.setIsDraggable(false);
+
+        if (_this.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
+          _this.setDragEndConfig();
+
+          (0, _DebugConsoleFunc.DebugPointerPosition)(_this.mainCamera, _pointer);
+        }
+      }); // SHIFT + S get back to default zoom value
+
+
+      _scene.input.keyboard.on('keyup-S', function (_pointer, _gameObj) {
+        if (_this.chckCmdShiftKeyDown()) {
+          _this.set2defaultZoom();
+        }
+      });
+    }
+  }, {
+    key: "set2defaultZoom",
+    value: function set2defaultZoom() {
+      this.mainCamera.pan(this.size.w / 2, this.size.h / 2, 250, 'Elastic');
+      this.mainCamera.zoomTo(1, 0);
+      this.mainCamera.scrollX = 0;
+      this.mainCamera.scrollY = 0;
+      this.dragConfig.scrollX = 0;
+      this.dragConfig.scrollY = 0;
+    }
+  }, {
+    key: "createFollowEvent",
+    value: function createFollowEvent(_scene, _debugBox) {
+      var _this2 = this;
+
+      // main camera just follows focus game obj
+      _scene.input.keyboard.on('keyup-A', function (_pointer, _gameObj) {
+        var tmpFocusGameObj = _debugBox.getFocusGameObj();
+
+        if (_this2.chckCmdShiftKeyDown() && tmpFocusGameObj) {
+          if (!_this2.mainCamera._follow) {
+            _this2.setIsFollowing(true);
+
+            _this2.setFollowConfig();
+
+            _this2.mainCamera.startFollow(tmpFocusGameObj, true, 0.3, 0.3, 0.5, 0.5);
+          } else {
+            _this2.setIsFollowing(false);
+
+            var tmpP = _this2.getPrevFollowConfig();
+
+            _this2.mainCamera.stopFollow();
+
+            _this2.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
+
+            _this2.mainCamera.zoomTo(tmpP.zoom, 0);
+          }
+        }
+      });
+    }
+  }, {
+    key: "updateDrag",
+    value: function updateDrag() {
+      if (this.getIsDraggable()) {
+        var tmpX = this.dragConfig.scrollX + this.dragConfig.x - this.scene.input.x;
+        var tmpY = this.dragConfig.scrollY + this.dragConfig.y - this.scene.input.y;
+        this.mainCamera.scrollX = tmpX;
+        this.mainCamera.scrollY = tmpY;
+      }
+    }
+  }, {
+    key: "chckCmdShiftKeyDown",
+    value: function chckCmdShiftKeyDown() {
+      var tmpBool = this.getCursorKey().shift.isDown ? true : false; // is shift down?
+
+      return tmpBool;
+    }
+  }]);
+
+  return CameraManager;
+}();
+
+exports.default = CameraManager;
+},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
 /*
     * Origin ref from under URL
     https://github.com/dataarts/dat.gui/blob/master/API.md
@@ -4397,13 +4495,15 @@ var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
 
 var _TypeSortManager = _interopRequireDefault(require("./TypeSortManager.js"));
 
-var _InputManager = _interopRequireDefault(require("./InputManager.js"));
-
 var _FolderManager = _interopRequireDefault(require("./FolderManager.js"));
 
 var _SaveManager = _interopRequireDefault(require("./SaveManager.js"));
 
 var _DebugBoxClass = _interopRequireDefault(require("./DebugBoxClass.js"));
+
+var _InputManager = _interopRequireDefault(require("./InputManager.js"));
+
+var _CameraManager = _interopRequireDefault(require("./CameraManager.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4432,13 +4532,14 @@ function () {
     this.save = new _SaveManager.default();
     this.debugBox = new _DebugBoxClass.default();
     this.input = new _InputManager.default();
+    this.camera = new _CameraManager.default();
   }
 
   _createClass(GUIClass, [{
     key: "create",
     value: function create(_scene) {
       this.createETCClass(_scene);
-      this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.input);
+      this.createBasicFolder(_scene, this.libs, this.folder, this.folder.getBasicFolder(), this.debugBox, this.camera);
       this.createFocusFolder(_scene, this.input.getCursorKey(), this.debugBox, this.folder, this.typeSort);
       this.folder.chckOpenAllList();
     }
@@ -4447,14 +4548,15 @@ function () {
     value: function createETCClass(_scene) {
       this.folder.create(_scene);
       this.save.create(_scene);
-      this.debugBox.create(_scene, this.input);
+      this.debugBox.create(_scene, this.camera);
       this.input.create(_scene, this.debugBox, this.folder);
+      this.camera.create(_scene, this.debugBox);
     }
   }, {
     key: "update",
     value: function update(_time, _delta) {
       this.debugBox.update(_time, _delta);
-      this.input.update();
+      this.camera.update();
     }
   }, {
     key: "initConsole",
@@ -4486,7 +4588,7 @@ function () {
     }
   }, {
     key: "createBasicFolder",
-    value: function createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _input) {
+    value: function createBasicFolder(_scene, _lib, _folder, _basic, _debugBox, _camera) {
       var _this = this;
 
       // create basic pointer
@@ -4498,7 +4600,7 @@ function () {
         _this.initConsole(_this.libs.getGUIcssObj(), _DebugConsoleFunc.DebugConsole);
       };
 
-      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.DEFAULT_CAM = _input.set2defaultZoom.bind(_input);
+      tmpAllConsole.SCENE_LIST = _DebugConsoleFunc.DebugSceneNAllDisplayList.bind(_scene), tmpAllConsole.DEFAULT_CAM = _camera.set2defaultZoom.bind(_camera);
       var tmpPointer = undefined;
       var tmpXY = {};
       tmpXY.x = _scene.game.config.width;
@@ -4612,7 +4714,7 @@ function () {
 }();
 
 exports.GUIClass = GUIClass;
-},{"./lib/index.js":"gui/lib/index.js","../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./TypeSortManager.js":"gui/TypeSortManager.js","./InputManager.js":"gui/InputManager.js","./FolderManager.js":"gui/FolderManager.js","./SaveManager.js":"gui/SaveManager.js","./DebugBoxClass.js":"gui/DebugBoxClass.js"}],"PGInspector.js":[function(require,module,exports) {
+},{"./lib/index.js":"gui/lib/index.js","../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./TypeSortManager.js":"gui/TypeSortManager.js","./FolderManager.js":"gui/FolderManager.js","./SaveManager.js":"gui/SaveManager.js","./DebugBoxClass.js":"gui/DebugBoxClass.js","./InputManager.js":"gui/InputManager.js","./CameraManager.js":"gui/CameraManager.js"}],"PGInspector.js":[function(require,module,exports) {
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // FINFAL WORK: ADD TO WINDOW OBJECT
@@ -4757,7 +4859,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49870" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50390" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
