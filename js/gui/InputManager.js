@@ -12,12 +12,11 @@ export default class InputManager {
         this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ANGLE'];
         this.pointerMode = 'NONE';
         this.pointerModeObjs = {
-            target: undefined, // targeted focus GameObj
-            targetX: 0,
-            targetY: 0,
-            // targetScaleX: 0,
-            // targetScaleY: 0,
+            // pointer info
+            pointer: { x: 0, y: 0},
             isDown: false, // chck pointer is down?
+            // target info
+            target: undefined, // targeted focus GameObj
             move: { x: 0, y: 0 }, // rate 1:1
             scale: { x: 0, y: 0 }, // rate 5px:0.1
             angle: 0 // x coordinate rate 1:1
@@ -221,9 +220,10 @@ export default class InputManager {
         this.setDragStart(_pointer);
     }
     setDraggingMoveMode() {
+        let tmpMO = this.pointerModeObjs;
         let tmpGap = this.setDragging();
-        this.pointerModeObjs.target.x = tmpGap.x;
-        this.pointerModeObjs.target.y = tmpGap.y;
+        tmpMO.target.x = tmpMO.move.x + tmpGap.x;
+        tmpMO.target.y = tmpMO.move.y + tmpGap.y;
     }
     setDragEndMoveMode() {
         this.setDragEnd();
@@ -232,20 +232,21 @@ export default class InputManager {
     // SCALE MODE
     setDragStartScaleMode(_pointer) {
         this.setDragStart(_pointer);
-        this.pointerModeObjs.targetScaleX = this.pointerModeObjs.target.scaleX;
-        this.pointerModeObjs.targetScaleY = this.pointerModeObjs.target.scaleY;
+        this.pointerModeObjs.scale.x = this.pointerModeObjs.target.scaleX;
+        this.pointerModeObjs.scale.y = this.pointerModeObjs.target.scaleY;
     }
     setDraggingScaleMode() {
+        let tmpMO = this.pointerModeObjs;
         let tmpGap = this.setDragging();
-        let tmpX = this.pointerModeObjs.targetScaleX + (tmpGap.x - this.pointerModeObjs.target.x)/10;
-        let tmpY = this.pointerModeObjs.targetScaleY + (tmpGap.y - this.pointerModeObjs.target.y)/10;
-        this.pointerModeObjs.target.scaleX = tmpX.toFixed(1);
-        this.pointerModeObjs.target.scaleY = tmpY.toFixed(1);
+        let tmpX = tmpMO.scale.x + (tmpGap.x)/15;
+        let tmpY = tmpMO.scale.y - (tmpGap.y)/15;
+        tmpMO.target.scaleX = tmpX;
+        tmpMO.target.scaleY = tmpY;
     }
     setDragEndScaleMode() {
         this.setDragEnd();
-        this.pointerModeObjs.targetScaleX = 0;
-        this.pointerModeObjs.targetScaleY = 0;
+        this.pointerModeObjs.scale.x = 0;
+        this.pointerModeObjs.scale.y = 0;
     }
 
     // ANGLE MODE
@@ -256,7 +257,7 @@ export default class InputManager {
     setDraggingAngleMode() {
         let tmpMO = this.pointerModeObjs;
         let tmpGap = this.setDragging();
-        let tmpAngle = tmpMO.angle - ((tmpMO.targetY - tmpGap.y) / 5);
+        let tmpAngle = tmpMO.angle + ((tmpGap.y) / 5);
         tmpMO.target.angle = tmpAngle.toFixed(0);
     }
     setDragEndAngleMode() {
@@ -267,21 +268,21 @@ export default class InputManager {
     // GAP logic
     setDragStart(_pointer) {
         let tmpMO = this.pointerModeObjs;
-        tmpMO.targetX = tmpMO.target.x;
-        tmpMO.targetY = tmpMO.target.y;
-        tmpMO.move.x = _pointer.x;
-        tmpMO.move.y = _pointer.y;
+        tmpMO.pointer.x = _pointer.x;
+        tmpMO.pointer.y = _pointer.y;
+        tmpMO.move.x = tmpMO.target.x;
+        tmpMO.move.y = tmpMO.target.y;
     }
     setDragging() {
         let tmpMO = this.pointerModeObjs;
-        let tmpGapX = tmpMO.targetX - tmpMO.move.x + this.scene.input.x;
-        let tmpGapY = tmpMO.targetY - tmpMO.move.y + this.scene.input.y;
+        let tmpGapX = this.scene.input.x - tmpMO.pointer.x;
+        let tmpGapY = this.scene.input.y - tmpMO.pointer.y;
         return { x: tmpGapX, y: tmpGapY };
     }
     setDragEnd() {
         let tmpMO = this.pointerModeObjs;
-        tmpMO.targetX = 0;
-        tmpMO.targetY = 0;
+        tmpMO.pointer.x = 0;
+        tmpMO.pointer.y = 0;
         tmpMO.move.x = 0;
         tmpMO.move.y = 0;
     }

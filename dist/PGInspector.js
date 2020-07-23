@@ -4216,14 +4216,16 @@ function () {
     this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ANGLE'];
     this.pointerMode = 'NONE';
     this.pointerModeObjs = {
-      target: undefined,
-      // targeted focus GameObj
-      targetX: 0,
-      targetY: 0,
-      // targetScaleX: 0,
-      // targetScaleY: 0,
+      // pointer info
+      pointer: {
+        x: 0,
+        y: 0
+      },
       isDown: false,
       // chck pointer is down?
+      // target info
+      target: undefined,
+      // targeted focus GameObj
       move: {
         x: 0,
         y: 0
@@ -4515,9 +4517,10 @@ function () {
   }, {
     key: "setDraggingMoveMode",
     value: function setDraggingMoveMode() {
+      var tmpMO = this.pointerModeObjs;
       var tmpGap = this.setDragging();
-      this.pointerModeObjs.target.x = tmpGap.x;
-      this.pointerModeObjs.target.y = tmpGap.y;
+      tmpMO.target.x = tmpMO.move.x + tmpGap.x;
+      tmpMO.target.y = tmpMO.move.y + tmpGap.y;
     }
   }, {
     key: "setDragEndMoveMode",
@@ -4529,24 +4532,25 @@ function () {
     key: "setDragStartScaleMode",
     value: function setDragStartScaleMode(_pointer) {
       this.setDragStart(_pointer);
-      this.pointerModeObjs.targetScaleX = this.pointerModeObjs.target.scaleX;
-      this.pointerModeObjs.targetScaleY = this.pointerModeObjs.target.scaleY;
+      this.pointerModeObjs.scale.x = this.pointerModeObjs.target.scaleX;
+      this.pointerModeObjs.scale.y = this.pointerModeObjs.target.scaleY;
     }
   }, {
     key: "setDraggingScaleMode",
     value: function setDraggingScaleMode() {
+      var tmpMO = this.pointerModeObjs;
       var tmpGap = this.setDragging();
-      var tmpX = this.pointerModeObjs.targetScaleX + (tmpGap.x - this.pointerModeObjs.target.x) / 10;
-      var tmpY = this.pointerModeObjs.targetScaleY + (tmpGap.y - this.pointerModeObjs.target.y) / 10;
-      this.pointerModeObjs.target.scaleX = tmpX.toFixed(1);
-      this.pointerModeObjs.target.scaleY = tmpY.toFixed(1);
+      var tmpX = tmpMO.scale.x + tmpGap.x / 15;
+      var tmpY = tmpMO.scale.y - tmpGap.y / 15;
+      tmpMO.target.scaleX = tmpX;
+      tmpMO.target.scaleY = tmpY;
     }
   }, {
     key: "setDragEndScaleMode",
     value: function setDragEndScaleMode() {
       this.setDragEnd();
-      this.pointerModeObjs.targetScaleX = 0;
-      this.pointerModeObjs.targetScaleY = 0;
+      this.pointerModeObjs.scale.x = 0;
+      this.pointerModeObjs.scale.y = 0;
     } // ANGLE MODE
 
   }, {
@@ -4560,7 +4564,7 @@ function () {
     value: function setDraggingAngleMode() {
       var tmpMO = this.pointerModeObjs;
       var tmpGap = this.setDragging();
-      var tmpAngle = tmpMO.angle - (tmpMO.targetY - tmpGap.y) / 5;
+      var tmpAngle = tmpMO.angle + tmpGap.y / 5;
       tmpMO.target.angle = tmpAngle.toFixed(0);
     }
   }, {
@@ -4574,17 +4578,17 @@ function () {
     key: "setDragStart",
     value: function setDragStart(_pointer) {
       var tmpMO = this.pointerModeObjs;
-      tmpMO.targetX = tmpMO.target.x;
-      tmpMO.targetY = tmpMO.target.y;
-      tmpMO.move.x = _pointer.x;
-      tmpMO.move.y = _pointer.y;
+      tmpMO.pointer.x = _pointer.x;
+      tmpMO.pointer.y = _pointer.y;
+      tmpMO.move.x = tmpMO.target.x;
+      tmpMO.move.y = tmpMO.target.y;
     }
   }, {
     key: "setDragging",
     value: function setDragging() {
       var tmpMO = this.pointerModeObjs;
-      var tmpGapX = tmpMO.targetX - tmpMO.move.x + this.scene.input.x;
-      var tmpGapY = tmpMO.targetY - tmpMO.move.y + this.scene.input.y;
+      var tmpGapX = this.scene.input.x - tmpMO.pointer.x;
+      var tmpGapY = this.scene.input.y - tmpMO.pointer.y;
       return {
         x: tmpGapX,
         y: tmpGapY
@@ -4594,8 +4598,8 @@ function () {
     key: "setDragEnd",
     value: function setDragEnd() {
       var tmpMO = this.pointerModeObjs;
-      tmpMO.targetX = 0;
-      tmpMO.targetY = 0;
+      tmpMO.pointer.x = 0;
+      tmpMO.pointer.y = 0;
       tmpMO.move.x = 0;
       tmpMO.move.y = 0;
     } // chck focus then, focus ON game object or OFF
@@ -5290,7 +5294,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49761" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56579" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
