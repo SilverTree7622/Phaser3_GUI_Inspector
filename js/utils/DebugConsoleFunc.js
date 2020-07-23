@@ -57,20 +57,20 @@ export function DebugSceneNAllDisplayList() {
     return console.log(tmpInit, tmpStyle, tmpInfo, this, '\n', tmpDisplayList);
 }
 
-export function DebugPointerPosition(_mainCamera, _pointer) {
-    let tmpInit = '%c_PGI Pointer Info_';
-    let tmpStyle = 'color: white; background: rgb(125, 0, 125);';
-    let tmpGap = ':';
-    let tmpXStr = 'X:';
-    let tmpX = _pointer.x;
-    let tmpYStr = 'Y:';
-    let tmpY = _pointer.y;
-    let tmpZoomStr = 'ZoomRate:';
-    let tmpZoom = _mainCamera.zoom;
+// export function DebugPointerPosition(_mainCamera, _pointer) {
+//     let tmpInit = '%c_PGI Pointer Info_';
+//     let tmpStyle = 'color: white; background: rgb(125, 0, 125);';
+//     let tmpGap = ':';
+//     let tmpXStr = 'X:';
+//     let tmpX = _pointer.x;
+//     let tmpYStr = 'Y:';
+//     let tmpY = _pointer.y;
+//     let tmpZoomStr = 'ZoomRate:';
+//     let tmpZoom = _mainCamera.zoom;
 
-    return console.log(
-        tmpInit, tmpStyle, tmpGap, '\n',
-        tmpXStr, tmpX, tmpYStr, tmpY, '\n',
-        tmpZoomStr, tmpZoom
-    );
-}
+//     return console.log(
+//         tmpInit, tmpStyle, tmpGap, '\n',
+//         tmpXStr, tmpX, tmpYStr, tmpY, '\n',
+//         tmpZoomStr, tmpZoom
+//     );
+// }

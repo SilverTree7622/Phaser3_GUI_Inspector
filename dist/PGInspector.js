@@ -1940,7 +1940,7 @@ function () {
   _createClass(GUIMain, [{
     key: "chckSideOption",
     value: function chckSideOption(_tmpHandOverObj) {
-      return _tmpHandOverObj.init.noSide ? undefined : new dat.GUI();
+      return _tmpHandOverObj.init.isSideExist ? undefined : new dat.GUI();
     }
   }, {
     key: "getLib",
@@ -2282,7 +2282,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.DebugConsole = DebugConsole;
 exports.DebugGetThisConsole = DebugGetThisConsole;
 exports.DebugSceneNAllDisplayList = DebugSceneNAllDisplayList;
-exports.DebugPointerPosition = DebugPointerPosition;
 
 function DebugConsole(_obj) {
   var tmpName = _obj.name;
@@ -2332,20 +2331,22 @@ function DebugSceneNAllDisplayList() {
   var tmpInfo = ': |Scene| & |DisplayList|\n';
   var tmpStyle = 'color: white; background: rgb(250, 0, 0);';
   return console.log(tmpInit, tmpStyle, tmpInfo, this, '\n', tmpDisplayList);
-}
-
-function DebugPointerPosition(_mainCamera, _pointer) {
-  var tmpInit = '%c_PGI Pointer Info_';
-  var tmpStyle = 'color: white; background: rgb(125, 0, 125);';
-  var tmpGap = ':';
-  var tmpXStr = 'X:';
-  var tmpX = _pointer.x;
-  var tmpYStr = 'Y:';
-  var tmpY = _pointer.y;
-  var tmpZoomStr = 'ZoomRate:';
-  var tmpZoom = _mainCamera.zoom;
-  return console.log(tmpInit, tmpStyle, tmpGap, '\n', tmpXStr, tmpX, tmpYStr, tmpY, '\n', tmpZoomStr, tmpZoom);
-}
+} // export function DebugPointerPosition(_mainCamera, _pointer) {
+//     let tmpInit = '%c_PGI Pointer Info_';
+//     let tmpStyle = 'color: white; background: rgb(125, 0, 125);';
+//     let tmpGap = ':';
+//     let tmpXStr = 'X:';
+//     let tmpX = _pointer.x;
+//     let tmpYStr = 'Y:';
+//     let tmpY = _pointer.y;
+//     let tmpZoomStr = 'ZoomRate:';
+//     let tmpZoom = _mainCamera.zoom;
+//     return console.log(
+//         tmpInit, tmpStyle, tmpGap, '\n',
+//         tmpXStr, tmpX, tmpYStr, tmpY, '\n',
+//         tmpZoomStr, tmpZoom
+//     );
+// }
 },{}],"gui/SrcManagerClass.js":[function(require,module,exports) {
 "use strict";
 
@@ -3924,8 +3925,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4104,8 +4103,6 @@ function () {
 
         if (_this.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
           _this.setDragEndConfig();
-
-          (0, _DebugConsoleFunc.DebugPointerPosition)(_this.mainCamera, _pointer);
         }
       }); // SHIFT + S get back to default zoom value
 
@@ -4185,7 +4182,7 @@ function () {
 }();
 
 exports.default = CameraManager;
-},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/InputManager.js":[function(require,module,exports) {
+},{}],"gui/InputManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4215,8 +4212,29 @@ function () {
     };
     this.cursorKey; // pointer mode for MOVE, SCALE, ROTATE
 
-    this.mode = {};
-    this.isPointerUIMode = false;
+    this.isPointerMode = false;
+    this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ROTATE'];
+    this.pointerMode = 'NONE';
+    this.pointerModeObjs = {
+      target: undefined,
+      // targeted focus GameObj
+      isDown: false,
+      // chck pointer is downed?
+      move: {
+        targetX: 0,
+        targetY: 0,
+        x: 0,
+        y: 0
+      },
+      // rate 1:1
+      scale: {
+        x: 0,
+        y: 0
+      },
+      // rate 1:1
+      angle: 0 // x coordinate rate 1:1
+
+    };
   }
 
   _createClass(InputManager, [{
@@ -4232,9 +4250,13 @@ function () {
       this.createDetailEvent(_scene, _debugBox, _folder);
       this.createVisibleEvent(_scene, _debugBox); // MOVE, SCALE, ROTATE MODE input
 
-      this.createMoveModeEvent(_scene, _debugBox);
-      this.createScaleModeEvent(_scene, _debugBox);
-      this.createRotateModeEvent(_scene, _debugBox);
+      this.createModeCmdEvent(_scene);
+      this.createModeEvent(_scene, _debugBox, _folder, _camera);
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      this.updatePointerMode();
     }
   }, {
     key: "createDisableRightClick",
@@ -4329,7 +4351,9 @@ function () {
       _scene.input.on('gameobjectup', function (_pointer, _gameObj) {
         // if middle button pressed
         if (_this3.chckCommandKey(_pointer)) {
-          _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera);
+          if (!_this3.isPointerMode) {
+            _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera);
+          }
         }
       }); // when press command SHIFT + F
 
@@ -4379,27 +4403,125 @@ function () {
       });
     }
   }, {
-    key: "createMoveModeEvent",
-    value: function createMoveModeEvent(_scene) {
+    key: "createModeCmdEvent",
+    value: function createModeCmdEvent(_scene) {
+      // when press command SHIFT + Q, W, E for mode & modeObjs boolean control
+      _scene.input.keyboard.on('keyup-Q', this.setModeCmdFunc.bind(this, 1));
+
+      _scene.input.keyboard.on('keyup-W', this.setModeCmdFunc.bind(this, 2));
+
+      _scene.input.keyboard.on('keyup-E', this.setModeCmdFunc.bind(this, 3));
+
+      _scene.input.keyboard.on('keyup-R', this.setModeCmdFunc.bind(this, 0));
+    }
+  }, {
+    key: "setModeCmdFunc",
+    value: function setModeCmdFunc(_idx, _keyboardEvt) {
+      if (this.chckCmdShiftKeyDown()) {
+        console.log('_idx:', _idx);
+        this.isPointerMode ? this.pointerMode = this.pointerModeList[0] : this.pointerMode = this.pointerModeList[_idx];
+        this.isPointerMode = !this.isPointerMode;
+      }
+    }
+  }, {
+    key: "createModeEvent",
+    value: function createModeEvent(_scene, _debugBox, _folder, _camera) {
       var _this6 = this;
 
-      // when press command SHIFT + Q, MOVE mode
-      _scene.input.keyboard.on('keyup-Q', function (_pointer, _gameObj) {
-        var tmpFocusGameObj = _debugBox.getFocusGameObj(); // + change 
+      // just pointer over obj
+      _scene.input.on('pointerdown', function (_pointer) {
+        if (_this6.chckCommandKey(_pointer) && _this6.isPointerMode) {
+          _this6.pointerModeObjs.target = _debugBox.getFocusGameObj();
 
+          if (_this6.pointerModeObjs.target) {
+            _this6.pointerModeObjs.isDown = true;
 
-        if ( // chck if focus valid & shift key down
-        tmpFocusGameObj && _this6.chckCmdShiftKeyDown()) {
-          tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+            _this6.sortPointerModeObjs({
+              move: _this6.setDragStartMoveMode.bind(_this6, _pointer)
+            });
+          }
+        }
+      });
+
+      _scene.input.on('pointerup', function (_pointer) {
+        if (_this6.chckCommandKey(_pointer) && _this6.isPointerMode) {
+          _this6.pointerModeObjs.target = undefined;
+          _this6.pointerModeObjs.isDown = false;
+
+          if (_this6.pointerModeObjs.target) {
+            _this6.sortPointerModeObjs({
+              move: _this6.setDragEndMoveMode.bind(_this6)
+            });
+          }
         }
       });
     }
   }, {
-    key: "createScaleModeEvent",
-    value: function createScaleModeEvent(_scene) {}
+    key: "updatePointerMode",
+    value: function updatePointerMode() {
+      if (this.isPointerMode && this.pointerModeObjs.isDown) {
+        this.sortPointerModeObjs({
+          move: this.setDraggingMoveMode.bind(this)
+        });
+      }
+    }
   }, {
-    key: "createRotateModeEvent",
-    value: function createRotateModeEvent(_scene) {} // chck focus then, focus ON game object or OFF
+    key: "sortPointerModeObjs",
+    value: function sortPointerModeObjs(_obj) {
+      switch (this.pointerMode) {
+        case this.pointerModeList[0]:
+          break;
+
+        case this.pointerModeList[1]:
+          _obj.move();
+
+          break;
+
+        case this.pointerModeList[2]:
+          _obj.scale();
+
+          break;
+
+        case this.pointerModeList[3]:
+          _obj.angle();
+
+          break;
+
+        default:
+          console.warn(this.pointerMode, '<= this is not on the options');
+          break;
+      }
+    } // MOVE MODE
+
+  }, {
+    key: "setDragStartMoveMode",
+    value: function setDragStartMoveMode(_pointer) {
+      var tmpMO = this.pointerModeObjs;
+      tmpMO.move.targetX = tmpMO.target.x;
+      tmpMO.move.targetY = tmpMO.target.y;
+      tmpMO.move.x = _pointer.x;
+      tmpMO.move.y = _pointer.y;
+    }
+  }, {
+    key: "setDraggingMoveMode",
+    value: function setDraggingMoveMode() {
+      var tmpMO = this.pointerModeObjs;
+      var tmpGapX = tmpMO.move.targetX - tmpMO.move.x + this.scene.input.x;
+      var tmpGapY = tmpMO.move.targetY - tmpMO.move.y + this.scene.input.y;
+      tmpMO.target.x = tmpGapX;
+      tmpMO.target.y = tmpGapY;
+    }
+  }, {
+    key: "setDragEndMoveMode",
+    value: function setDragEndMoveMode() {
+      var tmpMO = this.pointerModeObjs;
+      tmpMO.move.targetX = 0;
+      tmpMO.move.targetY = 0;
+      tmpMO.move.x = 0;
+      tmpMO.move.y = 0;
+    } // SCALE MODE
+    // ANGLE MODE
+    // chck focus then, focus ON game object or OFF
 
   }, {
     key: "runFocusLogic",
@@ -4647,10 +4769,11 @@ function () {
     _classCallCheck(this, SideGUIClass);
 
     this.main = _main;
-    this.lib = this.main.sideGUI; // if init config noSide = true, then return
+    this.lib = this.main.sideGUI; // if init config isSideExist = false, then return
 
     if (!this.main.sideGUI) return;
     this.manager = this.main.manager;
+    this.modeFolder;
     this.cmdListFolder;
     this.cmdFolder = [];
     this.cmdList = this.initCmdList();
@@ -4720,9 +4843,10 @@ function () {
   }, {
     key: "createModeList",
     value: function createModeList(_scene) {
-      this.lib.addFolder('POINTER_MODE'); // + SHIFT + Q MOVE MODE
+      this.modeFolder = this.lib.addFolder('POINTER_MODE'); // + SHIFT + Q MOVE MODE
       // + SHIFT + W SCALE MODE
       // + SHIFT + E ROTATE MODE
+      // + SHIFT + R or just toggling button get back to none POINTER MODE
     }
   }, {
     key: "createCmdFolder",
@@ -4905,6 +5029,7 @@ function () {
     value: function update(_time, _delta) {
       this.manager.debugBox.update(_time, _delta);
       this.manager.camera.update();
+      this.manager.input.update();
     }
   }, {
     key: "initConsole",
@@ -4934,13 +5059,13 @@ window.PhaserGUIAction = PhaserGUIAction; // lib act function
 window.PhaserGUI = undefined; // GUI self class
 // Main Phaser3 GUI function **
 
-function PhaserGUIAction(_scene, _configObj) {
+function PhaserGUIAction(_scene, _userConfigObj) {
   var tmpMainInstance; // main(GUI & SideGUI) instance
   // check GUI object is already exist
 
   ChckGUIObj(); // chck (scene, css Opacity object / phaser scenes)
 
-  var tmpConfigObj = ChckConfigObj(_scene, _configObj); // pure declare for callback or plan
+  var tmpConfigObj = ChckConfigObj(_scene, _userConfigObj); // pure declare for callback or plan
 
   var tmpMainClass; // setting value
 
@@ -4960,7 +5085,7 @@ function ChckGUIObj() {
   }
 }
 
-function ChckConfigObj(_scene, _configObj) {
+function ChckConfigObj(_scene, _userConfigObj) {
   // init config structure
   var tmpReturn = {
     scene: undefined,
@@ -4978,20 +5103,20 @@ function ChckConfigObj(_scene, _configObj) {
       // GameObj
       ignore: undefined,
       // GameObj, array, container
-      noSide: false // boolean
+      isSideExist: true // boolean
 
     }
   }; // check is init config
 
   TryCatchObj(tmpReturn, 'scene', _scene);
 
-  if (_typeof(_configObj) === 'object') {
-    TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
-    TryCatchObj(tmpReturn.css, 'right', _configObj.right);
-    TryCatchObj(tmpReturn.css, 'top', _configObj.top);
-    TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
-    TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
-    TryCatchObj(tmpReturn.init, 'noSide', _configObj.noSide);
+  if (_typeof(_userConfigObj) === 'object') {
+    TryCatchObj(tmpReturn.css, 'alpha', _userConfigObj.alpha);
+    TryCatchObj(tmpReturn.css, 'right', _userConfigObj.right);
+    TryCatchObj(tmpReturn.css, 'top', _userConfigObj.top);
+    TryCatchObj(tmpReturn.init, 'focus', _userConfigObj.focus);
+    TryCatchObj(tmpReturn.init, 'ignore', _userConfigObj.ignore);
+    TryCatchObj(tmpReturn.init, 'isSideExist', _userConfigObj.isSideExist);
   }
 
   return tmpReturn;

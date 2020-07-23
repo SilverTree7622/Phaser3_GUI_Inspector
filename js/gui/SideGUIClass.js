@@ -3,9 +3,10 @@ export default class SideGUIClass {
     constructor(_main) {
         this.main = _main;
         this.lib = this.main.sideGUI;
-        // if init config noSide = true, then return
+        // if init config isSideExist = false, then return
         if (!this.main.sideGUI) return;
         this.manager = this.main.manager;
+        this.modeFolder;
         this.cmdListFolder;
         this.cmdFolder = [];
         this.cmdList = this.initCmdList();
@@ -38,14 +39,14 @@ export default class SideGUIClass {
         this.lib.domElement.style.marginRight = '2px';
     }
     createModeList(_scene) {
-        this.lib.addFolder('POINTER_MODE');
+        this.modeFolder = this.lib.addFolder('POINTER_MODE');
         // + SHIFT + Q MOVE MODE
-        
 
         // + SHIFT + W SCALE MODE
 
-
         // + SHIFT + E ROTATE MODE
+
+        // + SHIFT + R or just toggling button get back to none POINTER MODE
         
     }
     createCmdFolder() {

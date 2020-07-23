@@ -175,7 +175,7 @@ function create() {
 
     // PGInspector.js usage
     PhaserGUIAction(
-        this, { noSide: false }
+        this, { isSideExist: false }
     );
 }
 

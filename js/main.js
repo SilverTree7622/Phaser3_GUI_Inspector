@@ -81,6 +81,7 @@ export class Main {
     update(_time, _delta) {
         this.manager.debugBox.update(_time, _delta);
         this.manager.camera.update();
+        this.manager.input.update();
     }
 
 

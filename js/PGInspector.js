@@ -4,14 +4,14 @@ window.PhaserGUIAction = PhaserGUIAction; // lib act function
 window.PhaserGUI = undefined; // GUI self class
 
 // Main Phaser3 GUI function **
-function PhaserGUIAction(_scene, _configObj) {
+function PhaserGUIAction(_scene, _userConfigObj) {
     let tmpMainInstance; // main(GUI & SideGUI) instance
 
     // check GUI object is already exist
     ChckGUIObj();
 
     // chck (scene, css Opacity object / phaser scenes)
-    let tmpConfigObj = ChckConfigObj(_scene, _configObj);
+    let tmpConfigObj = ChckConfigObj(_scene, _userConfigObj);
 
     // pure declare for callback or plan
     let tmpMainClass;
@@ -34,7 +34,7 @@ function ChckGUIObj() {
         window.PhaserGUI = undefined;
     }
 }
-function ChckConfigObj(_scene, _configObj) {
+function ChckConfigObj(_scene, _userConfigObj) {
     // init config structure
     let tmpReturn = {
         scene: undefined, // Phaser.Scene
@@ -46,19 +46,19 @@ function ChckConfigObj(_scene, _configObj) {
         init: {
             focus: undefined, // GameObj
             ignore: undefined, // GameObj, array, container
-            noSide: false // boolean
+            isSideExist: true // boolean
         }
     };
     // check is init config
     TryCatchObj(tmpReturn, 'scene', _scene);
-    if (typeof _configObj === 'object') {
-        TryCatchObj(tmpReturn.css, 'alpha', _configObj.alpha);
-        TryCatchObj(tmpReturn.css, 'right', _configObj.right);
-        TryCatchObj(tmpReturn.css, 'top', _configObj.top);
+    if (typeof _userConfigObj === 'object') {
+        TryCatchObj(tmpReturn.css, 'alpha', _userConfigObj.alpha);
+        TryCatchObj(tmpReturn.css, 'right', _userConfigObj.right);
+        TryCatchObj(tmpReturn.css, 'top', _userConfigObj.top);
 
-        TryCatchObj(tmpReturn.init, 'focus', _configObj.focus);
-        TryCatchObj(tmpReturn.init, 'ignore', _configObj.ignore);
-        TryCatchObj(tmpReturn.init, 'noSide', _configObj.noSide);
+        TryCatchObj(tmpReturn.init, 'focus', _userConfigObj.focus);
+        TryCatchObj(tmpReturn.init, 'ignore', _userConfigObj.ignore);
+        TryCatchObj(tmpReturn.init, 'isSideExist', _userConfigObj.isSideExist);
     }
     return tmpReturn;
 }

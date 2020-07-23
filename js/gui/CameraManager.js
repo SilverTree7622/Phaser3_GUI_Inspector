@@ -1,6 +1,4 @@
 
-import { DebugPointerPosition } from '../utils/DebugConsoleFunc.js';
-
 export default class CameraManager {
     constructor() {
         this.scene;
@@ -118,7 +116,6 @@ export default class CameraManager {
             this.setIsDraggable(false);
             if (this.chckCmdShiftKeyDown() && _pointer.rightButtonReleased()) {
                 this.setDragEndConfig();
-                DebugPointerPosition(this.mainCamera, _pointer);
             }
         });
         

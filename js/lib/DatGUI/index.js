@@ -9,7 +9,7 @@ export default class GUIMain { // GUI property main class
         this.css = new GUIcss(_tmpHandOverObj.css);
     }
     chckSideOption(_tmpHandOverObj) {
-        return (_tmpHandOverObj.init.noSide) ? undefined : new dat.GUI();
+        return (_tmpHandOverObj.init.isSideExist) ? undefined : new dat.GUI();
     }
     getLib() {
         return this.lib;
