@@ -9,13 +9,17 @@ export default class InputManager {
         this.cursorKey;
         // pointer mode for MOVE, SCALE, ROTATE
         this.isPointerMode = false;
-        this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ROTATE'];
+        this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ANGLE'];
         this.pointerMode = 'NONE';
         this.pointerModeObjs = {
             target: undefined, // targeted focus GameObj
-            isDown: false, // chck pointer is downed?
-            move: { targetX: 0, targetY: 0, x: 0, y: 0 }, // rate 1:1
-            scale: { x: 0, y: 0 }, // rate 1:1
+            targetX: 0,
+            targetY: 0,
+            // targetScaleX: 0,
+            // targetScaleY: 0,
+            isDown: false, // chck pointer is down?
+            move: { x: 0, y: 0 }, // rate 1:1
+            scale: { x: 0, y: 0 }, // rate 5px:0.1
             angle: 0 // x coordinate rate 1:1
         };
     }
@@ -95,7 +99,7 @@ export default class InputManager {
         // when want to focus logic
         _scene.input.on('gameobjectup', (_pointer, _gameObj) => {
             // if middle button pressed
-            if (this.chckCommandKey(_pointer)) {
+            if (this.chckCommandKeyReleased(_pointer)) {
                 if (!this.isPointerMode) {
                     this.runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera);
                 }
@@ -149,34 +153,43 @@ export default class InputManager {
         _scene.input.keyboard.on('keyup-R', this.setModeCmdFunc.bind(this, 0));
     }
     setModeCmdFunc(_idx, _keyboardEvt) {
-        if (this.chckCmdShiftKeyDown()) {
+        if (this.chckCmdShiftKeyDown() && !this.pointerModeObjs.isDown) {
             console.log('_idx:', _idx);
-            this.isPointerMode ? this.pointerMode = this.pointerModeList[0] : this.pointerMode = this.pointerModeList[_idx];
-            this.isPointerMode = !this.isPointerMode;
+            if (_idx === 0) {
+                this.isPointerMode = false;
+            }
+            else {
+                this.isPointerMode = true;
+                if (this.pointerMode !== this.pointerModeList[_idx]) {
+                    this.pointerMode = this.pointerModeList[_idx];
+                }
+            }
         }
     }
     createModeEvent(_scene, _debugBox, _folder, _camera) {
         // just pointer over obj
         _scene.input.on('pointerdown', (_pointer) => {
-            if (this.chckCommandKey(_pointer) && this.isPointerMode) {
+            if (this.chckCommandKeyDown(_pointer) && this.isPointerMode) {
                 this.pointerModeObjs.target = _debugBox.getFocusGameObj();
                 if (this.pointerModeObjs.target) {
                     this.pointerModeObjs.isDown = true;
-                    this.sortPointerModeObjs({ 
-                        move: this.setDragStartMoveMode.bind(this, _pointer)
+                    this.sortPointerModeObjs({
+                        move: this.setDragStartMoveMode.bind(this, _pointer),
+                        scale: this.setDragStartScaleMode.bind(this, _pointer),
+                        angle: this.setDragStartAngleMode.bind(this, _pointer)
                     });
                 }
             }
         });
         _scene.input.on('pointerup', (_pointer) => {
-            if (this.chckCommandKey(_pointer) && this.isPointerMode) {
+            if (this.isPointerMode) {
                 this.pointerModeObjs.target = undefined;
                 this.pointerModeObjs.isDown = false;
-                if (this.pointerModeObjs.target) {
-                    this.sortPointerModeObjs({ 
-                        move: this.setDragEndMoveMode.bind(this)
-                    });
-                }
+                this.sortPointerModeObjs({ 
+                    move: this.setDragEndMoveMode.bind(this),
+                    scale: this.setDragEndScaleMode.bind(this),
+                    angle: this.setDragEndAngleMode.bind(this)
+                });
             }
         });
     }
@@ -184,7 +197,9 @@ export default class InputManager {
     updatePointerMode() {
         if (this.isPointerMode && this.pointerModeObjs.isDown) {
             this.sortPointerModeObjs({
-                move: this.setDraggingMoveMode.bind(this)
+                move: this.setDraggingMoveMode.bind(this),
+                scale: this.setDraggingScaleMode.bind(this),
+                angle: this.setDraggingAngleMode.bind(this)
             });
         }
     }
@@ -203,31 +218,74 @@ export default class InputManager {
 
     // MOVE MODE
     setDragStartMoveMode(_pointer) {
-        let tmpMO = this.pointerModeObjs;
-        tmpMO.move.targetX = tmpMO.target.x;
-        tmpMO.move.targetY = tmpMO.target.y;
-        tmpMO.move.x = _pointer.x;
-        tmpMO.move.y = _pointer.y;
+        this.setDragStart(_pointer);
     }
     setDraggingMoveMode() {
-        let tmpMO = this.pointerModeObjs;
-        let tmpGapX = tmpMO.move.targetX - tmpMO.move.x + this.scene.input.x;
-        let tmpGapY = tmpMO.move.targetY - tmpMO.move.y + this.scene.input.y;
-        tmpMO.target.x = tmpGapX;
-        tmpMO.target.y = tmpGapY;
+        let tmpGap = this.setDragging();
+        this.pointerModeObjs.target.x = tmpGap.x;
+        this.pointerModeObjs.target.y = tmpGap.y;
     }
     setDragEndMoveMode() {
-        let tmpMO = this.pointerModeObjs;
-        tmpMO.move.targetX = 0;
-        tmpMO.move.targetY = 0;
-        tmpMO.move.x = 0;
-        tmpMO.move.y = 0;
+        this.setDragEnd();
     }
 
     // SCALE MODE
+    setDragStartScaleMode(_pointer) {
+        this.setDragStart(_pointer);
+        this.pointerModeObjs.targetScaleX = this.pointerModeObjs.target.scaleX;
+        this.pointerModeObjs.targetScaleY = this.pointerModeObjs.target.scaleY;
+    }
+    setDraggingScaleMode() {
+        let tmpGap = this.setDragging();
+        let tmpX = this.pointerModeObjs.targetScaleX + (tmpGap.x - this.pointerModeObjs.target.x)/10;
+        let tmpY = this.pointerModeObjs.targetScaleY + (tmpGap.y - this.pointerModeObjs.target.y)/10;
+        this.pointerModeObjs.target.scaleX = tmpX.toFixed(1);
+        this.pointerModeObjs.target.scaleY = tmpY.toFixed(1);
+    }
+    setDragEndScaleMode() {
+        this.setDragEnd();
+        this.pointerModeObjs.targetScaleX = 0;
+        this.pointerModeObjs.targetScaleY = 0;
+    }
 
     // ANGLE MODE
+    setDragStartAngleMode(_pointer) {
+        this.setDragStart(_pointer);
+        this.pointerModeObjs.angle = this.pointerModeObjs.target.angle;
+    }
+    setDraggingAngleMode() {
+        let tmpMO = this.pointerModeObjs;
+        let tmpGap = this.setDragging();
+        let tmpAngle = tmpMO.angle - ((tmpMO.targetY - tmpGap.y) / 5);
+        tmpMO.target.angle = tmpAngle.toFixed(0);
+    }
+    setDragEndAngleMode() {
+        this.setDragEnd();
+        this.pointerModeObjs.angle = 0;
+    }
 
+    // GAP logic
+    setDragStart(_pointer) {
+        let tmpMO = this.pointerModeObjs;
+        tmpMO.targetX = tmpMO.target.x;
+        tmpMO.targetY = tmpMO.target.y;
+        tmpMO.move.x = _pointer.x;
+        tmpMO.move.y = _pointer.y;
+    }
+    setDragging() {
+        let tmpMO = this.pointerModeObjs;
+        let tmpGapX = tmpMO.targetX - tmpMO.move.x + this.scene.input.x;
+        let tmpGapY = tmpMO.targetY - tmpMO.move.y + this.scene.input.y;
+        return { x: tmpGapX, y: tmpGapY };
+    }
+    setDragEnd() {
+        let tmpMO = this.pointerModeObjs;
+        tmpMO.targetX = 0;
+        tmpMO.targetY = 0;
+        tmpMO.move.x = 0;
+        tmpMO.move.y = 0;
+        console.log('init drag end');
+    }
 
     // chck focus then, focus ON game object or OFF
     runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera) {
@@ -269,10 +327,19 @@ export default class InputManager {
             _folder.setBasicFocusFolder(_gameObj);
         }
     }
-    chckCommandKey(_pointer) {
+    chckCommandKeyReleased(_pointer) {
         let tmpBool;
         if ((this.getCursorKey().shift.isDown && _pointer.leftButtonReleased()) || // shift + mouse left click or
             (!_pointer.rightButtonReleased() && !_pointer.leftButtonReleased())) { // mouse middle button
+            tmpBool = true;
+        }
+        else { tmpBool = false; }
+        return tmpBool;
+    }
+    chckCommandKeyDown(_pointer) {
+        let tmpBool;
+        if ((this.getCursorKey().shift.isDown && _pointer.leftButtonDown()) || // shift + mouse left click or
+            (!_pointer.rightButtonDown() && !_pointer.leftButtonDown())) { // mouse middle button
             tmpBool = true;
         }
         else { tmpBool = false; }

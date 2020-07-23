@@ -3257,8 +3257,8 @@ function () {
       return tmpC;
     }
   }, {
-    key: "setDeatiledStatus",
-    value: function setDeatiledStatus(_bool) {
+    key: "setDetailedStatus",
+    value: function setDetailedStatus(_bool) {
       this.custom.folder.isDetailedOpen = _bool;
     }
   }, {
@@ -3378,9 +3378,9 @@ function () {
   }, {
     key: "openFolder",
     value: function openFolder(_folder) {
-      _folder.open();
-
       this.setFolderDisplay(_folder, 'default');
+
+      _folder.open();
     }
   }, {
     key: "closeFolder",
@@ -3392,9 +3392,9 @@ function () {
   }, {
     key: "openChildrenFolder",
     value: function openChildrenFolder(_folder) {
-      _folder.open();
-
       this.setFolderChildrenDisplay(_folder, 'default');
+
+      _folder.open();
     }
   }, {
     key: "closeChildrenFolder",
@@ -3492,7 +3492,7 @@ function () {
         this.closeBigFolder(this.basic.folder);
         this.openBigFolder(this.custom.folder);
         this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
-        this.setDeatiledStatus(true);
+        this.setDetailedStatus(true);
       }
     }
   }, {
@@ -3500,7 +3500,7 @@ function () {
     value: function back2Basic(_idx) {
       var tmpObjFolder = this.getCustomFoldersInFolder();
       this.closeFolder(tmpObjFolder[_idx]);
-      this.setDeatiledStatus(false);
+      this.setDetailedStatus(false);
       this.closeBigFolder(this.custom.folder);
       this.openBigFolder(this.basic.folder);
     }
@@ -4213,16 +4213,18 @@ function () {
     this.cursorKey; // pointer mode for MOVE, SCALE, ROTATE
 
     this.isPointerMode = false;
-    this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ROTATE'];
+    this.pointerModeList = ['NONE', 'MOVE', 'SCALE', 'ANGLE'];
     this.pointerMode = 'NONE';
     this.pointerModeObjs = {
       target: undefined,
       // targeted focus GameObj
+      targetX: 0,
+      targetY: 0,
+      // targetScaleX: 0,
+      // targetScaleY: 0,
       isDown: false,
-      // chck pointer is downed?
+      // chck pointer is down?
       move: {
-        targetX: 0,
-        targetY: 0,
         x: 0,
         y: 0
       },
@@ -4231,7 +4233,7 @@ function () {
         x: 0,
         y: 0
       },
-      // rate 1:1
+      // rate 5px:0.1
       angle: 0 // x coordinate rate 1:1
 
     };
@@ -4350,7 +4352,7 @@ function () {
       // when want to focus logic
       _scene.input.on('gameobjectup', function (_pointer, _gameObj) {
         // if middle button pressed
-        if (_this3.chckCommandKey(_pointer)) {
+        if (_this3.chckCommandKeyReleased(_pointer)) {
           if (!_this3.isPointerMode) {
             _this3.runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera);
           }
@@ -4417,10 +4419,18 @@ function () {
   }, {
     key: "setModeCmdFunc",
     value: function setModeCmdFunc(_idx, _keyboardEvt) {
-      if (this.chckCmdShiftKeyDown()) {
+      if (this.chckCmdShiftKeyDown() && !this.pointerModeObjs.isDown) {
         console.log('_idx:', _idx);
-        this.isPointerMode ? this.pointerMode = this.pointerModeList[0] : this.pointerMode = this.pointerModeList[_idx];
-        this.isPointerMode = !this.isPointerMode;
+
+        if (_idx === 0) {
+          this.isPointerMode = false;
+        } else {
+          this.isPointerMode = true;
+
+          if (this.pointerMode !== this.pointerModeList[_idx]) {
+            this.pointerMode = this.pointerModeList[_idx];
+          }
+        }
       }
     }
   }, {
@@ -4430,29 +4440,31 @@ function () {
 
       // just pointer over obj
       _scene.input.on('pointerdown', function (_pointer) {
-        if (_this6.chckCommandKey(_pointer) && _this6.isPointerMode) {
+        if (_this6.chckCommandKeyDown(_pointer) && _this6.isPointerMode) {
           _this6.pointerModeObjs.target = _debugBox.getFocusGameObj();
 
           if (_this6.pointerModeObjs.target) {
             _this6.pointerModeObjs.isDown = true;
 
             _this6.sortPointerModeObjs({
-              move: _this6.setDragStartMoveMode.bind(_this6, _pointer)
+              move: _this6.setDragStartMoveMode.bind(_this6, _pointer),
+              scale: _this6.setDragStartScaleMode.bind(_this6, _pointer),
+              angle: _this6.setDragStartAngleMode.bind(_this6, _pointer)
             });
           }
         }
       });
 
       _scene.input.on('pointerup', function (_pointer) {
-        if (_this6.chckCommandKey(_pointer) && _this6.isPointerMode) {
+        if (_this6.isPointerMode) {
           _this6.pointerModeObjs.target = undefined;
           _this6.pointerModeObjs.isDown = false;
 
-          if (_this6.pointerModeObjs.target) {
-            _this6.sortPointerModeObjs({
-              move: _this6.setDragEndMoveMode.bind(_this6)
-            });
-          }
+          _this6.sortPointerModeObjs({
+            move: _this6.setDragEndMoveMode.bind(_this6),
+            scale: _this6.setDragEndScaleMode.bind(_this6),
+            angle: _this6.setDragEndAngleMode.bind(_this6)
+          });
         }
       });
     }
@@ -4461,7 +4473,9 @@ function () {
     value: function updatePointerMode() {
       if (this.isPointerMode && this.pointerModeObjs.isDown) {
         this.sortPointerModeObjs({
-          move: this.setDraggingMoveMode.bind(this)
+          move: this.setDraggingMoveMode.bind(this),
+          scale: this.setDraggingScaleMode.bind(this),
+          angle: this.setDraggingAngleMode.bind(this)
         });
       }
     }
@@ -4496,32 +4510,96 @@ function () {
   }, {
     key: "setDragStartMoveMode",
     value: function setDragStartMoveMode(_pointer) {
-      var tmpMO = this.pointerModeObjs;
-      tmpMO.move.targetX = tmpMO.target.x;
-      tmpMO.move.targetY = tmpMO.target.y;
-      tmpMO.move.x = _pointer.x;
-      tmpMO.move.y = _pointer.y;
+      this.setDragStart(_pointer);
     }
   }, {
     key: "setDraggingMoveMode",
     value: function setDraggingMoveMode() {
-      var tmpMO = this.pointerModeObjs;
-      var tmpGapX = tmpMO.move.targetX - tmpMO.move.x + this.scene.input.x;
-      var tmpGapY = tmpMO.move.targetY - tmpMO.move.y + this.scene.input.y;
-      tmpMO.target.x = tmpGapX;
-      tmpMO.target.y = tmpGapY;
+      var tmpGap = this.setDragging();
+      this.pointerModeObjs.target.x = tmpGap.x;
+      this.pointerModeObjs.target.y = tmpGap.y;
     }
   }, {
     key: "setDragEndMoveMode",
     value: function setDragEndMoveMode() {
+      this.setDragEnd();
+    } // SCALE MODE
+
+  }, {
+    key: "setDragStartScaleMode",
+    value: function setDragStartScaleMode(_pointer) {
+      this.setDragStart(_pointer);
+      this.pointerModeObjs.targetScaleX = this.pointerModeObjs.target.scaleX;
+      this.pointerModeObjs.targetScaleY = this.pointerModeObjs.target.scaleY;
+    }
+  }, {
+    key: "setDraggingScaleMode",
+    value: function setDraggingScaleMode() {
+      var tmpGap = this.setDragging();
+      var tmpX = this.pointerModeObjs.targetScaleX + (tmpGap.x - this.pointerModeObjs.target.x) / 10;
+      var tmpY = this.pointerModeObjs.targetScaleY + (tmpGap.y - this.pointerModeObjs.target.y) / 10;
+      this.pointerModeObjs.target.scaleX = tmpX.toFixed(1);
+      this.pointerModeObjs.target.scaleY = tmpY.toFixed(1);
+    }
+  }, {
+    key: "setDragEndScaleMode",
+    value: function setDragEndScaleMode() {
+      this.setDragEnd();
+      this.pointerModeObjs.targetScaleX = 0;
+      this.pointerModeObjs.targetScaleY = 0;
+    } // ANGLE MODE
+
+  }, {
+    key: "setDragStartAngleMode",
+    value: function setDragStartAngleMode(_pointer) {
+      this.setDragStart(_pointer);
+      this.pointerModeObjs.angle = this.pointerModeObjs.target.angle;
+    }
+  }, {
+    key: "setDraggingAngleMode",
+    value: function setDraggingAngleMode() {
       var tmpMO = this.pointerModeObjs;
-      tmpMO.move.targetX = 0;
-      tmpMO.move.targetY = 0;
+      var tmpGap = this.setDragging();
+      var tmpAngle = tmpMO.angle - (tmpMO.targetY - tmpGap.y) / 5;
+      tmpMO.target.angle = tmpAngle.toFixed(0);
+    }
+  }, {
+    key: "setDragEndAngleMode",
+    value: function setDragEndAngleMode() {
+      this.setDragEnd();
+      this.pointerModeObjs.angle = 0;
+    } // GAP logic
+
+  }, {
+    key: "setDragStart",
+    value: function setDragStart(_pointer) {
+      var tmpMO = this.pointerModeObjs;
+      tmpMO.targetX = tmpMO.target.x;
+      tmpMO.targetY = tmpMO.target.y;
+      tmpMO.move.x = _pointer.x;
+      tmpMO.move.y = _pointer.y;
+    }
+  }, {
+    key: "setDragging",
+    value: function setDragging() {
+      var tmpMO = this.pointerModeObjs;
+      var tmpGapX = tmpMO.targetX - tmpMO.move.x + this.scene.input.x;
+      var tmpGapY = tmpMO.targetY - tmpMO.move.y + this.scene.input.y;
+      return {
+        x: tmpGapX,
+        y: tmpGapY
+      };
+    }
+  }, {
+    key: "setDragEnd",
+    value: function setDragEnd() {
+      var tmpMO = this.pointerModeObjs;
+      tmpMO.targetX = 0;
+      tmpMO.targetY = 0;
       tmpMO.move.x = 0;
       tmpMO.move.y = 0;
-    } // SCALE MODE
-    // ANGLE MODE
-    // chck focus then, focus ON game object or OFF
+      console.log('init drag end');
+    } // chck focus then, focus ON game object or OFF
 
   }, {
     key: "runFocusLogic",
@@ -4576,12 +4654,27 @@ function () {
       }
     }
   }, {
-    key: "chckCommandKey",
-    value: function chckCommandKey(_pointer) {
+    key: "chckCommandKeyReleased",
+    value: function chckCommandKeyReleased(_pointer) {
       var tmpBool;
 
       if (this.getCursorKey().shift.isDown && _pointer.leftButtonReleased() || // shift + mouse left click or
       !_pointer.rightButtonReleased() && !_pointer.leftButtonReleased()) {
+        // mouse middle button
+        tmpBool = true;
+      } else {
+        tmpBool = false;
+      }
+
+      return tmpBool;
+    }
+  }, {
+    key: "chckCommandKeyDown",
+    value: function chckCommandKeyDown(_pointer) {
+      var tmpBool;
+
+      if (this.getCursorKey().shift.isDown && _pointer.leftButtonDown() || // shift + mouse left click or
+      !_pointer.rightButtonDown() && !_pointer.leftButtonDown()) {
         // mouse middle button
         tmpBool = true;
       } else {
@@ -5198,7 +5291,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49896" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49761" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

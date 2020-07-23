@@ -48,7 +48,7 @@ export default class FolderManager {
         tmpC.isDetailedOpen = false;
         return tmpC;
     }
-    setDeatiledStatus(_bool) {
+    setDetailedStatus(_bool) {
         this.custom.folder.isDetailedOpen = _bool;
     }
     getDetailedStatus() {
@@ -144,16 +144,16 @@ export default class FolderManager {
         _folder.close();
     }
     openFolder(_folder) {
-        _folder.open();
         this.setFolderDisplay(_folder, 'default');
+        _folder.open();
     }
     closeFolder(_folder) {
         _folder.close();
         this.setFolderDisplay(_folder, 'none');
     }
     openChildrenFolder(_folder) {
-        _folder.open();
         this.setFolderChildrenDisplay(_folder, 'default');
+        _folder.open();
     }
     closeChildrenFolder(_folder) {
         _folder.close();
@@ -219,13 +219,13 @@ export default class FolderManager {
             this.closeBigFolder(this.basic.folder);
             this.openBigFolder(this.custom.folder);
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
-            this.setDeatiledStatus(true);
+            this.setDetailedStatus(true);
         }
     }
     back2Basic(_idx) {
         let tmpObjFolder = this.getCustomFoldersInFolder();
         this.closeFolder(tmpObjFolder[_idx]);
-        this.setDeatiledStatus(false);
+        this.setDetailedStatus(false);
         this.closeBigFolder(this.custom.folder);
         this.openBigFolder(this.basic.folder);
     }
