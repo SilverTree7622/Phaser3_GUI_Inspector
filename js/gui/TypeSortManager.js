@@ -70,6 +70,7 @@ export default class TypeSortManager {
         tmpObjs.scene = this.scene;
         tmpObjs.debugBox = this.debugBox;
         tmpObjs.folder = this.folder;
+        tmpObjs.camera = this.camera;
         _obj.guiIdx = tmpGUIIdx;
         _obj.isFocusOnGUI = false; // focus check boolean
         _obj.focusTw = undefined; // save focus performance tween in this property
@@ -80,7 +81,7 @@ export default class TypeSortManager {
                 tmpObjs.folder.cross2FocusObj(this);
             }
             tmpObjs.input.runFocusLogic.call(
-                tmpObjs.input, tmpObjs.scene, this, tmpObjs.debugBox, tmpObjs.folder
+                tmpObjs.input, tmpObjs.scene, this, tmpObjs.debugBox, tmpObjs.folder, tmpObjs.camera
             );
         }
         _obj.GUI_CONSOLE = DebugGetThisConsole;

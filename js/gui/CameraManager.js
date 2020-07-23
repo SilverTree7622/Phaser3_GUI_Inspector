@@ -18,7 +18,7 @@ export default class CameraManager {
         this.isDebugCamBound = false;
     }
     create(_scene, _debugBox) {
-        this.createInitScene(_scene);
+        this.scene = _scene;
         this.createSize(_scene);
         this.createCursorKey(_scene);
         this.createMainCamera(_scene);
@@ -30,9 +30,6 @@ export default class CameraManager {
         this.updateDrag();
     }
 
-    createInitScene(_scene) {
-        this.scene = _scene;
-    }
     getSize() {
         return this.size;
     }
@@ -97,16 +94,12 @@ export default class CameraManager {
                 // if zoom size under 0.1 & Gap value is minus, no reason to smaller i think
                 if (tmpCal <= 0.1 && tmpGap < 0) {}
                 else {
-                    if (!this.getIsFollowing()) {
-                        this.mainCamera.pan(_pointer.x, _pointer.y, 100);
-                    }
                     this.mainCamera.zoomTo(tmpCal, 100);
                 }
-
                 // set wheel debug cam bound
                 this.setIsDebugCamBound(true);
+                // wheel end
                 setTimeout(() => {
-                    // wheel end
                     if (tmpCal == this.mainCamera.zoom) {
                         this.setIsDebugCamBound(false);
                     }
@@ -157,15 +150,21 @@ export default class CameraManager {
                     );
                 }
                 else {
-                    this.setIsFollowing(false);
-                    let tmpP = this.getPrevFollowConfig();
-                    this.mainCamera.stopFollow();
-                    this.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
-                    this.mainCamera.zoomTo(tmpP.zoom, 0);
+                    this.setFollowStop();
                 }
                 this.setIsDebugCamBound(this.getIsFollowing());
             }
         });
+    }
+    setFollowStop() {
+        if (this.mainCamera._follow) {
+            this.setIsFollowing(false);
+            let tmpP = this.getPrevFollowConfig();
+            this.mainCamera.stopFollow();
+            this.mainCamera.pan(tmpP.x, tmpP.y, 250, 'Power2');
+            this.mainCamera.zoomTo(tmpP.zoom, 0);
+            this.setIsDebugCamBound(this.getIsFollowing());
+        }
     }
 
     updateDrag() {

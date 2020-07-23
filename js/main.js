@@ -39,8 +39,8 @@ import { DebugConsole } from './utils/DebugConsoleFunc.js';
 import TypeSortManager from './gui/TypeSortManager.js';
 import FolderManager from './gui/FolderManager.js';
 import DebugBoxClass from './gui/DebugBoxClass.js';
-import InputManager from './gui/InputManager.js';
 import CameraManager from './gui/CameraManager.js';
+import InputManager from './gui/InputManager.js';
 // GUIs
 import GUIClass from './gui/GUIClass.js';
 import SideGUIClass from './gui/SideGUIClass.js';
@@ -56,8 +56,8 @@ export class Main {
         this.manager.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
         this.manager.folder = new FolderManager(this.manager.typeSort);
         this.manager.debugBox = new DebugBoxClass();
-        this.manager.input = new InputManager();
         this.manager.camera = new CameraManager();
+        this.manager.input = new InputManager();
         // GUIs
         this.mainGUI = this.libs.getGUILib();
         this.sideGUI = this.libs.getGUISide();
@@ -69,8 +69,8 @@ export class Main {
         this.manager.typeSort.create(this.manager);
         this.manager.folder.create(_scene, this.mainGUI);
         this.manager.debugBox.create(_scene, this.manager.camera);
-        this.manager.input.create(_scene, this.manager.debugBox, this.manager.folder);
         this.manager.camera.create(_scene, this.manager.debugBox);
+        this.manager.input.create(_scene, this.manager.debugBox, this.manager.folder, this.manager.camera);
         // GUIs
         this.GUI.create(_scene);
         this.Side.create(_scene);

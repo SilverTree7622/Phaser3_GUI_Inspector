@@ -12,7 +12,7 @@ export default class FolderManager {
         this.GUI = _GUI;
         this.createBasic();
         this.createCustom();
-        this.createBtnClickEvent(this.basic.folder, this.custom.folder);
+        this.createFolderBtnClickEvent();
     }
     initConfig() { // config
         let tmpC = {};
@@ -61,25 +61,28 @@ export default class FolderManager {
         this.custom.folder = this.GUI.addFolder('DISPLAY_LIST');
     }
 
-    createBtnClickEvent(_basic, _custom) {
+    createFolderBtnClickEvent() {
+        let tmpBasic = this.basic.folder;
+        let tmpCustom = this.custom.folder;
         // BASIC & CUSTOM folder div placement
-        let tmpBasicTitle = _basic.domElement.getElementsByClassName('title')[0];
-        let tmpCustomTitle = _custom.domElement.getElementsByClassName('title')[0];
+        let tmpBasicTitle = tmpBasic.domElement.getElementsByClassName('title')[0];
+        let tmpCustomTitle = tmpCustom.domElement.getElementsByClassName('title')[0];
 
+        // dat.GUI folder pointer interactive event handling
         tmpBasicTitle.addEventListener('pointerup', (_event) => {
-            if (_basic.closed) { // result is open
-                this.openBigFolder(_basic);
+            if (tmpBasic.closed) { // result is open
+                this.openBigFolder(tmpBasic);
             }
             else { // result is close
-                this.closeBigFolder(_basic);
+                this.closeBigFolder(tmpBasic);
             }
         });
         tmpCustomTitle.addEventListener('pointerup', (_event) => {
-            if (_custom.closed) { // result is open
-                this.closeChildrenFolder(_custom);
+            if (tmpCustom.closed) { // result is open
+                this.closeChildrenFolder(tmpCustom);
             }
             else { // result is close
-                this.openChildrenFolder(_custom);
+                this.openChildrenFolder(tmpCustom);
             }
         });
     }
@@ -217,9 +220,6 @@ export default class FolderManager {
             this.openBigFolder(this.custom.folder);
             this.openFolder(tmpObjFolder[_gameObj.guiIdx]);
             this.setDeatiledStatus(true);
-        }
-        else {
-            // console.warn('_inspector SYSTEM_: NONE Focus');
         }
     }
     back2Basic(_idx) {

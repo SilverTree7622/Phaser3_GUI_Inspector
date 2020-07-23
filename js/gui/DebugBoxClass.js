@@ -11,7 +11,7 @@ export default class DebugBoxClass {
         this.focus = this.initFocus();
     }
     create(_scene, _camera) {
-        this.createScene(_scene);
+        this.scene = _scene;
         this.camera = _camera;
         this.createSetting(_scene);
         this.createOver(Phaser.Geom.Rectangle);
@@ -52,9 +52,6 @@ export default class DebugBoxClass {
             color: 0xff0000 // red
         };
         return tmpF;
-    }
-    createScene(_scene) {
-        this.scene = _scene;
     }
     createSetting(_scene) {
         this.graphics = _scene.add.graphics();

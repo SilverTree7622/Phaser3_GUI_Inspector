@@ -7,22 +7,26 @@ export default class InputManager {
         // game size width, height
         this.size = { w: 0, h: 0 };
         this.cursorKey;
+        // pointer mode for MOVE, SCALE, ROTATE
+        this.mode = {};
+        this.isPointerUIMode = false;
     }
-    create(_scene, _debugBox, _folder) {
-        this.createInitScene(_scene);
+    create(_scene, _debugBox, _folder, _camera) {
+        this.scene = _scene;
         this.createDisableRightClick();
         this.createSize(_scene);
         this.createCursorKey(_scene);
         this.createConsoleCmd(_scene, _debugBox);
         this.createOverEvent(_scene, _debugBox, _folder);
-        this.createFocusEvent(_scene, _debugBox, _folder);
+        this.createFocusEvent(_scene, _debugBox, _folder, _camera);
         this.createDetailEvent(_scene, _debugBox, _folder);
         this.createVisibleEvent(_scene, _debugBox);
+        // MOVE, SCALE, ROTATE MODE input
+        this.createMoveModeEvent(_scene, _debugBox);
+        this.createScaleModeEvent(_scene, _debugBox);
+        this.createRotateModeEvent(_scene, _debugBox);
     }
     
-    createInitScene(_scene) {
-        this.scene = _scene;
-    }
     createDisableRightClick() {
         // disable right click pop up
         window.addEventListener('contextmenu', (e) => {
@@ -77,12 +81,12 @@ export default class InputManager {
             }
         });
     }
-    createFocusEvent(_scene, _debugBox, _folder) {
+    createFocusEvent(_scene, _debugBox, _folder, _camera) {
         // when want to focus logic
         _scene.input.on('gameobjectup', (_pointer, _gameObj) => {
             // if middle button pressed
             if (this.chckCommandKey(_pointer)) {
-                this.runFocusLogic(_scene, _gameObj, _debugBox, _folder);
+                this.runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera);
             }
         });
         // when press command SHIFT + F
@@ -90,7 +94,7 @@ export default class InputManager {
             if (this.chckCmdShiftKeyDown()) {
                 // set gameObj via which pointer over on
                 let tmpGameObj = _debugBox.getOverGameObj();
-                this.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder);
+                this.runFocusLogic(_scene, tmpGameObj, _debugBox, _folder, _camera);
             }
         });
     }
@@ -125,13 +129,32 @@ export default class InputManager {
             }
         });
     }
+    createMoveModeEvent(_scene) {
+        // when press command SHIFT + Q, MOVE mode
+        _scene.input.keyboard.on('keyup-Q', (_pointer, _gameObj) => {
+            let tmpFocusGameObj = _debugBox.getFocusGameObj();
+            // + change 
+            if ( // chck if focus valid & shift key down
+                tmpFocusGameObj &&
+                this.chckCmdShiftKeyDown()
+                ) {
+                tmpFocusGameObj.visible = !tmpFocusGameObj.visible;
+            }
+        });
+    }
+    createScaleModeEvent(_scene) {
+
+    }
+    createRotateModeEvent(_scene) {
+
+    }
     // chck focus then, focus ON game object or OFF
-    runFocusLogic(_scene, _gameObj, _debugBox, _folder) {
+    runFocusLogic(_scene, _gameObj, _debugBox, _folder, _camera) {
         // isFocusOnGUI boolean is true
         // (if u run focusCommand on the focus game object)
         if (this.chckGameObjIsFocusOnGUI(_gameObj)) {
             // clear the focus object
-            this.runFocusLogic_focus_clear(_gameObj, _debugBox, _folder);
+            this.runFocusLogic_focus_clear(_gameObj, _debugBox, _folder, _camera);
         }
         // isFocusOnGUI boolean is false
         // (if u run focusCommand on the not focus game object)
@@ -140,7 +163,7 @@ export default class InputManager {
             if (tmpFocusGameObj) {
                 // clear the focus during object focusing
                 // init focus check
-                this.runFocusLogic_focus_clear(tmpFocusGameObj, _debugBox, _folder);
+                this.runFocusLogic_focus_clear(tmpFocusGameObj, _debugBox, _folder, _camera);
             }
             else {
                 // pure game object focus
@@ -149,7 +172,8 @@ export default class InputManager {
             }
         }
     }
-    runFocusLogic_focus_clear(_gameObj, _debugBox, _folder) {
+    runFocusLogic_focus_clear(_gameObj, _debugBox, _folder, _camera) {
+        _camera.setFollowStop();
         _debugBox.clearFocus(_gameObj);
         _debugBox.setFocusGameObj(undefined);
         _debugBox.clearFocusGameObj();
