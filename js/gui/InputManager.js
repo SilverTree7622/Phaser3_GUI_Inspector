@@ -284,7 +284,6 @@ export default class InputManager {
         tmpMO.targetY = 0;
         tmpMO.move.x = 0;
         tmpMO.move.y = 0;
-        console.log('init drag end');
     }
 
     // chck focus then, focus ON game object or OFF
