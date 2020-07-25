@@ -1,9 +1,10 @@
 
-import { jointSI } from '../../utils/GlobalJoint.js';
-import { DebugGetThisConsole } from '../../utils/DebugConsoleFunc.js';
+import { JOINT_SI } from '../utils/GlobalJoint.js';
+import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
 
 export default class InputManager {
     constructor() {
+        JOINT_SI.setInput(this);
         this.scene;
         // game size width, height
         this.size = { w: 0, h: 0 };
@@ -33,9 +34,9 @@ export default class InputManager {
         this.createFocusEvent(_scene, _debugBox, _folder, _camera);
         this.createDetailEvent(_scene, _debugBox, _folder);
         this.createVisibleEvent(_scene, _debugBox);
-        // // MOVE, SCALE, ROTATE MODE input
-        // this.createModeCmdEvent(_scene);
-        // this.createModeEvent(_scene, _debugBox, _folder, _camera);
+        // MOVE, SCALE, ROTATE MODE input
+        this.createModeCmdEvent(_scene);
+        this.createModeEvent(_scene, _debugBox, _folder, _camera);
     }
     update() {
         this.updatePointerMode();
@@ -154,7 +155,7 @@ export default class InputManager {
     }
     setModeCmdFunc(_idx, _keyboardEvt) {
         if (this.chckCmdShiftKeyDown() && !this.pointerModeObjs.isDown) {
-            console.log('_idx:', _idx);
+            JOINT_SI.signalInput2Side(_idx);
             if (_idx === 0) {
                 this.isPointerMode = false;
             }

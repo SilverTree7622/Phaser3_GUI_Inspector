@@ -2347,7 +2347,7 @@ function DebugSceneNAllDisplayList() {
 //         tmpZoomStr, tmpZoom
 //     );
 // }
-},{}],"gui/manager/SrcManager.js":[function(require,module,exports) {
+},{}],"manager/SrcManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2486,7 +2486,7 @@ function () {
 }();
 
 exports.default = SrcManager;
-},{}],"gui/manager/TypeSortManager.js":[function(require,module,exports) {
+},{}],"manager/TypeSortManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2494,7 +2494,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _DebugConsoleFunc = require("../../utils/DebugConsoleFunc.js");
+var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
 
 var _SrcManager = _interopRequireDefault(require("./SrcManager.js"));
 
@@ -3177,7 +3177,7 @@ function () {
 }();
 
 exports.default = TypeSortManager;
-},{"../../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManager.js":"gui/manager/SrcManager.js"}],"gui/manager/FolderManager.js":[function(require,module,exports) {
+},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManager.js":"manager/SrcManager.js"}],"manager/FolderManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3573,7 +3573,7 @@ function () {
 }();
 
 exports.default = FolderManager;
-},{}],"gui/manager/DebugBoxManager.js":[function(require,module,exports) {
+},{}],"manager/DebugBoxManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3917,7 +3917,7 @@ function () {
 }();
 
 exports.default = DebugBoxManager;
-},{}],"gui/manager/CameraManager.js":[function(require,module,exports) {
+},{}],"manager/CameraManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4183,29 +4183,32 @@ function () {
 
 exports.default = CameraManager;
 },{}],"utils/GlobalJoint.js":[function(require,module,exports) {
-"use strict";
+/*
+    this script is only for complicated relations
+    like SideGUI and Input manager
+*/
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.JointSide2Input = JointSide2Input;
-exports.jointSI = void 0;
-var jointSI = {
+exports.JOINT_SI = void 0;
+var JOINT_SI = {
   side: undefined,
   input: undefined,
-  side2input: function side2input() {
-    console.log('JointSide2Input');
+  // method
+  setSide: function setSide(_side) {
+    this.side = _side;
   },
-  input2side: function input2side() {
-    console.log('JointSide2Input');
+  setInput: function setInput(_input) {
+    this.input = _input;
+  },
+  signalInput2Side: function signalInput2Side(_idx) {
+    this.side.signalFromInput(_idx);
   }
 };
-exports.jointSI = jointSI;
-
-function JointSide2Input() {
-  console.log('JointSide2Input');
-}
-},{}],"gui/manager/InputManager.js":[function(require,module,exports) {
+exports.JOINT_SI = JOINT_SI;
+},{}],"manager/InputManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4213,9 +4216,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _GlobalJoint = require("../../utils/GlobalJoint.js");
+var _GlobalJoint = require("../utils/GlobalJoint.js");
 
-var _DebugConsoleFunc = require("../../utils/DebugConsoleFunc.js");
+var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4228,6 +4231,8 @@ var InputManager =
 function () {
   function InputManager() {
     _classCallCheck(this, InputManager);
+
+    _GlobalJoint.JOINT_SI.setInput(this);
 
     this.scene; // game size width, height
 
@@ -4277,9 +4282,10 @@ function () {
       this.createOverEvent(_scene, _debugBox, _folder);
       this.createFocusEvent(_scene, _debugBox, _folder, _camera);
       this.createDetailEvent(_scene, _debugBox, _folder);
-      this.createVisibleEvent(_scene, _debugBox); // // MOVE, SCALE, ROTATE MODE input
-      // this.createModeCmdEvent(_scene);
-      // this.createModeEvent(_scene, _debugBox, _folder, _camera);
+      this.createVisibleEvent(_scene, _debugBox); // MOVE, SCALE, ROTATE MODE input
+
+      this.createModeCmdEvent(_scene);
+      this.createModeEvent(_scene, _debugBox, _folder, _camera);
     }
   }, {
     key: "update",
@@ -4446,7 +4452,7 @@ function () {
     key: "setModeCmdFunc",
     value: function setModeCmdFunc(_idx, _keyboardEvt) {
       if (this.chckCmdShiftKeyDown() && !this.pointerModeObjs.isDown) {
-        console.log('_idx:', _idx);
+        _GlobalJoint.JOINT_SI.signalInput2Side(_idx);
 
         if (_idx === 0) {
           this.isPointerMode = false;
@@ -4737,7 +4743,7 @@ function () {
 }();
 
 exports.default = InputManager;
-},{"../../utils/GlobalJoint.js":"utils/GlobalJoint.js","../../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
+},{"../utils/GlobalJoint.js":"utils/GlobalJoint.js","../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
 "use strict"; // debug console utils
 
 Object.defineProperty(exports, "__esModule", {
@@ -4884,6 +4890,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _GlobalJoint = require("../utils/GlobalJoint.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -4896,13 +4904,17 @@ function () {
   function SideGUIClass(_main) {
     _classCallCheck(this, SideGUIClass);
 
+    _GlobalJoint.JOINT_SI.setSide(this);
+
     this.main = _main;
     this.lib = this.main.sideGUI; // if init config isSideExist = false, then return
 
     if (!this.main.sideGUI) return;
     this.manager = this.main.manager;
-    this.input = this.manager.input;
     this.modeFolder;
+    this.textList = ['M____ / S____ / A____ / None ', 'Moves / S____ / A____ / N___ ', 'M____ / Scale / A____ / N___ ', 'M____ / S____ / Angle / N___ '];
+    this.modeFolderDesc;
+    this.modeFolderChild;
     this.cmdListFolder;
     this.cmdFolder = [];
     this.cmdList = this.initCmdList();
@@ -4976,12 +4988,13 @@ function () {
   }, {
     key: "createModeList",
     value: function createModeList(_scene) {
-      this.modeFolder = this.lib.addFolder('POINTER_MODE'); // MOVE, SCALE, ROTATE MODE input
-
-      this.input.createModeCmdEvent(_scene); // + SHIFT + Q MOVE MODE
-      // + SHIFT + W SCALE MODE
-      // + SHIFT + E ROTATE MODE
-      // + SHIFT + R or just toggling button get back to none POINTER MODE
+      this.modeFolder = this.lib.addFolder('POINTER_MODE');
+      this.modeFolder.open();
+      this.modeFolderDesc = this.modeFolder.addFolder(this.textList[0]);
+      this.modeFolderChild = this.modeFolderDesc.domElement.lastChild.lastChild;
+      this.modeFolderChild.style.backgroundColor = 'grey';
+      this.modeFolderChild.style.color = 'black';
+      this.modeFolderChild.style.webkitTextStrokeWidth = '1px'; // this.modeFolderChild.style.fontFamily = 'fantasy';
     } // Command List Info
 
   }, {
@@ -5000,12 +5013,13 @@ function () {
           var i = _step.value;
           var tmpIdx = _this.cmdFolder.push(_this.cmdListFolder.addFolder(i.name)) - 1;
 
-          var tmpDesc = _this.cmdFolder[tmpIdx].addFolder(i.description); // set description folder title background color grey
+          var tmpDesc = _this.cmdFolder[tmpIdx].addFolder(i.description);
 
+          var tmpChild = tmpDesc.domElement.lastChild.lastChild; // set description folder title background color grey
 
-          tmpDesc.domElement.lastChild.lastChild.style.backgroundColor = 'grey';
-          tmpDesc.domElement.lastChild.lastChild.style.color = 'black';
-          tmpDesc.domElement.lastChild.lastChild.style.webkitTextStrokeWidth = '1px';
+          tmpChild.style.backgroundColor = 'grey';
+          tmpChild.style.color = 'black';
+          tmpChild.style.webkitTextStrokeWidth = '1px';
 
           _this.cmdFolder[tmpIdx].domElement.addEventListener('pointerover', function (_event) {
             _this.setSideWidthExpand();
@@ -5041,12 +5055,22 @@ function () {
   }, {
     key: "setSideWidthInit",
     value: function setSideWidthInit() {
-      this.lib.width = 140;
+      this.lib.width = 176;
     }
   }, {
     key: "setSideWidthExpand",
     value: function setSideWidthExpand() {
       this.lib.width = 400;
+    }
+  }, {
+    key: "signalFromInput",
+    value: function signalFromInput(_idx) {
+      this.setPointerModeText(_idx);
+    }
+  }, {
+    key: "setPointerModeText",
+    value: function setPointerModeText(_idx) {
+      this.modeFolderChild.innerText = this.textList[_idx];
     }
   }]);
 
@@ -5054,7 +5078,7 @@ function () {
 }();
 
 exports.default = SideGUIClass;
-},{}],"main.js":[function(require,module,exports) {
+},{"../utils/GlobalJoint.js":"utils/GlobalJoint.js"}],"main.js":[function(require,module,exports) {
 /*
     * Libs
 
@@ -5098,15 +5122,15 @@ var _index = _interopRequireDefault(require("./lib/index.js"));
 
 var _DebugConsoleFunc = require("./utils/DebugConsoleFunc.js");
 
-var _TypeSortManager = _interopRequireDefault(require("./gui/manager/TypeSortManager.js"));
+var _TypeSortManager = _interopRequireDefault(require("./manager/TypeSortManager.js"));
 
-var _FolderManager = _interopRequireDefault(require("./gui/manager/FolderManager.js"));
+var _FolderManager = _interopRequireDefault(require("./manager/FolderManager.js"));
 
-var _DebugBoxManager = _interopRequireDefault(require("./gui/manager/DebugBoxManager.js"));
+var _DebugBoxManager = _interopRequireDefault(require("./manager/DebugBoxManager.js"));
 
-var _CameraManager = _interopRequireDefault(require("./gui/manager/CameraManager.js"));
+var _CameraManager = _interopRequireDefault(require("./manager/CameraManager.js"));
 
-var _InputManager = _interopRequireDefault(require("./gui/manager/InputManager.js"));
+var _InputManager = _interopRequireDefault(require("./manager/InputManager.js"));
 
 var _GUIClass = _interopRequireDefault(require("./gui/GUIClass.js"));
 
@@ -5186,7 +5210,7 @@ function () {
 }();
 
 exports.Main = Main;
-},{"./lib/index.js":"lib/index.js","./utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./gui/manager/TypeSortManager.js":"gui/manager/TypeSortManager.js","./gui/manager/FolderManager.js":"gui/manager/FolderManager.js","./gui/manager/DebugBoxManager.js":"gui/manager/DebugBoxManager.js","./gui/manager/CameraManager.js":"gui/manager/CameraManager.js","./gui/manager/InputManager.js":"gui/manager/InputManager.js","./gui/GUIClass.js":"gui/GUIClass.js","./gui/SideGUIClass.js":"gui/SideGUIClass.js"}],"PGInspector.js":[function(require,module,exports) {
+},{"./lib/index.js":"lib/index.js","./utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./manager/TypeSortManager.js":"manager/TypeSortManager.js","./manager/FolderManager.js":"manager/FolderManager.js","./manager/DebugBoxManager.js":"manager/DebugBoxManager.js","./manager/CameraManager.js":"manager/CameraManager.js","./manager/InputManager.js":"manager/InputManager.js","./gui/GUIClass.js":"gui/GUIClass.js","./gui/SideGUIClass.js":"gui/SideGUIClass.js"}],"PGInspector.js":[function(require,module,exports) {
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // FINFAL WORK: ADD TO WINDOW OBJECT
@@ -5334,7 +5358,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53030" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64890" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

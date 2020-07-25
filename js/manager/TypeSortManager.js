@@ -1,5 +1,5 @@
 
-import { DebugGetThisConsole } from '../../utils/DebugConsoleFunc.js';
+import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
 import SrcManager from './SrcManager.js';
 
 // sort obj type, pointer over properties

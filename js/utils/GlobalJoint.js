@@ -1,16 +1,21 @@
+/*
+    this script is only for complicated relations
+    like SideGUI and Input manager
+*/
 
+'use strict';
 
-export var jointSI = {
+export let JOINT_SI = {
     side: undefined,
     input: undefined,
-    side2input: function () {
-        console.log('JointSide2Input');
+    // method
+    setSide: function (_side) {
+        this.side = _side;
     },
-    input2side: function () {
-        console.log('JointSide2Input');
+    setInput: function (_input) {
+        this.input = _input;
+    },
+    signalInput2Side: function (_idx) {
+        this.side.signalFromInput(_idx);
     }
 };
-
-export function JointSide2Input() {
-    console.log('JointSide2Input');
-}

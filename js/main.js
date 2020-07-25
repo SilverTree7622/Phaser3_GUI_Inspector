@@ -37,11 +37,11 @@
 import LibClass from './lib/index.js'; // import whole GUI
 import { DebugConsole } from './utils/DebugConsoleFunc.js';
 // Manager
-import TypeSortManager from './gui/manager/TypeSortManager.js';
-import FolderManager from './gui/manager/FolderManager.js';
-import DebugBoxManager from './gui/manager/DebugBoxManager.js';
-import CameraManager from './gui/manager/CameraManager.js';
-import InputManager from './gui/manager/InputManager.js';
+import TypeSortManager from './manager/TypeSortManager.js';
+import FolderManager from './manager/FolderManager.js';
+import DebugBoxManager from './manager/DebugBoxManager.js';
+import CameraManager from './manager/CameraManager.js';
+import InputManager from './manager/InputManager.js';
 // GUIs
 import GUIClass from './gui/GUIClass.js';
 import SideGUIClass from './gui/SideGUIClass.js';

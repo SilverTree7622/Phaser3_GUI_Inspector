@@ -1,15 +1,23 @@
 
-
+import { JOINT_SI } from '../utils/GlobalJoint.js';
 
 export default class SideGUIClass {
     constructor(_main) {
+        JOINT_SI.setSide(this);
         this.main = _main;
         this.lib = this.main.sideGUI;
         // if init config isSideExist = false, then return
         if (!this.main.sideGUI) return;
         this.manager = this.main.manager;
-        this.input = this.manager.input;
         this.modeFolder;
+        this.textList = [
+            'M____ / S____ / A____ / None ',
+            'Moves / S____ / A____ / N___ ',
+            'M____ / Scale / A____ / N___ ',
+            'M____ / S____ / Angle / N___ ',
+        ];
+        this.modeFolderDesc;
+        this.modeFolderChild;
         this.cmdListFolder;
         this.cmdFolder = [];
         this.cmdList = this.initCmdList();
@@ -44,22 +52,13 @@ export default class SideGUIClass {
     }
     createModeList(_scene) {
         this.modeFolder = this.lib.addFolder('POINTER_MODE');
-
-
-        // MOVE, SCALE, ROTATE MODE input
-        this.input.createModeCmdEvent(_scene);
-
-
-
-
-        // + SHIFT + Q MOVE MODE
-
-        // + SHIFT + W SCALE MODE
-
-        // + SHIFT + E ROTATE MODE
-
-        // + SHIFT + R or just toggling button get back to none POINTER MODE
-        
+        this.modeFolder.open();
+        this.modeFolderDesc = this.modeFolder.addFolder(this.textList[0]);
+        this.modeFolderChild = this.modeFolderDesc.domElement.lastChild.lastChild;
+        this.modeFolderChild.style.backgroundColor = 'grey';
+        this.modeFolderChild.style.color = 'black';
+        this.modeFolderChild.style.webkitTextStrokeWidth = '1px';
+        // this.modeFolderChild.style.fontFamily = 'fantasy';
     }
     // Command List Info
     createCmdFolder() {
@@ -68,10 +67,11 @@ export default class SideGUIClass {
         for (let i of this.cmdList) {
             let tmpIdx = this.cmdFolder.push(this.cmdListFolder.addFolder(i.name)) - 1;
             let tmpDesc = this.cmdFolder[tmpIdx].addFolder(i.description);
+            let tmpChild = tmpDesc.domElement.lastChild.lastChild;
             // set description folder title background color grey
-            tmpDesc.domElement.lastChild.lastChild.style.backgroundColor = 'grey';
-            tmpDesc.domElement.lastChild.lastChild.style.color = 'black';
-            tmpDesc.domElement.lastChild.lastChild.style.webkitTextStrokeWidth = '1px';
+            tmpChild.style.backgroundColor = 'grey';
+            tmpChild.style.color = 'black';
+            tmpChild.style.webkitTextStrokeWidth = '1px';
             this.cmdFolder[tmpIdx].domElement.addEventListener('pointerover', (_event) => {
                 this.setSideWidthExpand();
                 this.cmdFolder[tmpIdx].open();
@@ -85,9 +85,15 @@ export default class SideGUIClass {
 
 
     setSideWidthInit() {
-        this.lib.width = 140;
+        this.lib.width = 176;
     }
     setSideWidthExpand() {
         this.lib.width = 400;
+    }
+    signalFromInput(_idx) {
+        this.setPointerModeText(_idx);
+    }
+    setPointerModeText(_idx) {
+        this.modeFolderChild.innerText = this.textList[_idx];
     }
 }
