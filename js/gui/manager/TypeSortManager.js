@@ -1,6 +1,6 @@
 
-import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
-import SrcManager from './SrcManagerClass.js';
+import { DebugGetThisConsole } from '../../utils/DebugConsoleFunc.js';
+import SrcManager from './SrcManager.js';
 
 // sort obj type, pointer over properties
 export default class TypeSortManager {

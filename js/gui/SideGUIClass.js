@@ -1,4 +1,6 @@
 
+
+
 export default class SideGUIClass {
     constructor(_main) {
         this.main = _main;
@@ -6,6 +8,7 @@ export default class SideGUIClass {
         // if init config isSideExist = false, then return
         if (!this.main.sideGUI) return;
         this.manager = this.main.manager;
+        this.input = this.manager.input;
         this.modeFolder;
         this.cmdListFolder;
         this.cmdFolder = [];
@@ -30,6 +33,7 @@ export default class SideGUIClass {
         tmpCL.push({ name: 'SHIFT + RIGHT_CLCIK', description: 'moving main camera via scroll' });
         tmpCL.push({ name: 'SHIFT + WHEEL', description: 'zoom in/out the main camera' });
         tmpCL.push({ name: 'SHIFT + S', description: 'set main camera zoom & scroll values to the default' });
+        tmpCL.push({ name: 'SHIFT + Q, W, E, R', description: 'set Pointer Mode(Q, W, E), set to normal(R)' });
         return tmpCL;
     }
 
@@ -40,6 +44,14 @@ export default class SideGUIClass {
     }
     createModeList(_scene) {
         this.modeFolder = this.lib.addFolder('POINTER_MODE');
+
+
+        // MOVE, SCALE, ROTATE MODE input
+        this.input.createModeCmdEvent(_scene);
+
+
+
+
         // + SHIFT + Q MOVE MODE
 
         // + SHIFT + W SCALE MODE
@@ -49,6 +61,7 @@ export default class SideGUIClass {
         // + SHIFT + R or just toggling button get back to none POINTER MODE
         
     }
+    // Command List Info
     createCmdFolder() {
         this.cmdListFolder = this.lib.addFolder('COMMAND_LIST');
         // add pointer over and out for description (open or close folder)

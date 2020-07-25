@@ -1,5 +1,6 @@
 
-import { DebugGetThisConsole } from '../utils/DebugConsoleFunc.js';
+import { jointSI } from '../../utils/GlobalJoint.js';
+import { DebugGetThisConsole } from '../../utils/DebugConsoleFunc.js';
 
 export default class InputManager {
     constructor() {
@@ -32,9 +33,9 @@ export default class InputManager {
         this.createFocusEvent(_scene, _debugBox, _folder, _camera);
         this.createDetailEvent(_scene, _debugBox, _folder);
         this.createVisibleEvent(_scene, _debugBox);
-        // MOVE, SCALE, ROTATE MODE input
-        this.createModeCmdEvent(_scene);
-        this.createModeEvent(_scene, _debugBox, _folder, _camera);
+        // // MOVE, SCALE, ROTATE MODE input
+        // this.createModeCmdEvent(_scene);
+        // this.createModeEvent(_scene, _debugBox, _folder, _camera);
     }
     update() {
         this.updatePointerMode();
@@ -352,5 +353,11 @@ export default class InputManager {
     chckGameObjIsFocusOnGUI(_gameObj) {
         let tmpGameObjBoolean = (_gameObj) ? _gameObj.isFocusOnGUI : null;
         return tmpGameObjBoolean;
+    }
+    getPointerListNmode() {
+        let tmpReturn = {};
+        tmpReturn.list = this.pointerModeList;
+        tmpReturn.now = this.pointerMode;
+        return tmpReturn;
     }
 }

@@ -22,6 +22,7 @@
     * Another Planning Ref
     https://github.com/koreezgames/phaser3-particle-editor
 */
+
 /*
     END GOAL:
         you can get name when you over the objects,
@@ -36,11 +37,11 @@
 import LibClass from './lib/index.js'; // import whole GUI
 import { DebugConsole } from './utils/DebugConsoleFunc.js';
 // Manager
-import TypeSortManager from './gui/TypeSortManager.js';
-import FolderManager from './gui/FolderManager.js';
-import DebugBoxClass from './gui/DebugBoxClass.js';
-import CameraManager from './gui/CameraManager.js';
-import InputManager from './gui/InputManager.js';
+import TypeSortManager from './gui/manager/TypeSortManager.js';
+import FolderManager from './gui/manager/FolderManager.js';
+import DebugBoxManager from './gui/manager/DebugBoxManager.js';
+import CameraManager from './gui/manager/CameraManager.js';
+import InputManager from './gui/manager/InputManager.js';
 // GUIs
 import GUIClass from './gui/GUIClass.js';
 import SideGUIClass from './gui/SideGUIClass.js';
@@ -55,7 +56,7 @@ export class Main {
         this.manager = {};
         this.manager.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
         this.manager.folder = new FolderManager(this.manager.typeSort);
-        this.manager.debugBox = new DebugBoxClass();
+        this.manager.debugBox = new DebugBoxManager();
         this.manager.camera = new CameraManager();
         this.manager.input = new InputManager();
         // GUIs
@@ -83,7 +84,6 @@ export class Main {
         this.manager.camera.update();
         this.manager.input.update();
     }
-
 
     initConsole(_cssObj) {
         let tmpName = ' PGInspector.js';

@@ -2347,7 +2347,7 @@ function DebugSceneNAllDisplayList() {
 //         tmpZoomStr, tmpZoom
 //     );
 // }
-},{}],"gui/SrcManagerClass.js":[function(require,module,exports) {
+},{}],"gui/manager/SrcManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2486,7 +2486,7 @@ function () {
 }();
 
 exports.default = SrcManager;
-},{}],"gui/TypeSortManager.js":[function(require,module,exports) {
+},{}],"gui/manager/TypeSortManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2494,9 +2494,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+var _DebugConsoleFunc = require("../../utils/DebugConsoleFunc.js");
 
-var _SrcManagerClass = _interopRequireDefault(require("./SrcManagerClass.js"));
+var _SrcManager = _interopRequireDefault(require("./SrcManager.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2518,7 +2518,7 @@ function () {
     this.conAlert = '_PGI System_ :';
     this.timeKey = '_PGI CntEnd_ ';
     this.objLength = 0;
-    this.srcObj = new _SrcManagerClass.default(_scene); // class objs
+    this.srcObj = new _SrcManager.default(_scene); // class objs
 
     this.scene = _scene;
     this.folder;
@@ -3177,7 +3177,7 @@ function () {
 }();
 
 exports.default = TypeSortManager;
-},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManagerClass.js":"gui/SrcManagerClass.js"}],"gui/FolderManager.js":[function(require,module,exports) {
+},{"../../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./SrcManager.js":"gui/manager/SrcManager.js"}],"gui/manager/FolderManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3573,7 +3573,7 @@ function () {
 }();
 
 exports.default = FolderManager;
-},{}],"gui/DebugBoxClass.js":[function(require,module,exports) {
+},{}],"gui/manager/DebugBoxManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3588,11 +3588,11 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 // make debug box with phaser graphics
-var DebugBoxClass =
+var DebugBoxManager =
 /*#__PURE__*/
 function () {
-  function DebugBoxClass() {
-    _classCallCheck(this, DebugBoxClass);
+  function DebugBoxManager() {
+    _classCallCheck(this, DebugBoxManager);
 
     this.scene;
     this.camera;
@@ -3603,7 +3603,7 @@ function () {
     this.focus = this.initFocus();
   }
 
-  _createClass(DebugBoxClass, [{
+  _createClass(DebugBoxManager, [{
     key: "create",
     value: function create(_scene, _camera) {
       this.scene = _scene;
@@ -3913,11 +3913,11 @@ function () {
     }
   }]);
 
-  return DebugBoxClass;
+  return DebugBoxManager;
 }();
 
-exports.default = DebugBoxClass;
-},{}],"gui/CameraManager.js":[function(require,module,exports) {
+exports.default = DebugBoxManager;
+},{}],"gui/manager/CameraManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4182,7 +4182,30 @@ function () {
 }();
 
 exports.default = CameraManager;
-},{}],"gui/InputManager.js":[function(require,module,exports) {
+},{}],"utils/GlobalJoint.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.JointSide2Input = JointSide2Input;
+exports.jointSI = void 0;
+var jointSI = {
+  side: undefined,
+  input: undefined,
+  side2input: function side2input() {
+    console.log('JointSide2Input');
+  },
+  input2side: function input2side() {
+    console.log('JointSide2Input');
+  }
+};
+exports.jointSI = jointSI;
+
+function JointSide2Input() {
+  console.log('JointSide2Input');
+}
+},{}],"gui/manager/InputManager.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4190,7 +4213,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _DebugConsoleFunc = require("../utils/DebugConsoleFunc.js");
+var _GlobalJoint = require("../../utils/GlobalJoint.js");
+
+var _DebugConsoleFunc = require("../../utils/DebugConsoleFunc.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4252,10 +4277,9 @@ function () {
       this.createOverEvent(_scene, _debugBox, _folder);
       this.createFocusEvent(_scene, _debugBox, _folder, _camera);
       this.createDetailEvent(_scene, _debugBox, _folder);
-      this.createVisibleEvent(_scene, _debugBox); // MOVE, SCALE, ROTATE MODE input
-
-      this.createModeCmdEvent(_scene);
-      this.createModeEvent(_scene, _debugBox, _folder, _camera);
+      this.createVisibleEvent(_scene, _debugBox); // // MOVE, SCALE, ROTATE MODE input
+      // this.createModeCmdEvent(_scene);
+      // this.createModeEvent(_scene, _debugBox, _folder, _camera);
     }
   }, {
     key: "update",
@@ -4699,13 +4723,21 @@ function () {
       var tmpGameObjBoolean = _gameObj ? _gameObj.isFocusOnGUI : null;
       return tmpGameObjBoolean;
     }
+  }, {
+    key: "getPointerListNmode",
+    value: function getPointerListNmode() {
+      var tmpReturn = {};
+      tmpReturn.list = this.pointerModeList;
+      tmpReturn.now = this.pointerMode;
+      return tmpReturn;
+    }
   }]);
 
   return InputManager;
 }();
 
 exports.default = InputManager;
-},{"../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
+},{"../../utils/GlobalJoint.js":"utils/GlobalJoint.js","../../utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js"}],"gui/GUIClass.js":[function(require,module,exports) {
 "use strict"; // debug console utils
 
 Object.defineProperty(exports, "__esModule", {
@@ -4869,6 +4901,7 @@ function () {
 
     if (!this.main.sideGUI) return;
     this.manager = this.main.manager;
+    this.input = this.manager.input;
     this.modeFolder;
     this.cmdListFolder;
     this.cmdFolder = [];
@@ -4927,6 +4960,10 @@ function () {
         name: 'SHIFT + S',
         description: 'set main camera zoom & scroll values to the default'
       });
+      tmpCL.push({
+        name: 'SHIFT + Q, W, E, R',
+        description: 'set Pointer Mode(Q, W, E), set to normal(R)'
+      });
       return tmpCL;
     }
   }, {
@@ -4939,11 +4976,14 @@ function () {
   }, {
     key: "createModeList",
     value: function createModeList(_scene) {
-      this.modeFolder = this.lib.addFolder('POINTER_MODE'); // + SHIFT + Q MOVE MODE
+      this.modeFolder = this.lib.addFolder('POINTER_MODE'); // MOVE, SCALE, ROTATE MODE input
+
+      this.input.createModeCmdEvent(_scene); // + SHIFT + Q MOVE MODE
       // + SHIFT + W SCALE MODE
       // + SHIFT + E ROTATE MODE
       // + SHIFT + R or just toggling button get back to none POINTER MODE
-    }
+    } // Command List Info
+
   }, {
     key: "createCmdFolder",
     value: function createCmdFolder() {
@@ -5058,15 +5098,15 @@ var _index = _interopRequireDefault(require("./lib/index.js"));
 
 var _DebugConsoleFunc = require("./utils/DebugConsoleFunc.js");
 
-var _TypeSortManager = _interopRequireDefault(require("./gui/TypeSortManager.js"));
+var _TypeSortManager = _interopRequireDefault(require("./gui/manager/TypeSortManager.js"));
 
-var _FolderManager = _interopRequireDefault(require("./gui/FolderManager.js"));
+var _FolderManager = _interopRequireDefault(require("./gui/manager/FolderManager.js"));
 
-var _DebugBoxClass = _interopRequireDefault(require("./gui/DebugBoxClass.js"));
+var _DebugBoxManager = _interopRequireDefault(require("./gui/manager/DebugBoxManager.js"));
 
-var _CameraManager = _interopRequireDefault(require("./gui/CameraManager.js"));
+var _CameraManager = _interopRequireDefault(require("./gui/manager/CameraManager.js"));
 
-var _InputManager = _interopRequireDefault(require("./gui/InputManager.js"));
+var _InputManager = _interopRequireDefault(require("./gui/manager/InputManager.js"));
 
 var _GUIClass = _interopRequireDefault(require("./gui/GUIClass.js"));
 
@@ -5094,7 +5134,7 @@ function () {
     this.manager = {};
     this.manager.typeSort = new _TypeSortManager.default(_tmpHandOverObj.scene);
     this.manager.folder = new _FolderManager.default(this.manager.typeSort);
-    this.manager.debugBox = new _DebugBoxClass.default();
+    this.manager.debugBox = new _DebugBoxManager.default();
     this.manager.camera = new _CameraManager.default();
     this.manager.input = new _InputManager.default(); // GUIs
 
@@ -5146,7 +5186,7 @@ function () {
 }();
 
 exports.Main = Main;
-},{"./lib/index.js":"lib/index.js","./utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./gui/TypeSortManager.js":"gui/TypeSortManager.js","./gui/FolderManager.js":"gui/FolderManager.js","./gui/DebugBoxClass.js":"gui/DebugBoxClass.js","./gui/CameraManager.js":"gui/CameraManager.js","./gui/InputManager.js":"gui/InputManager.js","./gui/GUIClass.js":"gui/GUIClass.js","./gui/SideGUIClass.js":"gui/SideGUIClass.js"}],"PGInspector.js":[function(require,module,exports) {
+},{"./lib/index.js":"lib/index.js","./utils/DebugConsoleFunc.js":"utils/DebugConsoleFunc.js","./gui/manager/TypeSortManager.js":"gui/manager/TypeSortManager.js","./gui/manager/FolderManager.js":"gui/manager/FolderManager.js","./gui/manager/DebugBoxManager.js":"gui/manager/DebugBoxManager.js","./gui/manager/CameraManager.js":"gui/manager/CameraManager.js","./gui/manager/InputManager.js":"gui/manager/InputManager.js","./gui/GUIClass.js":"gui/GUIClass.js","./gui/SideGUIClass.js":"gui/SideGUIClass.js"}],"PGInspector.js":[function(require,module,exports) {
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 // FINFAL WORK: ADD TO WINDOW OBJECT
@@ -5294,7 +5334,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56579" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53030" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

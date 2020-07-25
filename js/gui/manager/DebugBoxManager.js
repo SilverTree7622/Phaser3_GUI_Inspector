@@ -1,6 +1,6 @@
 
 // make debug box with phaser graphics
-export default class DebugBoxClass {
+export default class DebugBoxManager {
     constructor() {
         this.scene;
         this.camera;
