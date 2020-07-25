@@ -2813,13 +2813,15 @@ function () {
       this.tryCatch(_folderInCustom, _gameObj, 'y', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'width', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'height', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'scaleX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'scaleY', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'originX', 'listen');
+      this.tryCatch(_folderInCustom, _gameObj, 'originY', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'alpha', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'depth');
       this.tryCatch(_folderInCustom, _gameObj, 'angle', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'rotation', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'visible');
-      this.tryCatch(_folderInCustom, _gameObj, 'originX', 'listen');
-      this.tryCatch(_folderInCustom, _gameObj, 'originY', 'listen');
       this.tryCatch(_folderInCustom, _gameObj, 'active');
     }
   }, {
