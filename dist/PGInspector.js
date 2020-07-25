@@ -4940,7 +4940,7 @@ function () {
       });
       tmpCL.push({
         name: 'SHIFT + LEFT_CLICK',
-        description: 'focus on/off GameObj'
+        description: 'focus on/off GameObj but difference in Pointer Mode'
       });
       tmpCL.push({
         name: 'MOUSE_MIDDLE_BTN',
@@ -4976,7 +4976,7 @@ function () {
       });
       tmpCL.push({
         name: 'SHIFT + Q, W, E, R',
-        description: 'set Pointer Mode(Q, W, E), set to normal(R)'
+        description: 'set Pointer Mode(Q, W, E), set to normal(R) / control with SHIFT + LEFT CLICK'
       });
       return tmpCL;
     }
@@ -5360,7 +5360,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64890" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50638" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

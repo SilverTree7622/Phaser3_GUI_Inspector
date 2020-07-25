@@ -32,7 +32,7 @@ export default class SideGUIClass {
     initCmdList() {
         let tmpCL = [];
         tmpCL.push({ name: 'SHIFT + F', description: 'focus on/off GameObj' });
-        tmpCL.push({ name: 'SHIFT + LEFT_CLICK', description: 'focus on/off GameObj' });
+        tmpCL.push({ name: 'SHIFT + LEFT_CLICK', description: 'focus on/off GameObj but difference in Pointer Mode' });
         tmpCL.push({ name: 'MOUSE_MIDDLE_BTN', description: 'focus on/off GameObj' });
         tmpCL.push({ name: 'SHIFT + V', description: 'on/off Focused GameObj visible' });
         tmpCL.push({ name: 'SHIFT + A', description: 'aim the Focused GameObj for toggling follow' });
@@ -41,7 +41,7 @@ export default class SideGUIClass {
         tmpCL.push({ name: 'SHIFT + RIGHT_CLCIK', description: 'moving main camera via scroll' });
         tmpCL.push({ name: 'SHIFT + WHEEL', description: 'zoom in/out the main camera' });
         tmpCL.push({ name: 'SHIFT + S', description: 'set main camera zoom & scroll values to the default' });
-        tmpCL.push({ name: 'SHIFT + Q, W, E, R', description: 'set Pointer Mode(Q, W, E), set to normal(R)' });
+        tmpCL.push({ name: 'SHIFT + Q, W, E, R', description: 'set Pointer Mode(Q, W, E), set to normal(R) / control with SHIFT + LEFT CLICK' });
         return tmpCL;
     }
 
