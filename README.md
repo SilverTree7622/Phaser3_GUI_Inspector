@@ -57,7 +57,7 @@
 			{
 				alpha: 0.6, // 0.0 ~ 1.0 (any value, you can change it in GUI)
 				right: 100, // any value
-				top: 50 // any value,
+				top: 50 // any value
 				side: true // boolean (default is true)
 			}
 		);
@@ -90,20 +90,23 @@
 </p>
 
 **USAGE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;mouse command :
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command : \
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SHIFT + F) or (SHIFT + LEFT CLICK) is the important & basic command for controlling Game Objects\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This makes Game Object 'Focus' which twinkles with RED BOUND\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The others is on the command list like below\
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/cmdsCapture.gif" width="70%">
 </p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;You can find command list in the Side GUI (init option 'side' should be true)\
+&nbsp;&nbsp;&nbsp;&nbsp;You can find command list in the Side GUI (init option 'side' should be true)
 
 **VERSION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**PREVIOUS_UPDATE)** https://github.com/SilverTree7622/Phaser3_GUI_Inspector/tree/master/zUpdate
 
 &nbsp;&nbsp;&nbsp;&nbsp;**1.2.0)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Pointer Mode for ease (Move, Scale, Angle, None)\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands are (SHIFT + Q, W, E, R) & control with (SHIFT + LEFT CLICK)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands are (SHIFT + Q, W, E, R) for changing Pointer Mode & control with (SHIFT + LEFT CLICK)
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/pointerModeCapture.gif" width="70%">
@@ -123,4 +126,13 @@
 	<img src="./zReadmeSrc/v120/followingCapture.gif" width="70%">
 </p>
 
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Improve performance via partially hide\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus on/off toggle in detail\
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus Game Object visible toggle\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + V) when focused\
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus Game Object's detail\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + D) when focused\
 
