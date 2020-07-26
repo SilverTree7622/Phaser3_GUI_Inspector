@@ -93,7 +93,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : \
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SHIFT + F) or (SHIFT + LEFT CLICK) is the important & basic command for controlling Game Objects\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This makes Game Object 'Focus' which twinkles with RED BOUND\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The others is on the command list like below\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The others is on the command list like below
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/cmdsCapture.gif" width="70%">
@@ -120,7 +120,7 @@
 </p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Following Focused Game Object\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + A) following or stop toggling
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + A) following or stop toggling when focused
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/followingCapture.gif" width="70%">
@@ -128,11 +128,21 @@
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Improve performance via partially hide\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus on/off toggle in detail\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus on/off toggle in detail
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus Game Object visible toggle\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + V) when focused\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + V) when focused
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus Game Object's detail\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + D) when focused\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + D) when focused
+
+
+**SHOWCASE)**\
+&nbsp;&nbsp;&nbsp;&nbsp;mix with focused(SHIFT + F) + following(SHIFT + A) + Pointer Move Mode(SHIFT + Q)
+
+<p align="center">
+	<img src="./zReadmeSrc/v120/showcase1.gif" width="70%">
+</p>
+
+
 
