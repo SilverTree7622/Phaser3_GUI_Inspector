@@ -1,8 +1,7 @@
 
 var config = {
-    type: Phaser.WEBGL,
+    type: Phaser.AUTO,
     scale: {
-        mode: Phaser.Scale.FIT,
         parent: 'phaser-example',
         width: 800,
         height: 600
