@@ -91,15 +91,9 @@
 
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command :\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;click phaser game object with\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**(Mouse middle button) or (Shift + F) or (Shift + Left Click)**\
-&nbsp;&nbsp;&nbsp;&nbsp;if you wanna check the focused game object console, then\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**(Shift + C) or (just click the name "GUI_CONSOLE") when the game object focused**\
-&nbsp;&nbsp;&nbsp;&nbsp;(if it's not already focused, then focus on it\
-&nbsp;&nbsp;&nbsp;&nbsp;else is focus off the object)
 
 <p align="center">
-	<img src="./zReadmeSrc/alphaRightTopControl_v110.gif" width="70%">
+	<img src="./zReadmeSrc/v120/cmdsCapture.gif" width="70%">
 </p>
 
 > **If you wanna check status or var name somethning,**\
