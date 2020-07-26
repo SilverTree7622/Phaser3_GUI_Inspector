@@ -2,13 +2,14 @@
 export function DebugConsole(_obj) {
     let tmpName = _obj.name;
     let tmpVersion = _obj.version;
-    let tmpInitConfig = _obj.initConfig;
-    let tmpA = 'ALPHA:' + tmpInitConfig.alpha;
-    let tmpR = 'RIGHT:' + tmpInitConfig.right;
-    let tmpT = 'TOP:' + tmpInitConfig.top;
+    let tmpIC = _obj.initConfig;
+    let tmpA = 'ALPHA:' + tmpIC.css.alpha;
+    let tmpR = 'RIGHT:' + tmpIC.css.right;
+    let tmpT = 'TOP:' + tmpIC.css.top;
+    let tmpI = 'SIDE:' + tmpIC.init.side;
     let tmpURL = _obj.url;
     let tmp_nameNversion = '%c' + tmpName + ' v' + tmpVersion + ' \n';
-    let tmp_config = '%c INIT_CONFIG( ' + tmpA + ' | ' + tmpR + ' | ' + tmpT + ' ) \n';
+    let tmp_config = '%c INIT_CONFIG( ' + tmpA + ' | ' + tmpR + ' | ' + tmpT + ' | ' + tmpI + ' ) \n';
     let tmp_url = '%c' + tmpURL;
     let tmpShadowGap = 1;
     let tmpShadowList = [

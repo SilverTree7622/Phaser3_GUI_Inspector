@@ -1772,8 +1772,11 @@ function () {
 
     this.class = this.initClass();
     this.gui = this.initGui();
-    this.alpha = this.initSetAlpha(_cssObj);
-    this.posXY = this.initSetPosXY(_cssObj); // delay GUI color all structure
+    this.alpha = _cssObj.alpha;
+    this.posXY = {
+      right: _cssObj.right,
+      top: _cssObj.top
+    }; // delay GUI color all structure
     // this.color = this.initSetColor(_cssObj);
 
     this.initAlpha();
@@ -1789,31 +1792,6 @@ function () {
     key: "initGui",
     value: function initGui() {
       return this.class[0];
-    }
-  }, {
-    key: "initSetAlpha",
-    value: function initSetAlpha(_cssObj) {
-      var tmpDefaultValue = 0.8;
-      var tmpValue = _cssObj.alpha ? _cssObj.alpha : tmpDefaultValue;
-      return tmpValue;
-    } // initSetColor(_cssObj) {
-    //     let tmpDefaultValue = [255, 255, 255];
-    //     let tmpValue = (_cssObj.color) ? _cssObj.color : tmpDefaultValue;
-    //     return tmpValue;
-    // }
-
-  }, {
-    key: "initSetPosXY",
-    value: function initSetPosXY(_cssObj) {
-      var tmpDefaultRight = 0;
-      var tmpDefaultTop = 0;
-      var tmpRight = _cssObj.right ? _cssObj.right : tmpDefaultRight;
-      var tmpTop = _cssObj.top ? _cssObj.top : tmpDefaultTop;
-      var tmpReturnObj = {
-        right: tmpRight,
-        top: tmpTop
-      };
-      return tmpReturnObj;
     }
   }, {
     key: "initAlpha",
@@ -1940,7 +1918,7 @@ function () {
   _createClass(GUIMain, [{
     key: "chckSideOption",
     value: function chckSideOption(_tmpHandOverObj) {
-      return _tmpHandOverObj.init.isSideExist ? undefined : new dat.GUI();
+      return _tmpHandOverObj.init.side ? new dat.GUI() : undefined;
     }
   }, {
     key: "getLib",
@@ -2286,13 +2264,14 @@ exports.DebugSceneNAllDisplayList = DebugSceneNAllDisplayList;
 function DebugConsole(_obj) {
   var tmpName = _obj.name;
   var tmpVersion = _obj.version;
-  var tmpInitConfig = _obj.initConfig;
-  var tmpA = 'ALPHA:' + tmpInitConfig.alpha;
-  var tmpR = 'RIGHT:' + tmpInitConfig.right;
-  var tmpT = 'TOP:' + tmpInitConfig.top;
+  var tmpIC = _obj.initConfig;
+  var tmpA = 'ALPHA:' + tmpIC.css.alpha;
+  var tmpR = 'RIGHT:' + tmpIC.css.right;
+  var tmpT = 'TOP:' + tmpIC.css.top;
+  var tmpI = 'SIDE:' + tmpIC.init.side;
   var tmpURL = _obj.url;
   var tmp_nameNversion = '%c' + tmpName + ' v' + tmpVersion + ' \n';
-  var tmp_config = '%c INIT_CONFIG( ' + tmpA + ' | ' + tmpR + ' | ' + tmpT + ' ) \n';
+  var tmp_config = '%c INIT_CONFIG( ' + tmpA + ' | ' + tmpR + ' | ' + tmpT + ' | ' + tmpI + ' ) \n';
   var tmp_url = '%c' + tmpURL;
   var tmpShadowGap = 1;
   var tmpShadowList = [tmpShadowGap + 'px ' + -tmpShadowGap + 'px 0 rgb(217,31,38)', tmpShadowGap * 2 + 'px ' + -tmpShadowGap * 2 + 'px 0 rgb(226,91,14)', tmpShadowGap * 3 + 'px ' + -tmpShadowGap * 3 + 'px 0 rgb(245,221,8)', tmpShadowGap * 4 + 'px ' + -tmpShadowGap * 4 + 'px 0 rgb(5,148,68)', tmpShadowGap * 5 + 'px ' + -tmpShadowGap * 5 + 'px 0 rgb(2,135,206)', tmpShadowGap * 6 + 'px ' + -tmpShadowGap * 6 + 'px 0 rgb(4,77,145)', tmpShadowGap * 7 + 'px ' + -tmpShadowGap * 7 + 'px 0 rgb(42,21,113)'];
@@ -2675,10 +2654,15 @@ function () {
         case 'StaticTilemapLayer':
           this.createTilemapLayer(_idx, _folderInCustom, tmpGameObj);
           break;
-        // ++ Done
+        // ++ Spine
 
         case 'Spine':
           this.createSpine(_idx, _folderInCustom, tmpGameObj);
+          break;
+        // ++ Group
+
+        case 'Group':
+          this.createGroup(_idx, _folderInCustom, tmpGameObj);
           break;
 
         case 'Graphics':
@@ -2920,6 +2904,11 @@ function () {
   }, {
     key: "createSpine",
     value: function createSpine(_idx, _folderInCustom, _gameObj) {
+      this.chckEndSorting(_idx);
+    }
+  }, {
+    key: "createGroup",
+    value: function createGroup(_idx, _folderInCustom, _gameObj) {
       this.chckEndSorting(_idx);
     }
   }, {
@@ -4206,7 +4195,9 @@ var JOINT_SI = {
     this.input = _input;
   },
   signalInput2Side: function signalInput2Side(_idx) {
-    this.side.signalFromInput(_idx);
+    if (this.side) {
+      this.side.signalFromInput(_idx);
+    }
   }
 };
 exports.JOINT_SI = JOINT_SI;
@@ -4911,9 +4902,8 @@ function () {
     _GlobalJoint.JOINT_SI.setSide(this);
 
     this.main = _main;
-    this.lib = this.main.sideGUI; // if init config isSideExist = false, then return
-
-    if (!this.main.sideGUI) return;
+    this.lib = this.main.sideGUI;
+    if (!this.lib) return;
     this.manager = this.main.manager;
     this.modeFolder;
     this.textList = ['M____ / S____ / A____ / None ', 'Moves / S____ / A____ / N___ ', 'M____ / Scale / A____ / N___ ', 'M____ / S____ / Angle / N___ '];
@@ -4927,7 +4917,7 @@ function () {
   _createClass(SideGUIClass, [{
     key: "create",
     value: function create(_scene) {
-      if (!this.main.sideGUI) return;
+      if (!this.lib) return;
       this.createSetConfig();
       this.createModeList(_scene);
       this.createCmdFolder();
@@ -4998,7 +4988,7 @@ function () {
       this.modeFolderChild = this.modeFolderDesc.domElement.lastChild.lastChild;
       this.modeFolderChild.style.backgroundColor = 'grey';
       this.modeFolderChild.style.color = 'black';
-      this.modeFolderChild.style.webkitTextStrokeWidth = '1px'; // this.modeFolderChild.style.fontFamily = 'fantasy';
+      this.modeFolderChild.style.webkitTextStrokeWidth = '1px';
     } // Command List Info
 
   }, {
@@ -5069,7 +5059,9 @@ function () {
   }, {
     key: "signalFromInput",
     value: function signalFromInput(_idx) {
-      this.setPointerModeText(_idx);
+      if (this.lib) {
+        this.setPointerModeText(_idx);
+      }
     }
   }, {
     key: "setPointerModeText",
@@ -5157,7 +5149,7 @@ function () {
     this.scene = _tmpHandOverObj.scene;
     this.libs = new _index.default(_tmpHandOverObj); // Console
 
-    this.initConsole(this.libs.getGUIcssObj()); // Manager Class
+    this.initConsole(_tmpHandOverObj); // Manager Class
 
     this.manager = {};
     this.manager.typeSort = new _TypeSortManager.default(_tmpHandOverObj.scene);
@@ -5197,14 +5189,14 @@ function () {
     }
   }, {
     key: "initConsole",
-    value: function initConsole(_cssObj) {
+    value: function initConsole(_tmpHandOverObj) {
       var tmpName = ' PGInspector.js';
       var tmpVersion = '1.2.0';
       var tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
       (0, _DebugConsoleFunc.DebugConsole)({
         name: tmpName,
         version: tmpVersion,
-        initConfig: _cssObj,
+        initConfig: _tmpHandOverObj,
         url: tmpURL
       });
     }
@@ -5255,19 +5247,19 @@ function ChckConfigObj(_scene, _userConfigObj) {
     scene: undefined,
     // Phaser.Scene
     css: {
-      alpha: undefined,
+      alpha: 0.8,
       // float 0 ~ 1
-      right: undefined,
+      right: 0,
       // int
-      top: undefined // int
+      top: 0 // int
 
     },
     init: {
-      focus: undefined,
+      focus: null,
       // GameObj
-      ignore: undefined,
+      ignore: null,
       // GameObj, array, container
-      isSideExist: true // boolean
+      side: true // boolean
 
     }
   }; // check is init config
@@ -5280,17 +5272,19 @@ function ChckConfigObj(_scene, _userConfigObj) {
     TryCatchObj(tmpReturn.css, 'top', _userConfigObj.top);
     TryCatchObj(tmpReturn.init, 'focus', _userConfigObj.focus);
     TryCatchObj(tmpReturn.init, 'ignore', _userConfigObj.ignore);
-    TryCatchObj(tmpReturn.init, 'isSideExist', _userConfigObj.isSideExist);
+    TryCatchObj(tmpReturn.init, 'side', _userConfigObj.side);
   }
 
   return tmpReturn;
 }
 
 function TryCatchObj(_obj, _objPropertyName, _obj2) {
-  try {
-    _obj[_objPropertyName] = _obj2;
-  } catch (e) {
-    console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
+  if (_obj2 !== undefined) {
+    try {
+      _obj[_objPropertyName] = _obj2;
+    } catch (e) {
+      console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
+    }
   }
 }
 
@@ -5362,7 +5356,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53834" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57067" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

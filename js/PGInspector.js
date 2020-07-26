@@ -39,14 +39,14 @@ function ChckConfigObj(_scene, _userConfigObj) {
     let tmpReturn = {
         scene: undefined, // Phaser.Scene
         css: {
-            alpha: undefined, // float 0 ~ 1
-            right: undefined, // int
-            top: undefined // int
+            alpha: 0.8, // float 0 ~ 1
+            right: 0, // int
+            top: 0 // int
         },
         init: {
-            focus: undefined, // GameObj
-            ignore: undefined, // GameObj, array, container
-            isSideExist: true // boolean
+            focus: null, // GameObj
+            ignore: null, // GameObj, array, container
+            side: true // boolean
         }
     };
     // check is init config
@@ -58,16 +58,19 @@ function ChckConfigObj(_scene, _userConfigObj) {
 
         TryCatchObj(tmpReturn.init, 'focus', _userConfigObj.focus);
         TryCatchObj(tmpReturn.init, 'ignore', _userConfigObj.ignore);
-        TryCatchObj(tmpReturn.init, 'isSideExist', _userConfigObj.isSideExist);
+        TryCatchObj(tmpReturn.init, 'side', _userConfigObj.side);
     }
     return tmpReturn;
 }
 function TryCatchObj(_obj, _objPropertyName, _obj2) {
-    try {
-        _obj[_objPropertyName] = _obj2;
-    }
-    catch(e) {
-        console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
+    
+    if (_obj2 !== undefined) {
+        try {
+            _obj[_objPropertyName] = _obj2;
+        }
+        catch(e) {
+            console.log('_PGI System_ : INIT CONFIG PROPERTY', _obj2, 'NOT FOUND');
+        }
     }
 }
 function InitMainClass() {

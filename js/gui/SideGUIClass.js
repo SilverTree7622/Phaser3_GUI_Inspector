@@ -6,8 +6,7 @@ export default class SideGUIClass {
         JOINT_SI.setSide(this);
         this.main = _main;
         this.lib = this.main.sideGUI;
-        // if init config isSideExist = false, then return
-        if (!this.main.sideGUI) return;
+        if (!this.lib) return;
         this.manager = this.main.manager;
         this.modeFolder;
         this.textList = [
@@ -23,7 +22,7 @@ export default class SideGUIClass {
         this.cmdList = this.initCmdList();
     }
     create(_scene) {
-        if (!this.main.sideGUI) return;
+        if (!this.lib) return;
         this.createSetConfig();
         this.createModeList(_scene);
         this.createCmdFolder();
@@ -58,7 +57,6 @@ export default class SideGUIClass {
         this.modeFolderChild.style.backgroundColor = 'grey';
         this.modeFolderChild.style.color = 'black';
         this.modeFolderChild.style.webkitTextStrokeWidth = '1px';
-        // this.modeFolderChild.style.fontFamily = 'fantasy';
     }
     // Command List Info
     createCmdFolder() {
@@ -83,7 +81,6 @@ export default class SideGUIClass {
         }
     }
 
-
     setSideWidthInit() {
         this.lib.width = 176;
     }
@@ -91,7 +88,9 @@ export default class SideGUIClass {
         this.lib.width = 400;
     }
     signalFromInput(_idx) {
-        this.setPointerModeText(_idx);
+        if (this.lib) {
+            this.setPointerModeText(_idx);
+        }
     }
     setPointerModeText(_idx) {
         this.modeFolderChild.innerText = this.textList[_idx];

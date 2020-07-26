@@ -51,7 +51,7 @@ export class Main {
         this.scene = _tmpHandOverObj.scene;
         this.libs = new LibClass(_tmpHandOverObj);
         // Console
-        this.initConsole(this.libs.getGUIcssObj());
+        this.initConsole(_tmpHandOverObj);
         // Manager Class
         this.manager = {};
         this.manager.typeSort = new TypeSortManager(_tmpHandOverObj.scene);
@@ -85,14 +85,14 @@ export class Main {
         this.manager.input.update();
     }
 
-    initConsole(_cssObj) {
+    initConsole(_tmpHandOverObj) {
         let tmpName = ' PGInspector.js';
         let tmpVersion = '1.2.0';
         let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
         DebugConsole({
             name: tmpName,
             version: tmpVersion,
-            initConfig: _cssObj,
+            initConfig: _tmpHandOverObj,
             url: tmpURL
         });
     }

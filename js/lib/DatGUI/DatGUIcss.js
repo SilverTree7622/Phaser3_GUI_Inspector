@@ -4,8 +4,8 @@ export default class GUIcss {
         this.name = 'dg ac'; // dat gui class name
         this.class = this.initClass();
         this.gui = this.initGui();
-        this.alpha = this.initSetAlpha(_cssObj);
-        this.posXY = this.initSetPosXY(_cssObj);
+        this.alpha = _cssObj.alpha;
+        this.posXY = { right: _cssObj.right, top: _cssObj.top };
         // delay GUI color all structure
         // this.color = this.initSetColor(_cssObj);
         this.initAlpha();
@@ -17,26 +17,6 @@ export default class GUIcss {
     }
     initGui() {
         return this.class[0];
-    }
-    initSetAlpha(_cssObj) {
-        let tmpDefaultValue = 0.8;
-        let tmpValue = (_cssObj.alpha) ? _cssObj.alpha : tmpDefaultValue;
-        return tmpValue;
-    }
-    // initSetColor(_cssObj) {
-    //     let tmpDefaultValue = [255, 255, 255];
-    //     let tmpValue = (_cssObj.color) ? _cssObj.color : tmpDefaultValue;
-    //     return tmpValue;
-    // }
-    initSetPosXY(_cssObj) {
-        let tmpDefaultRight = 0;
-        let tmpDefaultTop = 0;
-        let tmpRight = (_cssObj.right) ? _cssObj.right : tmpDefaultRight;
-        let tmpTop = (_cssObj.top) ? _cssObj.top : tmpDefaultTop;
-        let tmpReturnObj = {
-            right: tmpRight, top: tmpTop
-        };
-        return tmpReturnObj;
     }
     initAlpha() {
         return this.gui.style.opacity = this.alpha;

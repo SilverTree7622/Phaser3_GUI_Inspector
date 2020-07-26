@@ -126,8 +126,10 @@ export default class TypeSortManager {
             case 'ParticleEmitterManager': this.createParticleEmitterManager(_idx, _folderInCustom, tmpGameObj); break;
             // ++ TileMap Stuff
             case 'StaticTilemapLayer': this.createTilemapLayer(_idx, _folderInCustom, tmpGameObj); break;
-            // ++ Done
+            // ++ Spine
             case 'Spine': this.createSpine(_idx, _folderInCustom, tmpGameObj); break;
+            // ++ Group
+            case 'Group': this.createGroup(_idx, _folderInCustom, tmpGameObj); break;
             case 'Graphics': this.createGraphics(_idx, _folderInCustom, tmpGameObj); break;
             case 'Arc': // WTF is Arc????
                 this.chckEndSorting(_idx);
@@ -303,6 +305,9 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createSpine(_idx, _folderInCustom, _gameObj) {
+        this.chckEndSorting(_idx);
+    }
+    createGroup(_idx, _folderInCustom, _gameObj) {
         this.chckEndSorting(_idx);
     }
     createMatterBody(_folderInCustom, _gameObj) {

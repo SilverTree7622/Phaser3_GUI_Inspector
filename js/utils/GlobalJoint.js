@@ -16,6 +16,8 @@ export let JOINT_SI = {
         this.input = _input;
     },
     signalInput2Side: function (_idx) {
-        this.side.signalFromInput(_idx);
+        if (this.side) {
+            this.side.signalFromInput(_idx);
+        }
     }
 };
