@@ -118,9 +118,18 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;**1.2.0)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Pointer Mode for ease (Move, Scale, Angle, None)\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Related Commands is SHIFT + Q, W, E, R & control with SHIFT + LEFT CLICK
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands are SHIFT + Q, W, E, R & control with SHIFT + LEFT CLICK
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/pointerModeCapture.gif" width="70%">
 </p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Camera Move & Zoom\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands are SHIFT + RIGHT CLICK & SHIFT + MOUSE SCROLL & SHIFT + A
+
+<p align="center">
+	<img src="./zReadmeSrc/v120/camerDebugCapture.gif" width="70%">
+</p>
+
+
 
