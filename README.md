@@ -17,7 +17,7 @@
 
 **SCREENSHOT)**
 <p align="center">
-  <img src="./zReadmeSrc/capture_v110.PNG">
+  <img src="./zReadmeSrc/v120/titleCapture.PNG">
 </p>
 
 **EXAMPLE)**\
@@ -31,7 +31,11 @@
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)**
 	
+	// latest version
 	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.min.js"></script>
+	// previous version
+	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@1.1.4/dist/PGInspector.min.js"></script>
+
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
 
@@ -76,15 +80,12 @@
 		}
 	}
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you wanna check this GUI class
-
-	console.log('window.PhaserGUI:', window.PhaserGUI);
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_DEVTOOLS)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;It has some info in console way
 	
 <p align="center">
-  <img src="./zReadmeSrc/cpatureConsole_v110.PNG">
+  <img src="./zReadmeSrc/v120/devtoolsCapture.PNG">
 </p>
 
 **USAGE)**\
