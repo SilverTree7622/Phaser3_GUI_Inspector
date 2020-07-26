@@ -20,6 +20,16 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+var tmpSpr = {
+    self: undefined,
+    key: 'LazerSpr',
+    url: {
+        png: './lazer.png',
+        json: './lazer.json'
+    },
+    animSelf: undefined,
+    animKey: 'AnimLazer'
+};
 
 function preload ()
 {
@@ -75,10 +85,61 @@ function preload ()
     // this.load.image('loop');
     // this.load.image('maggot');
     // this.load.image('magnify-glass-inside');
+    this.load.setPath('https://labs.phaser.io/assets/animations/lazer');
+    this.load.atlas(tmpSpr.key, tmpSpr.url.png, tmpSpr.url.json);
+    this.load.setPath('https://labs.phaser.io/assets/animations/');
+    this.load.atlas('cube', './cube.png', './cube.json');
+    this.load.spritesheet('mummy', './mummy37x45.png', { frameWidth: 37, frameHeight: 45 });
 }
 
-function create ()
-{
+function create () {
+
+    this.anims.create(
+        {
+            key: tmpSpr.animKey,
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    this.anims.create(
+        {
+            key: '1',
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    this.anims.create(
+        {
+            key: '2',
+            frames: this.anims.generateFrameNames(
+                tmpSpr.key, 
+                { prefix: 'lazer_', start: 0, end: 22, zeroPad: 2 }
+            ),
+            repeat: -1 
+        }
+    );
+    this.anims.create({
+        key: 'spin',
+        frames: this.anims.generateFrameNames('cube', { prefix: 'frame', start: 0, end: 23 }),
+        frameRate: 50,
+        repeat: -1
+    });
+    
+    anim = this.anims.create({
+        key: 'walk',
+        frames: this.anims.generateFrameNumbers('mummy'),
+        frameRate: 6,
+        yoyo: false,
+        repeat: -1
+    });
+
+
     var keys = this.textures.getTextureKeys();
 
     let tmpX = [70, 150, 250, 330, 400, 470, 540];
@@ -87,24 +148,35 @@ function create ()
     // image, sprite, text, tile sprite, container, notification(explain)
 
     // image
-    this.add.image(tmpX[0], tmpY[0], keys.pop()).setDisplaySize(tmpSize, tmpSize);
-    this.physics.add.image(tmpX[0], tmpY[1], keys.pop()).setDisplaySize(tmpSize, tmpSize);
-    this.matter.add.image(tmpX[0], tmpY[2], keys.pop()).setDisplaySize(tmpSize, tmpSize);
+    this.add.image(tmpX[0], tmpY[0], keys.shift()).setDisplaySize(tmpSize, tmpSize);
+    this.physics.add.image(tmpX[0], tmpY[1], keys.shift()).setDisplaySize(tmpSize, tmpSize);
+    this.matter.add.image(tmpX[0], tmpY[2], keys.shift()).setDisplaySize(tmpSize, tmpSize);
 
     // sprite
-    this.add.sprite(tmpX[1], tmpY[0], keys.pop()).setDisplaySize(tmpSize, tmpSize);
-    this.physics.add.sprite(tmpX[1], tmpY[1], keys.pop()).setDisplaySize(tmpSize, tmpSize);
-    this.matter.add.sprite(tmpX[1], tmpY[2], keys.pop()).setDisplaySize(tmpSize, tmpSize);
+    tmpSpr.self = this.add.sprite(tmpX[1], tmpY[0], keys.pop()).setDisplaySize(tmpSize, tmpSize);
+    tmpSpr.self.anims.play('1');
+    let tmpArcadeAnim = this.physics.add.sprite(tmpX[1], tmpY[1], keys.pop());
+    tmpArcadeAnim.setTexture('cube');
+    tmpArcadeAnim.anims.play('spin');
+    tmpArcadeAnim.setDisplaySize(tmpSize, tmpSize);
+    let tmpMatterAnim = this.matter.add.sprite(tmpX[1], tmpY[2], keys.pop());
+    tmpMatterAnim.setTexture('mummy');
+    tmpMatterAnim.anims.play('walk');
+    tmpMatterAnim.setBody({
+        type: 'rectangle',
+        width: tmpSize,
+        height: tmpSize
+    });
 
     // text
     this.add.text(tmpX[2], tmpY[0], keys.pop()).setDisplaySize(tmpSize, tmpSize).setOrigin(1, 0.5);
     let tmpArcade = this.add.text(tmpX[2], tmpY[1], keys.pop()).setDisplaySize(tmpSize, tmpSize).setOrigin(1, 0.5);
     this.physics.world.enable(tmpArcade);
-    let tmpMatter = this.add.text(tmpX[2], tmpY[2], keys.pop()).setDisplaySize(tmpSize, tmpSize).setOrigin(1, 0.5);
+    let tmpMatter = this.add.text(tmpX[2], tmpY[2], keys.shift()).setDisplaySize(tmpSize, tmpSize).setOrigin(1, 0.5);
     this.matter.add.gameObject(tmpMatter);
 
     // tile sprite
-    this.add.tileSprite(tmpX[3], tmpY[0], tmpSize, tmpSize, keys.pop());
+    this.add.tileSprite(tmpX[3], tmpY[0], tmpSize, tmpSize, keys.shift());
     let tmpArcadeTS = this.add.tileSprite(tmpX[3], tmpY[1], tmpSize, tmpSize, keys.pop());
     this.physics.add.existing(tmpArcadeTS, false);
     let tmpMatterTS = this.add.tileSprite(tmpX[3], tmpY[2], tmpSize, tmpSize, keys.pop());
