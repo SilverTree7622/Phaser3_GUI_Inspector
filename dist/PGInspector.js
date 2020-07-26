@@ -4572,10 +4572,12 @@ function () {
     value: function setDraggingScaleMode() {
       var tmpMO = this.pointerModeObjs;
       var tmpGap = this.setDragging();
-      var tmpX = tmpMO.scale.x + tmpGap.x / 15;
-      var tmpY = tmpMO.scale.y - tmpGap.y / 15;
-      tmpMO.target.scaleX = tmpX;
-      tmpMO.target.scaleY = tmpY;
+      var tmpX = tmpMO.scale.x + tmpGap.x / 20;
+      var tmpY = tmpMO.scale.y - tmpGap.y / 20;
+      var tmpXCal = Math.round(tmpX * 100) / 100;
+      var tmpYCal = Math.round(tmpY * 100) / 100;
+      tmpMO.target.scaleX = tmpXCal;
+      tmpMO.target.scaleY = tmpYCal;
     }
   }, {
     key: "setDragEndScaleMode",
@@ -5360,7 +5362,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50638" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53834" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

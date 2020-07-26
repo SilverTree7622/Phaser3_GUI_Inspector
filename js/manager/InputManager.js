@@ -240,10 +240,12 @@ export default class InputManager {
     setDraggingScaleMode() {
         let tmpMO = this.pointerModeObjs;
         let tmpGap = this.setDragging();
-        let tmpX = tmpMO.scale.x + (tmpGap.x)/15;
-        let tmpY = tmpMO.scale.y - (tmpGap.y)/15;
-        tmpMO.target.scaleX = tmpX;
-        tmpMO.target.scaleY = tmpY;
+        let tmpX = tmpMO.scale.x + (tmpGap.x) / 20;
+        let tmpY = tmpMO.scale.y - (tmpGap.y) / 20;
+        let tmpXCal = Math.round(tmpX * 100) / 100;
+        let tmpYCal = Math.round(tmpY * 100) / 100;
+        tmpMO.target.scaleX = tmpXCal;
+        tmpMO.target.scaleY = tmpYCal;
     }
     setDragEndScaleMode() {
         this.setDragEnd();
