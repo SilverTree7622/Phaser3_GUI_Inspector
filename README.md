@@ -139,6 +139,8 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Main Camera Blue Boundary only when move, zoom or following active
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Default Zoom function just same as (SHIFT + S)
+
 
 **SHOWCASE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;- mix with focused(SHIFT + F) + following(SHIFT + A) + Pointer Move Mode(SHIFT + Q)
