@@ -115,7 +115,7 @@ export default class TypeSortManager {
         this.createContainerFunc(_idx, _folderInCustom, tmpGameObj);
         this.createCommonFront(_folderInCustom, tmpGameObj);
         this.chckNCreatePhysicsType(_folderInCustom, tmpGameObj);
-        
+
         // set each specific type properties
         switch (tmpType) {
             case 'Container': this.createContainer(_idx, _folderInCustom, tmpGameObj); break;
@@ -299,6 +299,7 @@ export default class TypeSortManager {
         this.chckEndSorting(_idx);
     }
     createParticleEmitterManager(_idx, _folderInCustom, _gameObj) {
+        console.log('particle emitter in typesort');
         this.chckEndSorting(_idx);
     }
     createTilemapLayer(_idx, _folderInCustom, _gameObj) {

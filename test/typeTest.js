@@ -81,24 +81,10 @@ function create ()
 {
     var keys = this.textures.getTextureKeys();
 
-    // for (var i = 0; i < keys.length; i++)
-    // {
-    //     var x = Phaser.Math.Between(0, 800);
-    //     var y = Phaser.Math.Between(0, 600);
-
-    //     this.add.image(x, y, keys[i]);
-    // }
-
     let tmpX = [70, 150, 250, 330, 400, 470, 540];
     let tmpY = [100, 200, 300, 400];
     let tmpSize = 45;
     // image, sprite, text, tile sprite, container, notification(explain)
-    // normal
-
-    // arcade
-
-    // matter
-    
 
     // image
     this.add.image(tmpX[0], tmpY[0], keys.pop()).setDisplaySize(tmpSize, tmpSize);
@@ -140,6 +126,23 @@ function create ()
     tmpMatterCon.setSize(tmpSize, tmpSize);
     this.matter.add.gameObject(tmpMatterCon);
 
+    // // particles
+    // var particles = this.add.particles(keys.pop());
+    // var emitter = particles.createEmitter({
+    //     x: tmpX[5],
+    //     y: tmpY[0],
+    //     angle: { min: 180, max: 360 },
+    //     speed: 100,
+    //     gravityY: 100,
+    //     lifespan: 1000,
+    //     quantity: 1,
+    //     scale: { start: 0.1, end: 1 },
+    //     blendMode: 'ADD'
+    // });
+    // console.log('particles:', particles);
+
+    // this.add.rope(tmpX[5], tmpY[0], keys.pop(), null, 64);
+
 
     // notifications
     this.add.text(tmpX[0], tmpY[3], 'IMAGE').setOrigin(0.5);
@@ -152,7 +155,5 @@ function create ()
     this.add.text(tmpX[6], tmpY[1], 'ARCADE').setOrigin(0.5);
     this.add.text(tmpX[6], tmpY[2], 'MATTER').setOrigin(0.5);
 
-
-
-    PhaserGUIAction(this, {side: false});
+    PhaserGUIAction(this, {side: true});
 }
