@@ -138,7 +138,7 @@
 
 
 **SHOWCASE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;mix with focused(SHIFT + F) + following(SHIFT + A) + Pointer Move Mode(SHIFT + Q)
+&nbsp;&nbsp;&nbsp;&nbsp;- mix with focused(SHIFT + F) + following(SHIFT + A) + Pointer Move Mode(SHIFT + Q)
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/showcase1.gif" width="70%">
