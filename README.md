@@ -90,30 +90,14 @@
 </p>
 
 **USAGE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;mouse command :\
+&nbsp;&nbsp;&nbsp;&nbsp;mouse command :
 
 <p align="center">
 	<img src="./zReadmeSrc/v120/cmdsCapture.gif" width="70%">
 </p>
 
-> **If you wanna check status or var name somethning,**\
-> **then change Phaser GameObject name property**\
-> **PGInspector will detect and show on UI**
+&nbsp;&nbsp;&nbsp;&nbsp;You can find command list in the Side GUI (init option 'side' should be true)\
 
-**NOTIFICATION)**\
-&nbsp;&nbsp;&nbsp;&nbsp;At the beginnnig, I just use this only for my phaser project\
-&nbsp;&nbsp;&nbsp;&nbsp;But, I changed my mind at the middle of this work so I made this as open source project\
-&nbsp;&nbsp;&nbsp;&nbsp;This is kind of side project so if I got some feedback,\
-&nbsp;&nbsp;&nbsp;&nbsp;then I'll fix or add via requests
-  
-**PLAN)**\
-&nbsp;&nbsp;&nbsp;&nbsp;**TO DO)**\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Update DebugBox when user change focus object properties\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set smooth detailed folder converts when user change focus object\
-&nbsp;&nbsp;&nbsp;&nbsp;**ADD ANOTHER)**\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add kind of GAME_STATUS_MANAGER stuffs with another dependency JS Lib\
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if I finish GAME_STATUS_MANAGER, I also publish Merged PGInspector & GAME_STATUS_MANAGER Lib
-    
 **VERSION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**1.1.0)**\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- TEXTURE, FRAME, ANIMATION CONTROL
@@ -131,3 +115,12 @@
 <p align="center">
 	<img src="./zReadmeSrc/sceneConsoleControl_v110.gif" width="70%">
 </p>
+
+&nbsp;&nbsp;&nbsp;&nbsp;**1.2.0)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Pointer Mode for ease (Move, Scale, Angle, None)\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Related Commands is SHIFT + Q, W, E, R & control with SHIFT + LEFT CLICK
+
+<p align="center">
+	<img src="./zReadmeSrc/v120/pointerModeCapture.gif" width="70%">
+</p>
+
