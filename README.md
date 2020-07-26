@@ -91,7 +91,7 @@
 
 **USAGE)**\
 &nbsp;&nbsp;&nbsp;&nbsp;mouse command : \
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SHIFT + F) or (SHIFT + LEFT CLICK) is the important & basic command for controlling Game Objects\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(SHIFT + F) or (SHIFT + LEFT CLICK) is the most important & basic command for controlling Game Objects\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This makes Game Object 'Focus' which twinkles with RED BOUND\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The others is on the command list like below
 
@@ -135,6 +135,8 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Focus Game Object's detail\
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Related Commands (SHIIFT + D) when focused
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Add Main Camera Blue Boundary only when move, zoom or following active
 
 
 **SHOWCASE)**\
