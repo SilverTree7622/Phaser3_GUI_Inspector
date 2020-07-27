@@ -11,6 +11,6 @@
   "dependencies": {
     "http-server": "^0.12.3",
     "phaser": "^3.23.0",
-    "phaser3_gui_inspector": "^1.1.4"
+    "phaser3_gui_inspector": "^1.2.0"
   }
 }
