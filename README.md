@@ -150,4 +150,11 @@
 </p>
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;- test same thing in mini game
+
+<p align="center">
+	<img src="./zReadmeSrc/v120/inGameTestCapture.gif" width="70%">
+</p>
+
+
 
