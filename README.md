@@ -101,6 +101,12 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;You can find command list in the Side GUI (init option 'side' should be true)
 
+
+**WARNING)**\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- You can find specific Game Object via opening DISPLAY_LIST\
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;but i recommend to use command because performance optimization is based on the command actions
+
+
 **VERSION)**\
 &nbsp;&nbsp;&nbsp;&nbsp;**PREVIOUS_UPDATE)** https://github.com/SilverTree7622/Phaser3_GUI_Inspector/tree/master/zUpdate
 
