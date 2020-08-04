@@ -32,9 +32,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_HTML_URL)** - prefer this method to test
 	
 	// latest version
-	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.js"></script>
 	// previous version
-	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@1.1.1/dist/PGInspector.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@1.1.1/dist/PGInspector.js"></script>
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_JS)**
