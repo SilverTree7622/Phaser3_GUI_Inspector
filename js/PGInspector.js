@@ -106,3 +106,4 @@ function StoreGUI(_GUI) {
 
 // trying for npm exports
 module.exports = PhaserGUIAction;
+

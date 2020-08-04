@@ -87,7 +87,7 @@ export class Main {
 
     initConsole(_tmpHandOverObj) {
         let tmpName = ' PGInspector.js';
-        let tmpVersion = '1.2.0';
+        let tmpVersion = '1.2.1';
         let tmpURL = 'https://github.com/SilverTree7622/Phaser3_GUI_Inspector';
         DebugConsole({
             name: tmpName,

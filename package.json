@@ -1,13 +1,13 @@
 {
 	"name": "phaser3_gui_inspector",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "This is a inspector for only phaser3 framework",
 	"main": "./dist/PGInspector.js",
 	"directories": {
 		"test": "test"
 	},
 	"scripts": {
-		"build": "parcel build ./js/PGInspector.js",
+		"build": "parcel build ./js/PGInspector.js --out-dir dist --experimental-scope-hoisting",
 		"watch": "parcel watch ./js/PGInspector.js",
 		"dev": "http-server -p 9999 -c-1"
 	},
@@ -31,5 +31,7 @@
 	},
 	"homepage": "https://github.com/SilverTree7622/Phaser3_GUI_Inspector#readme",
 	"dependencies": {},
-	"devDependencies": {}
+	"devDependencies": {
+		"parcel": "^1.12.4"
+	}
 }
