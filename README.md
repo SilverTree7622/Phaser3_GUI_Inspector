@@ -80,6 +80,28 @@
 			PhaserGUIAction(this); // also config object one works
 		}
 	}
+	
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
+	
+&nbsp;&nbsp;&nbsp;&nbsp;**ONE_JS_FILE_SOLUTION)** : No any setting. Just one JS file solution (Don't need to touch html or else)
+
+	// on top of the one JS file (this role is importing PGInspector.js)
+	const script = document.createElement('script');
+	script.src = "https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.js";      
+	document.head.appendChild(script);
+	
+	/*
+	* your any codes
+	*/
+
+	// in Phaser Scene create function
+	function create() {
+		/*
+		* your any codes
+		*/
+		
+		PhaserGUIAction(this);
+	}
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;**IN_DEVTOOLS)**\
