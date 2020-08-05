@@ -81,7 +81,6 @@
 		}
 	}
 	
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**ONE_JS_FILE_SOLUTION)** : No any setting. Just one JS file solution (Don't need to touch html or else)
 
