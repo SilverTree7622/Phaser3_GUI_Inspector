@@ -21,7 +21,7 @@
 </p>
 
 **EXAMPLE)**\
-&nbsp;&nbsp;&nbsp;&nbsp;**NODE_JS)** - it has a issue so not recommended right now
+&nbsp;&nbsp;&nbsp;&nbsp;**NODE_JS)** - it has an issue so not recommended right now
 	
 	npm install phaser3_gui_inspector --save-dev
 	npm i phaser3_gui_inspector --save-dev
