@@ -88,9 +88,9 @@
 	// these delare stuffs role is importing PGInspector.js via direct URL
 	
 	const PGIurl = 'https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.js'; 
-	const script = document.createElement('script');
-	script.src = PGIurl;
-	document.head.appendChild(script);
+	const PGIele = document.createElement('script');
+	PGIele.src = PGIurl;
+	document.head.appendChild(PGIele);
 	
 	/*
 	* your any codes
