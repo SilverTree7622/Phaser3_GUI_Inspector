@@ -84,7 +84,9 @@
 	
 &nbsp;&nbsp;&nbsp;&nbsp;**ONE_JS_FILE_SOLUTION)** : No any setting. Just one JS file solution (Don't need to touch html or else)
 
-	// on top of the one JS file (this role is importing PGInspector.js)
+	// on the top of the one JS file
+	// this delare stuffs role is importing PGInspector.js
+	
 	const script = document.createElement('script');
 	script.src = "https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.js";      
 	document.head.appendChild(script);
@@ -99,6 +101,7 @@
 		* your any codes
 		*/
 		
+		// use function at the end of the Phaser create function
 		PhaserGUIAction(this);
 	}
 
