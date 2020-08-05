@@ -85,7 +85,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;**ONE_JS_FILE_SOLUTION)** : No any setting. Just one JS file solution (Don't need to touch html or else)
 
 	// on the top of the one JS file
-	// these delare stuffs role is importing PGInspector.js
+	// these delare stuffs role is importing PGInspector.js via direct URL
 	
 	const PGIurl = 'https://cdn.jsdelivr.net/gh/SilverTree7622/Phaser3_GUI_Inspector@latest/dist/PGInspector.js'; 
 	const script = document.createElement('script');
