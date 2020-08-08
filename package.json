@@ -32,6 +32,6 @@
 	"homepage": "https://github.com/SilverTree7622/Phaser3_GUI_Inspector#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"parcel": "^1.12.4"
+		"parcel-bundler": "^1.12.4"
 	}
 }
