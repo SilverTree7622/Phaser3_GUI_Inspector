@@ -1,13 +1,13 @@
-import Phaser from 'phaser'
+import Phaser from 'phaser';
 
-// import the phaser3_gui_inspector
-import PhaserGUIAction from 'phaser3_gui_inspector'
+// @ts-ignore
+import PhaserGUIAction from 'phaser3_gui_inspector';
 
 export default class HelloWorldScene extends Phaser.Scene
 {
 	constructor()
 	{
-		super('hello-world')
+		super('hello-world');
 	}
 
 	preload()
